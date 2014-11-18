@@ -13,12 +13,12 @@
     Javascript to submit a title_id as a POST form, used with the "delete" links
 -->
 <script>
-function formSubmit(titleId) {
+function formSubmit(CustId) {
     'use strict';
     if (confirm('Are you sure you want to delete this customer?')) {
       // Set the value of a hidden HTML element in this form
       var form = document.getElementById('delete');
-      form.title_id.value = titleId;
+      form.cid.value = CustId;
       // Post this form
       form.submit();
     }
@@ -35,7 +35,7 @@ function formSubmit(titleId) {
 
     // CHANGE this to connect to your own MySQL instance in the labs or on your own computer
     $username = "root";
-	$password = "1230vuk7431";
+	$password = "";
 	$hostname = "localhost";
 
 	$connection = new mysqli($hostname, $username, $password, "AMS");
@@ -66,8 +66,8 @@ function formSubmit(titleId) {
         */
        
        // Create a delete query prepared statement with a ? for the title_id
-       $stmt = $connection->prepare("DELETE FROM Customers WHERE CustomerID=?");
-       $deleteCustID = $_POST['customer_id'];
+       $stmt = $connection->prepare("DELETE FROM Customer WHERE cid=?");
+       $deleteCustID = $_POST['cid'];
        // Bind the title_id parameter, 's' indicates a string value
        $stmt->bind_param("s", $deleteCustID);
        
@@ -77,7 +77,7 @@ function formSubmit(titleId) {
        if($stmt->error) {
          printf("<b>Error: %s.</b>\n", $stmt->error);
        } else {
-         echo "<b>Successfully deleted ".$deleteTitleID."</b>";
+         echo "<b>Successfully deleted ".$deleteCustID."</b>";
        }
             
       } elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
@@ -93,7 +93,7 @@ function formSubmit(titleId) {
         $stmt = $connection->prepare("INSERT INTO Customer (cid, c_password, cname, address, phone) VALUES (?,?,?,?,?)");
           
         // Bind the title and pub_id parameters, 'sssss' indicates 5 strings
-        $stmt->bind_param("sssss", $customer_id, $customer_pw, $customer_nm, $customer_ad, $customer_ph);
+        $stmt->bind_param("sssss", $cid, $customer_pw, $customer_nm, $customer_ad, $customer_ph);
         
         // Execute the insert statement
         $stmt->execute();
@@ -135,7 +135,7 @@ function formSubmit(titleId) {
     echo htmlspecialchars($_SERVER["PHP_SELF"]);
     echo "\" method=\"POST\">";
     // Hidden value is used if the delete link is clicked
-    echo "<input type=\"hidden\" name=\"title_id\" value=\"-1\"/>";
+    echo "<input type=\"hidden\" name=\"cid\" value=\"-1\"/>";
    // We need a submit value to detect if delete was pressed 
     echo "<input type=\"hidden\" name=\"submitDelete\" value=\"DELETE\"/>";
 
