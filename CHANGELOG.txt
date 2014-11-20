@@ -1,4 +1,0 @@
-Crystal
-- Changed title name
-- Fixed spelling errors
-- Added simple homepage (index.html)
