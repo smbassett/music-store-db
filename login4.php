@@ -4,13 +4,12 @@
 <meta content="utf-8" http-equiv="encoding">
 
 <title>Login</title>
-
-	<link href="login.css" rel="stylesheet" type="text/css">
-	
+<link href="bookbiz.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 <h1>Login to Allegro Music Store</h1>
+
 <?php
 
 	/* Establish Connection to Database */
@@ -46,7 +45,7 @@
 				if ($stmt->fetch()){
 					/*header('Location: http://localhost/home.html');*/
 					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; http://localhost/home.html">';
+					echo '<META http-equiv="refresh" content="1; http://localhost/index.html">';
 					exit;
 					}
 				else 
@@ -56,7 +55,7 @@
 			}
 		}
 ?>
-<h2>Customer Registration Menu</h2>
+<h2>Customer Login Menu</h2>
 	<form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 		<table border=0 cellpadding=0 cellspacing=0>
         <tr><td>Username</td><td><input type="text" size=30 name="cust_name"</td></tr>
@@ -64,6 +63,7 @@
 		<tr><td></td><td><input type="submit" name="submit" border=0 value="SUBMIT"></td></tr>
 		</table>
 	</form>
+	<a href="http://localhost/CustomerRegistration.php">Sign up</a> 
 </body>
 
 </html>

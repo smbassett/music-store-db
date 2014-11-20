@@ -3,7 +3,7 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
-<title>CPSC 304 AMS Music Store</title>
+<title>CPSC 304 Bookbiz</title>
 <!--
     A simple stylesheet is provided so you can modify colours, fonts, etc.
 -->
@@ -44,8 +44,8 @@ function formSubmit(CustId) {
     if (mysqli_connect_errno()) {
         printf("Connect failed: %s\n", mysqli_connect_error());
         exit();
-    }else printf("Connection Successfull");
-
+    }
+	else printf("Connection Successfull");
     /****************************************************
      STEP 2: Detect the user action
 
@@ -101,7 +101,7 @@ function formSubmit(CustId) {
         if($stmt->error) {       
           printf("<b>Error: %s.</b>\n", $stmt->error);
         } else {
-          echo "<b>Successfully added ".$cname."</b>";
+          echo "<b>Successfully added ".$customer_nm."</b>";
         }
       }
    }

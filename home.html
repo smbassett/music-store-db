@@ -1,29 +1,21 @@
+<!DOCTYPE html>
 <html>
 <head>
-<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-<meta content="utf-8" http-equiv="encoding">
-<title>ALLEGRO MUSIC STORE</title>
-    <link href="home.css" rel="stylesheet" type="text/css">
-
+<title>Welcome to AMS Music Store!</title>
+<link href="bookbiz.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
-<h1 style="color:blue">ALLEGRO MUSIC STORE</h1>
-<?php
-$username = "root";
-	$password = "";
-	$hostname = "localhost";
 
-	$connection = new mysqli($hostname, $username, $password, "AMS");
+<div id="homepage">
+	<h1>Welcome to AMS Music Store!</h1>
+	<h2>Please select one.</h2>
+	<br>
+	<a href="login4.php" title="Customer Login"><h3>Customers</h3></a>
+	<h3>Clerks (available soon!)</h3>
+	<h3>Managers (available soon!)</h3>
+</div>
 
-    // Check that the connection was successful, otherwise exit
-    if (mysqli_connect_errno()) {
-        printf("Connect failed: %s\n", mysqli_connect_error());
-        exit();
-    }
-	else printf("Connection Successful!");
-	?>
-<a href="http://localhost/login4.php">Login</a> <br>
-<a href="http://localhost/CustomerRegistration.php">Sign up</a> 
 </body>
 
 </html>
