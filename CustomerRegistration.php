@@ -4,10 +4,7 @@
 <meta content="utf-8" http-equiv="encoding">
 
 <title>AMS Registration</title>
-<!--
-    A simple stylesheet is provided so you can modify colours, fonts, etc.
--->
-    <link href="bookbiz.css" rel="stylesheet" type="text/css">
+<link href="bookbiz.css" rel="stylesheet" type="text/css">
 
 <!--
     Javascript to submit a title_id as a POST form, used with the "delete" links
@@ -55,8 +52,7 @@ function formSubmit(CustId) {
       deleteCustomer($_POST['cid'], $connection);        
     } elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
       // Add customer    		  
-      addCustomer($_POST["new_customerID"], $_POST["new_password"], 
-          $_POST["new_name"], $_POST["new_address"], 
+      addCustomer($_POST["new_password"], $_POST["new_name"], $_POST["new_address"], 
           $_POST["new_phone"], $connection);
     }
   }
@@ -121,9 +117,8 @@ function formSubmit(CustId) {
 
 <form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <table border=0 cellpadding=0 cellspacing=0>
-    <tr><td>CustomerID</td><td><input type="text" size=30 name="new_customerID"</td></tr>
+    <tr><td>Name</td><td><input type="text" size=5 name="new_name"></td></tr>
     <tr><td>Password</td><td><input type="password" size=30 name="new_password"</td></tr>
-    <tr><td>Name</td><td> <input type="text" size=5 name="new_name"></td></tr>
 		<tr><td>Address</td><td> <input type="text" size=5 name="new_address"></td></tr>
 		<tr><td>Phone</td><td> <input type="text" size=5 name="new_phone"></td></tr>
     <tr><td></td><td><input type="submit" name="submit" border=0 value="ADD"></td></tr>

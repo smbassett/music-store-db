@@ -2,12 +2,17 @@
 
 // CUSTOMER
 
-function addCustomer($id, $password, $name, $address, $phone, $connection) {
+function addCustomer($password, $name, $address, $phone, $connection) {
 	// SQL statement
 	$stmt = $connection->prepare("INSERT INTO Customer (cid, c_password, cname, address, phone) VALUES (?,?,?,?,?)");
-          
+    
+    // Generate new cid
+	$id = $connection->query("SELECT max(cid) FROM Customer");
+	$id = $id->fetch_array();
+	$id[0] = $id[0] + 1;
+
     // Bind the title and pub_id parameters, 'sssss' indicates 5 strings
-    $stmt->bind_param("sssss", $id, $password, $name, $address, $phone);
+    $stmt->bind_param("sssss", $id[0], $password, $name, $address, $phone);
     
     // Execute the insert statement
     $stmt->execute();
@@ -38,5 +43,7 @@ function deleteCustomer($id, $connection) {
 	 echo "<b>Successfully deleted ".$id."</b>";
 	}
 }
+
+
 
 ?>
