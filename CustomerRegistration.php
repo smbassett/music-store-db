@@ -3,7 +3,7 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
-<title>CPSC 304 Bookbiz</title>
+<title>AMS Registration</title>
 <!--
     A simple stylesheet is provided so you can modify colours, fonts, etc.
 -->
