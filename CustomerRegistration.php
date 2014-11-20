@@ -46,6 +46,7 @@ function formSubmit(CustId) {
         exit();
     }
 	else printf("Connection Successfull");
+	
     /****************************************************
      STEP 2: Detect the user action
 
