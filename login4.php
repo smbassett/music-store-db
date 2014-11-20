@@ -45,7 +45,7 @@
 				if ($stmt->fetch()){
 					/*header('Location: http://localhost/home.html');*/
 					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; http://localhost/index.html">';
+					echo '<META http-equiv="refresh" content="1; http://localhost/home.html">';
 					exit;
 					}
 				else 
