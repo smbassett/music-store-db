@@ -84,7 +84,7 @@ function formSubmit(CustId) {
        /*
         Add a book title using the post variables title_id, title and pub_id.
         */
-        $customer_id = $_POST["new_customerID"];
+        $cid = $_POST["new_customerID"];
         $customer_pw = $_POST["new_password"];
         $customer_nm = $_POST["new_name"];
 		$customer_ad = $_POST["new_address"]; 
@@ -181,7 +181,7 @@ function formSubmit(CustId) {
 <form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
     <table border=0 cellpadding=0 cellspacing=0>
         <tr><td>CustomerID</td><td><input type="text" size=30 name="new_customerID"</td></tr>
-        <tr><td>Password</td><td><input type="text" size=30 name="new_password"</td></tr>
+        <tr><td>Password</td><td><input type="password" size=30 name="new_password"</td></tr>
         <tr><td>Name</td><td> <input type="text" size=5 name="new_name"></td></tr>
 		<tr><td>Address</td><td> <input type="text" size=5 name="new_address"></td></tr>
 		<tr><td>Phone</td><td> <input type="text" size=5 name="new_phone"></td></tr>
