@@ -70,3 +70,13 @@ p {
 #homepage {
 	text-align: center;
 }
+
+#shop{
+	width: 30%;
+}
+#text_inputs{
+		width: 20%;
+        height: 250px;
+        display: table;
+        text-align: left;
+}
