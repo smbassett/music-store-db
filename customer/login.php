@@ -5,6 +5,7 @@
 
 <title>AMS Login</title>
 <link href="../style.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
@@ -49,7 +50,7 @@
 				if ($stmt->fetch()){
 					/*header('Location: index.php');*/
 					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; index.php">';
+					echo '<META http-equiv="refresh" content="1; /music-store-db/index.php">';
 					exit;
 					}
 				else 

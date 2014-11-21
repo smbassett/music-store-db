@@ -46,7 +46,7 @@ html {
 }
 
 body {
-	font-family: verdana, helvetica;
+	font-family: 'PT Sans', sans-serif;
 	color: #fff;
 	background-color: #fff;
 	font-size: 12px;
@@ -55,32 +55,27 @@ body {
 }
 
 h1 {
-	font-family: verdana,helvetica;
 	font-size: 24px;
 	font-weight: bold;
 	color: #0B0B61;
 }
 
 h2 {
-	font-family: verdana,helvetica;
 	font-size: 14px;
 	font-weight: bold;
 	color: #848484;
 }
 
 h3 {
-	font-family: verdana,helvetica;
 	font-size: 12px;
 	font-weight: bold;
 	color: #000000;
 }
 td {
-	font-family: verdana,helvetica;
 	color: #000000;
 	font-size: 12px;
 }
 a {
-	font-family: verdana,helvetica;
 	font-size: 12px;
 }
 a:link { color: #bb3902; font-weight:normal; text-decoration:underline;}
@@ -89,7 +84,6 @@ a:active { color: #bb3902; font-weight:normal; text-decoration:underline;}
 a:hover { color: #bb3902; font-weight:normal; text-decoration:underline;}
 
 .rowheader {
-	font-family: verdana,helvetica;
 	color: #000000;
 	background-color: #ffffff;
 	font-weight: plain;
@@ -98,7 +92,6 @@ a:hover { color: #bb3902; font-weight:normal; text-decoration:underline;}
 }
 
 p {
-	font-family: verdana,helvetica;
 	color: #000000;
 	font-size: 12px;
 }

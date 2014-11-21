@@ -5,6 +5,7 @@
 
 <title>AMS Registration</title>
 <link href="../style.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
 <!--
     Javascript to submit a title_id as a POST form, used with the "delete" links

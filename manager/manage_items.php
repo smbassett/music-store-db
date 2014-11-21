@@ -5,6 +5,7 @@
 
 <title>AMS Manage Items</title>
 <link href="../style.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
 <!--
     Javascript to submit a title_id as a POST form, used with the "delete" links
@@ -78,9 +79,16 @@ function formSubmit(itemUpc) {
 
 ?>
 
-<h2>ADD ITEM</h2>
+<h2>ADD NEW ITEM</h2>
 
-<!-- Form for adding a new Item -->
+<!-- Form for adding a new Item 
+Adding Items:  It adds new copies of an item.  
+The user has to specify the item's upc  the quantity and the unit price (optional).  
+If a unit price is specified this will be the new price for this item and it will 
+override any old price that may exist for this item. If no new unit price is provided 
+the old unit price will be retained.
+
+-->
 
 <form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <table border=0 cellpadding=0 cellspacing=0>
