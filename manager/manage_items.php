@@ -70,6 +70,7 @@ function formSubmit(itemUpc) {
 
 <h2>Items</h2>
 
+<div class="CustomerInfoTable">
 <?php
   // Display Items
   displayItems($connection);
@@ -78,6 +79,7 @@ function formSubmit(itemUpc) {
   mysqli_close($connection);
 
 ?>
+</div>
 
 <h2>ADD NEW ITEM</h2>
 

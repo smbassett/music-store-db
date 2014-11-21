@@ -69,6 +69,7 @@ function formSubmit(CustId) {
 
 <h2>Customer Registration Menu</h2>
 
+<div class="CustomerInfoTable">
 <?php
   // Display Customers
   displayCustomers($connection);
@@ -77,6 +78,7 @@ function formSubmit(CustId) {
   mysqli_close($connection);
 
 ?>
+</div>
 
 <h2>REGISTER CUSTOMER</h2>
 
