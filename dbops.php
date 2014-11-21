@@ -11,18 +11,30 @@ function addCustomer($password, $name, $address, $phone, $connection) {
 	$id = $id->fetch_array();
 	$id[0] = $id[0] + 1;
 
-    // Bind the title and pub_id parameters, 'sssss' indicates 5 strings
-    $stmt->bind_param("sssss", $id[0], $password, $name, $address, $phone);
-    
-    // Execute the insert statement
-    $stmt->execute();
-    
-	// Print success or error message  
-    if($stmt->error) {       
-      printf("<b>Error: %s.</b>\n", $stmt->error);
-    } else {
-      echo "<b>Successfully added ".$name."</b>";
-    }
+	// Test fields for validity
+	$valid = true;
+
+	// Prepare phone number
+	$phone_length = strlen($phone);
+	if ($phone_length > 12 || $phone_length < 10 || $phone_length == 11) {
+		printf("<b>Please enter a valid phone number.</b>");
+		$valid = false;
+	} else if ($phone_length == 10) {
+		$phone = substr($phone, 0, 3) . "-" . substr($phone, 3, 3) . "-" . substr($phone, 6, 4);
+	} 
+
+	if($valid) {
+		// Bind the title and pub_id parameters, 'sssss' indicates 5 strings
+    	$stmt->bind_param("sssss", $id[0], $password, $name, $address, $phone);
+    	// Execute the insert statement
+    	$stmt->execute();	
+    	// Print success or error message  
+	    if($stmt->error) {       
+	      printf("<b>Error: %s.</b>\n", $stmt->error);
+	    } else {
+	      echo "<b>Successfully added ".$name."</b>";
+	    }
+	} 
 }
 
 function deleteCustomer($id, $connection) {

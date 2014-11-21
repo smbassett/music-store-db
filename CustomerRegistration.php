@@ -44,12 +44,16 @@ function formSubmit(CustId) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
   } else printf("Connection Successful");
-
+?>
+<br>
+<?php
   // Detect user action
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
     if (isset($_POST["submitDelete"]) && $_POST["submitDelete"] == "DELETE") {
       // Delete customer
       deleteCustomer($_POST['cid'], $connection);        
+    
     } elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
       // Add customer    		  
       addCustomer($_POST["new_password"], $_POST["new_name"], $_POST["new_address"], 
@@ -117,10 +121,10 @@ function formSubmit(CustId) {
 
 <form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <table border=0 cellpadding=0 cellspacing=0>
-    <tr><td>Name</td><td><input type="text" size=5 name="new_name"></td></tr>
-    <tr><td>Password</td><td><input type="password" size=30 name="new_password"</td></tr>
-		<tr><td>Address</td><td> <input type="text" size=5 name="new_address"></td></tr>
-		<tr><td>Phone</td><td> <input type="text" size=5 name="new_phone"></td></tr>
+    <tr><td>Name</td><td><input type="text" size=20 name="new_name"></td></tr>
+    <tr><td>Password</td><td><input type="password" size=20 name="new_password"</td></tr>
+		<tr><td>Address</td><td> <input type="text" size=20 name="new_address"></td></tr>
+		<tr><td>Phone</td><td> <input type="text" size=20 name="new_phone"></td></tr>
     <tr><td></td><td><input type="submit" name="submit" border=0 value="ADD"></td></tr>
   </table>
 </form>
