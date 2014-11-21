@@ -3,11 +3,15 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
-<title>Login</title>
-<link href="bookbiz.css" rel="stylesheet" type="text/css">
+<title>AMS Login</title>
+<link href="../style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
+
+<!-- Include header -->
+<?php include '../header.php'; ?>
+	
 <h1>Login to Allegro Music Store</h1>
 
 <?php
@@ -43,9 +47,9 @@
 				printf("<b>Error: %s.</b>\n", $stmt->error);} 
 			else{
 				if ($stmt->fetch()){
-					/*header('Location: http://localhost/home.html');*/
+					/*header('Location: index.php');*/
 					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; http://localhost/home.html">';
+					echo '<META http-equiv="refresh" content="1; index.php">';
 					exit;
 					}
 				else 
@@ -63,7 +67,7 @@
 		<tr><td></td><td><input type="submit" name="submit" border=0 value="SUBMIT"></td></tr>
 		</table>
 	</form>
-	<a href="http://localhost/CustomerRegistration.php">Sign up</a> 
+	<a href="registration.php">Sign up</a> 
 </body>
 
 </html>

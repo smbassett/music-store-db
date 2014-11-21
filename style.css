@@ -1,3 +1,7 @@
+html {
+	height: 100%;
+	width: 100%;
+}
 
 body.n {
 	font-family: verdana,helvetica;
@@ -19,6 +23,8 @@ body {
 	color: #000000;
 	background-color: #CEECF5;
 	font-size: 12px;
+	width: 100%;
+	height: 100%;
 }
 h1 {
 	font-family: verdana,helvetica;
@@ -69,4 +75,10 @@ p {
 
 #homepage {
 	text-align: center;
+}
+
+#banner {
+	width: 100%;
+	height: 20%;
+	background-color: #fff; 
 }
