@@ -95,5 +95,7 @@ function formSubmit(itemUpc) {
     <tr><td></td><td><input type="submit" name="submit" border=0 value="ADD"></td></tr>
   </table>
 </form>
+
+<?php include '../footer.php'; ?>
 </body>
 </html>

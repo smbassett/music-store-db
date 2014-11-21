@@ -9,14 +9,14 @@
 
 <?php include 'header.php'; ?>
 
-<div id="homepage">
 	<h1>Welcome to AMS Music Store!</h1>
 	<h2>Please select one.</h2>
 	<br>
 	<a href="customer/login.php" title="Customer Login"><h3>Customers</h3></a>
 	<h3>Clerks (available soon!)</h3>
 	<a href="manager/manage_items.php" title="Manager's Page"><h3>Managers</h3></a>
-</div>
+
+<?php include 'footer.php'; ?>
 
 </body>
 

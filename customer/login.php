@@ -11,7 +11,7 @@
 
 <!-- Include header -->
 <?php include '../header.php'; ?>
-	
+
 <h1>Login to Allegro Music Store</h1>
 
 <?php
@@ -68,6 +68,8 @@
 		</table>
 	</form>
 	<a href="registration.php">Sign up</a> 
+
+<?php include '../footer.php'; ?>
 </body>
 
 </html>
