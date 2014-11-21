@@ -36,7 +36,7 @@ function formSubmit(CustId) {
     // CHANGE this to connect to your own MySQL instance in the labs or on your own computer
     $username = "root";
 	$password = "";
-	$hostname = "localhost";
+	$hostname = "127.0.0.1"; //localhost
 
 	$connection = new mysqli($hostname, $username, $password, "AMS");
 
@@ -45,7 +45,7 @@ function formSubmit(CustId) {
         printf("Connect failed: %s\n", mysqli_connect_error());
         exit();
     }
-	else printf("Connection Successful");
+//	else printf("Connection Successful");
     /****************************************************
      STEP 2: Detect the user action
 
@@ -84,16 +84,16 @@ function formSubmit(CustId) {
        /*
         Add a book title using the post variables title_id, title and pub_id.
         */
-        $customer_id = $_POST["new_customerID"];
-        $customer_pw = $_POST["new_password"];
-        $customer_nm = $_POST["new_name"];
-		$customer_ad = $_POST["new_address"]; 
-		$customer_ph = $_POST["new_phone"]; 	
+        $cid = $_POST["new_customerID"];
+        $c_pw = $_POST["new_password"];
+        $cname = $_POST["new_name"];
+		$address = $_POST["new_address"]; 
+		$phone = $_POST["new_phone"]; 	
 		  
-        $stmt = $connection->prepare("INSERT INTO Customer (cid, c_password, cname, address, phone) VALUES (?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO Customer (cid, c_pw, cname, address, phone) VALUES (?,?,?,?,?)");
           
         // Bind the title and pub_id parameters, 'sssss' indicates 5 strings
-        $stmt->bind_param("sssss", $cid, $customer_pw, $customer_nm, $customer_ad, $customer_ph);
+        $stmt->bind_param("sssss", $cid, $c_pw, $cname, $address, $phone);
         
         // Execute the insert statement
         $stmt->execute();
@@ -109,7 +109,9 @@ function formSubmit(CustId) {
 
 <h2>Customer Registration Menu</h2>
 <!-- Set up a table to view the book titles -->
-<table border=0 cellpadding=0 cellspacing=0>
+<table border=0 cellpadding=0 cellspacing=0 class="CustomerInfoTable">
+<!-- Note: table CSS generated with this useful online tool: http://www.csstablegenerator.com/?table_id=7 -->
+
 <!-- Create the table column headings -->
 
 <tr valign=center>
@@ -118,6 +120,7 @@ function formSubmit(CustId) {
 <td class=rowheader>Name</td>
 <td class=rowheader>Address</td>
 <td class=rowheader>Phone</td>
+<td class=rowheader>Delete</td>
 </tr>
 
 <?php
@@ -126,8 +129,8 @@ function formSubmit(CustId) {
      ****************************************************/
 
    // Select all of the book rows columns title_id, title and pub_id
-    if (!$result = $connection->query("SELECT cid, c_password, cname, address, phone FROM Customer ORDER BY cid")) {
-        die('There was an error running the query [' . $db->error . ']');
+    if (!$result = $connection->query("SELECT cid, c_pw, cname, address, phone FROM Customer ORDER BY cid")) {
+        die('There was an error running the query [' . $connection->error . ']');
     }
 
     // Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
@@ -147,9 +150,9 @@ function formSubmit(CustId) {
     while($row = $result->fetch_assoc()){
         
        echo "<td>".$row['cid']."</td>";
-       echo "<td>".$row['c_password']."</td>";
-       echo "<td>".$row['cname']."</td><td>";
-	   echo "<td>".$row['address']."</td><td>";
+       echo "<td>".$row['c_pw']."</td>";
+       echo "<td>".$row['cname']."</td>";
+	   echo "<td>".$row['address']."</td>";
 	   echo "<td>".$row['phone']."</td><td>";
        
        //Display an option to delete this title using the Javascript function and the hidden title_id
