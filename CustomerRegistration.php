@@ -64,56 +64,15 @@ function formSubmit(CustId) {
 ?>
 
 <h2>Customer Registration Menu</h2>
-<!-- Set up a table to view the customers -->
-<table border=0 cellpadding=0 cellspacing=0>
-<!-- Create the table column headings -->
-
-<tr valign=center>
-<td class=rowheader>CustomerID</td>
-<td class=rowheader>Password</td>
-<td class=rowheader>Name</td>
-<td class=rowheader>Address</td>
-<td class=rowheader>Phone</td>
-</tr>
 
 <?php
-
-  // Select all of the customer rows
-  if (!$result = $connection->query("SELECT cid, c_password, cname, address, phone FROM Customer ORDER BY cid")) {
-    die('There was an error running the query [' . $db->error . ']');
-  }
-
-  // Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
-  echo "<form id=\"delete\" name=\"delete\" action=\"";
-  echo htmlspecialchars($_SERVER["PHP_SELF"]);
-  echo "\" method=\"POST\">";
-  // Hidden value is used if the delete link is clicked
-  echo "<input type=\"hidden\" name=\"cid\" value=\"-1\"/>";
-  // We need a submit value to detect if delete was pressed 
-  echo "<input type=\"hidden\" name=\"submitDelete\" value=\"DELETE\"/>";
-
-
-  // Display each Customer databaserow as a table row
-  while($row = $result->fetch_assoc()){  
-    echo "<td>".$row['cid']."</td>";
-    echo "<td>".$row['c_password']."</td>";
-    echo "<td>".$row['cname']."</td>";
-    echo "<td>".$row['address']."</td>";
-    echo "<td>".$row['phone']."</td><td>";
-     
-    //Display an option to delete this Customer
-    echo "<a href=\"javascript:formSubmit('".$row['cid']."');\">DELETE</a>";
-    echo "</td></tr>";   
-  }
-
-  echo "</form>";
-
+  // Display Customers
+  displayCustomers($connection);
+  
   // Disconnect from database
   mysqli_close($connection);
 
 ?>
-
-</table>
 
 <h2>REGISTER CUSTOMER</h2>
 
