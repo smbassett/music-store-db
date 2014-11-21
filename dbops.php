@@ -1,6 +1,13 @@
 <?php
 
-// CUSTOMER
+/* 
+
+CUSTOMER TABLE FUNCTIONS
+
+addCustomer($password, $name, $address, $phone, $connection)
+deleteCustomer($id, $connection)
+
+*/
 
 function addCustomer($password, $name, $address, $phone, $connection) {
 	// SQL statement
@@ -56,6 +63,46 @@ function deleteCustomer($id, $connection) {
 	}
 }
 
+/* 
+
+ITEM TABLE FUNCTIONS
+
+addItem($upc, $title, $item_type, $category, $company, $item_year, $price, $stock, $connection)
+deleteItem($upc, $connection)
+
+*/
+
+function addItem($upc, $title, $item_type, $category, $company, $item_year, 
+	$price, $stock, $connection) {
+	
+	// SQL statement
+	$stmt = $connection->prepare("INSERT INTO Item (upc, title, item_type, 
+		category, company, item_year, price, stock) VALUES (?,?,?,?,?,?,?,?)");
+	$stmt->bind_param("ssssssss", $upc, $title, $item_type, $category, $company, 
+		$item_year, $price, $stock);
+	$stmt->execute();	
+	
+	// Print success or error message  
+    if($stmt->error) {       
+      printf("<b>Error: %s.</b>\n", $stmt->error);
+    } else {
+      echo "<b>Successfully added ".$name."</b>";
+    }
+}
+
+function deleteItem($upc, $connection) {
+    $stmt = $connection->prepare("DELETE FROM Item WHERE upc=?");
+    $deleteItemUpc = $upc;
+	$stmt->bind_param("s", $deleteItemUpc);
+	$stmt->execute();
+	  
+	// Print success or error message
+	if($stmt->error) {
+	 printf("<b>Error: %s.</b>\n", $stmt->error);
+	} else {
+	 echo "<b>Successfully deleted ".$upc."</b>";
+	}
+}
 
 
 ?>
