@@ -3,19 +3,19 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
-<title>AMS Registration</title>
+<title>AMS Manage Items</title>
 <link href="style.css" rel="stylesheet" type="text/css">
 
 <!--
     Javascript to submit a title_id as a POST form, used with the "delete" links
 -->
 <script>
-function formSubmit(CustId){
+function formSubmit(itemUpc) {
     'use strict';
-    if (confirm('Are you sure you want to delete this customer?')) {
+    if (confirm('Are you sure you want to delete this item?')) {
       // Set the value of a hidden HTML element in this form
       var form = document.getElementById('delete');
-      form.cid.value = CustId;
+      form.upc.value = itemUpc;
       // Post this form
       form.submit();
     }
@@ -28,7 +28,7 @@ function formSubmit(CustId){
 <!-- Include header -->
 <?php include 'header.php'; ?>
 
-<h1>Manage Customer Registration</h1>
+<h1>Manage Items</h1>
 
 <?php
 
@@ -54,39 +54,44 @@ function formSubmit(CustId){
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST["submitDelete"]) && $_POST["submitDelete"] == "DELETE") {
-      // Delete customer
-      deleteCustomer($_POST['cid'], $connection);        
+      // Delete Item
+      deleteItem($_POST['upc'], $connection);        
     
     } elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
-      // Add customer    		  
-      addCustomer($_POST["new_password"], $_POST["new_name"], $_POST["new_address"], 
-          $_POST["new_phone"], $connection);
+      // Add Item    		  
+      addItem($_POST["new_upc"], $_POST["new_title"], $_POST["new_item_type"], $_POST["new_category"],
+      	$_POST["new_company"], $_POST["new_item_year"], $_POST["new_price"], $_POST["new_quantity"], 
+      	 $connection);
     }
   }
 
 ?>
 
-<h2>Customer Registration Menu</h2>
+<h2>Items</h2>
 
 <?php
-  // Display Customers
-  displayCustomers($connection);
+  // Display Items
+  displayItems($connection);
   
   // Disconnect from database
   mysqli_close($connection);
 
 ?>
 
-<h2>REGISTER CUSTOMER</h2>
+<h2>ADD ITEM</h2>
 
-<!-- Form for adding a new customer -->
+<!-- Form for adding a new Item -->
 
 <form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <table border=0 cellpadding=0 cellspacing=0>
-    <tr><td>Name</td><td><input type="text" size=20 name="new_name"></td></tr>
-    <tr><td>Password</td><td><input type="password" size=20 name="new_password"</td></tr>
-		<tr><td>Address</td><td> <input type="text" size=20 name="new_address"></td></tr>
-		<tr><td>Phone</td><td> <input type="text" size=20 name="new_phone"></td></tr>
+    <tr><td>UPC</td><td><input type="text" size=20 name="new_upc"></td></tr>
+    <tr><td>Title</td><td><input type="text" size=20 name="new_title"></td></tr>
+    <tr><td>Item Type</td><td><input type="text" size=20 name="new_item_type"></td></tr>
+    <tr><td>Category</td><td><input type="text" size=20 name="new_category"></td></tr>
+    <tr><td>Company</td><td><input type="text" size=20 name="new_company"></td></tr>
+    <tr><td>Item Year</td><td><input type="text" size=20 name="new_item_year"></td></tr>
+    <tr><td>Price</td><td> <input type="text" size=20 name="new_price"></td></tr>
+    <tr><td>Quantity</td><td><input type="text" size=20 name="new_quantity"</td></tr>	
     <tr><td></td><td><input type="submit" name="submit" border=0 value="ADD"></td></tr>
   </table>
 </form>

@@ -7,9 +7,13 @@
 <!--
     A simple stylesheet is provided so you can modify colours, fonts, etc.
 -->
-    <link href="../style.css" rel="stylesheet" type="text/css">
+    <link href="style.css" rel="stylesheet" type="text/css">
 
 <body>
+
+<!-- Include header -->
+<?php include 'header.php'; ?>
+
 <h1>Welcome to AMS Online!</h1>
 
 <?php
@@ -122,5 +126,6 @@
                    <input type="submit" name="submit" value="SUBMIT"> 
 </form>	
 </div>
+<?php include 'footer.php'; ?>
 </body>
 </html>

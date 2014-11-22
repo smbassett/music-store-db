@@ -11,7 +11,7 @@ html {
 #header h1 {
 	color: #000;
 	font-size: 48px;
-	padding: 0px;
+	padding:  0px;
 	margin: 0px;
 }
 
@@ -47,7 +47,7 @@ html {
 
 body {
 	font-family: verdana, helvetica;
-	color: #fff;
+	color: #000066;
 	background-color: #fff;
 	font-size: 12px;
 	width: 100%;
@@ -101,11 +101,4 @@ p {
 	font-family: verdana,helvetica;
 	color: #000000;
 	font-size: 12px;
-}
-
-#text_inputs{
-		width: 20%;
-        height: 250px;
-        display: table;
-        text-align: left;
 }

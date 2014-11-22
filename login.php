@@ -4,13 +4,13 @@
 <meta content="utf-8" http-equiv="encoding">
 
 <title>AMS Login</title>
-<link href="../style.css" rel="stylesheet" type="text/css">
+<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
 <!-- Include header -->
-<?php include '../header.php'; ?>
+<?php include 'header.php'; ?>
 
 <h1>Login to Allegro Music Store</h1>
 
@@ -70,7 +70,7 @@
 	</form>
 	<a href="registration.php">Sign up</a> 
 
-<?php include '../footer.php'; ?>
+<?php include 'footer.php'; ?>
 </body>
 
 </html>
