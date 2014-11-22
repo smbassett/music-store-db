@@ -1,0 +1,208 @@
+html {
+	height: 100%;
+	width: 100%;
+}
+
+#header {
+	background-color: #fff; 
+	overflow: hidden;
+}
+
+#header h1 {
+	color: #000;
+	font-size: 48px;
+	padding: 0px;
+	margin: 0px;
+}
+
+#header a {
+	color: #000;
+	text-decoration: none;
+}
+
+#header h2 {
+	float: left;
+	padding-right: 90px;
+	margin-top: 20px;
+}
+
+#header img {
+	max-width: 100%;
+}
+
+#main {
+	background-color: #fff;
+	width: 75%;
+	height: 75%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#footer {
+	background-color: #fff;
+	text-align: center;
+	color: #000;
+	margin-top: 100px;
+	width: 100%;
+}
+
+body {
+	font-family: 'PT Sans', sans-serif;
+	color: #000;
+	background-color: #fff;
+	font-size: 12px;
+	width: 100%;
+	height: 100%;
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: bold;
+	color: #0B0B61;
+}
+
+h2 {
+	font-size: 14px;
+	font-weight: bold;
+	color: #848484;
+}
+
+h3 {
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+}
+td {
+	color: #000000;
+	font-size: 12px;
+}
+a {
+	font-size: 12px;
+}
+a:link { color: #bb3902; font-weight:normal; text-decoration:underline;}
+a:visited { color: #bb3902; font-weight:normal; text-decoration:underline;}
+a:active { color: #bb3902; font-weight:normal; text-decoration:underline;}
+a:hover { color: #bb3902; font-weight:normal; text-decoration:underline;}
+
+.rowheader {
+	color: #000000;
+	background-color: #ffffff;
+	font-weight: plain;
+	font-size: 14pt;
+    width: 160px;
+}
+
+p {
+	color: #000000;
+	font-size: 12px;
+}
+
+/*
+ * Below is CSS for the table on the Customer Registration Page. 
+ * You can generate CSS for these kinds of tables at http://www.csstablegenerator.com/
+ */
+
+.CustomerInfoTable {
+	margin:0px;padding:0px;
+	width:90%;
+	border:1px solid #000000;
+	
+	-moz-border-radius-bottomleft:0px;
+	-webkit-border-bottom-left-radius:0px;
+	border-bottom-left-radius:0px;
+	
+	-moz-border-radius-bottomright:0px;
+	-webkit-border-bottom-right-radius:0px;
+	border-bottom-right-radius:0px;
+	
+	-moz-border-radius-topright:0px;
+	-webkit-border-top-right-radius:0px;
+	border-top-right-radius:0px;
+	
+	-moz-border-radius-topleft:0px;
+	-webkit-border-top-left-radius:0px;
+	border-top-left-radius:0px;
+}.CustomerInfoTable table{
+    border-collapse: collapse;
+        border-spacing: 0;
+	width:100%;
+	height:100%;
+	margin:0px;padding:0px;
+}.CustomerInfoTable tr:last-child td:last-child {
+	-moz-border-radius-bottomright:0px;
+	-webkit-border-bottom-right-radius:0px;
+	border-bottom-right-radius:0px;
+}
+.CustomerInfoTable table tr:first-child td:first-child {
+	-moz-border-radius-topleft:0px;
+	-webkit-border-top-left-radius:0px;
+	border-top-left-radius:0px;
+}
+.CustomerInfoTable table tr:first-child td:last-child {
+	-moz-border-radius-topright:0px;
+	-webkit-border-top-right-radius:0px;
+	border-top-right-radius:0px;
+}.CustomerInfoTable tr:last-child td:first-child{
+	-moz-border-radius-bottomleft:0px;
+	-webkit-border-bottom-left-radius:0px;
+	border-bottom-left-radius:0px;
+}.CustomerInfoTable tr:hover td{
+	
+}
+.CustomerInfoTable tr:nth-child(odd){ background-color:#e5e5e5; }
+.CustomerInfoTable tr:nth-child(even)    { background-color:#ffffff; }.CustomerInfoTable td{
+	vertical-align:middle;
+	
+	
+	border:1px solid #000000;
+	border-width:0px 1px 1px 0px;
+	text-align:left;
+	padding:7px;
+	font-size:10px;
+	font-family:Arial;
+	font-weight:normal;
+	color:#000000;
+}.CustomerInfoTable tr:last-child td{
+	border-width:0px 1px 0px 0px;
+}.CustomerInfoTable tr td:last-child{
+	border-width:0px 0px 1px 0px;
+}.CustomerInfoTable tr:last-child td:last-child{
+	border-width:0px 0px 0px 0px;
+}
+.CustomerInfoTable tr:first-child td{
+		background:-o-linear-gradient(bottom, #cccccc 5%, #b2b2b2 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #cccccc), color-stop(1, #b2b2b2) );
+	background:-moz-linear-gradient( center top, #cccccc 5%, #b2b2b2 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#cccccc", endColorstr="#b2b2b2");	background: -o-linear-gradient(top,#cccccc,b2b2b2);
+
+	background-color:#cccccc;
+	border:0px solid #000000;
+	text-align:center;
+	border-width:0px 0px 1px 1px;
+	font-size:14px;
+	font-family:Arial;
+	font-weight:bold;
+	color:#000000;
+}
+.CustomerInfoTable tr:first-child:hover td{
+	background:-o-linear-gradient(bottom, #cccccc 5%, #b2b2b2 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #cccccc), color-stop(1, #b2b2b2) );
+	background:-moz-linear-gradient( center top, #cccccc 5%, #b2b2b2 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#cccccc", endColorstr="#b2b2b2");	background: -o-linear-gradient(top,#cccccc,b2b2b2);
+
+	background-color:#cccccc;
+}
+.CustomerInfoTable tr:first-child td:first-child{
+	border-width:0px 0px 1px 0px;
+}
+.CustomerInfoTable tr:first-child td:last-child{
+	border-width:0px 0px 1px 1px;
+}
+
+#shop{
+	width: 30%;
+}
+#text_inputs{
+	width: 20%;
+    height: 250px;
+    display: table;
+    text-align: left;
+}
