@@ -17,10 +17,19 @@
 
 <?php
 
-	/* Establish Connection to Database */
-    $username = "root";
+	/*//DATABASE CONNECTION CONFIG FOR SCOTT - uncomment to use
+	// CHANGE this to connect to your own MySQL instance in the labs or on your own computer
+	$username = "root";
+	$password = "";
+	$hostname = "127.0.0.1"; //localhost
+	*/
+
+	// DATABASE CONNECTION CONFIG FOR CRYSTAL - uncomment to use
+	// Connect to AMS database
+	$username = "root";
 	$password = "";
 	$hostname = "localhost";
+
 	$connection = new mysqli($hostname, $username, $password, "AMS");
 	
 	if (mysqli_connect_errno()) {
