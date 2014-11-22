@@ -195,3 +195,13 @@ p {
 .CustomerInfoTable tr:first-child td:last-child{
 	border-width:0px 0px 1px 1px;
 }
+
+#shop{
+	width: 30%;
+}
+#text_inputs{
+		width: 20%;
+        height: 250px;
+        display: table;
+        text-align: left;
+}

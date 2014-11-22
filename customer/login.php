@@ -40,25 +40,26 @@
 		*/
 			$customer_nm = $_POST["cust_name"];
 			$customer_pw = $_POST["cust_password"];
-			$stmt = $connection->prepare("SELECT * FROM Customer WHERE cname=? and c_password=?");
+			$stmt = $connection->prepare("SELECT cname FROM Customer WHERE cname=? and c_password=?");
 			$stmt->bind_param("ss", $customer_nm, $customer_pw);
 			$stmt->execute();
+			
+			$stmt->bind_result($col1);
 		
 			if($stmt->error) {
-				printf("<b>Error: %s.</b>\n", $stmt->error);} 
+				printf("<b>Error: %s.</b>\n", $stmt->error);
+			} 
 			else{
-				if ($stmt->fetch()){
-					/*header('Location: index.php');*/
+				while ($stmt->fetch()){
 					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; /music-store-db/index.php">';
+					echo '<META http-equiv="refresh" content="1; /music-store-db/amsonlineshop2.php">';
 					exit;
-					}
-				else 
-					printf("Customer not in database.");}
-	   
-			$stmt->close();		
+				}
 			}
+			$stmt->close();		
 		}
+	}
+		
 ?>
 <h2>Customer Login Menu</h2>
 	<form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
