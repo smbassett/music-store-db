@@ -7,7 +7,7 @@
 <!--
     A simple stylesheet is provided so you can modify colours, fonts, etc.
 -->
-    <link href="bookbiz.css" rel="stylesheet" type="text/css">
+    <link href="../style.css" rel="stylesheet" type="text/css">
 
 <body>
 <h1>Welcome to AMS Online!</h1>
