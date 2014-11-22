@@ -176,7 +176,7 @@ p {
 }.CustomerInfoTable tr:last-child td{
 	border-width:0px 1px 1px 1px;
 }.CustomerInfoTable tr td:last-child{
-	border-width:0px 1px 0px 0px;
+	border-width:0px 1px 0px 1px;
 }.CustomerInfoTable tr:last-child td:last-child{
 	border-width:0px 1px 01px 1px;
 }
