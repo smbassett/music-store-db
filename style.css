@@ -83,12 +83,12 @@ a:visited { color: #bb3902; font-weight:normal; text-decoration:underline;}
 a:active { color: #bb3902; font-weight:normal; text-decoration:underline;}
 a:hover { color: #bb3902; font-weight:normal; text-decoration:underline;}
 
-.rowheader {
-	color: #000000;
-	background-color: #ffffff;
-	font-weight: plain;
-	font-size: 14pt;
-    width: 160px;
+//.rowheader {
+//	color: #000000;
+//	background-color: #ffffff;
+//	font-weight: plain;
+//	font-size: 14pt;
+//   width: 160px;
 }
 
 p {
@@ -100,11 +100,11 @@ p {
  * Below is CSS for the table on the Customer Registration Page. 
  * You can generate CSS for these kinds of tables at http://www.csstablegenerator.com/
  */
-
-.CustomerInfoTable {
+  
+ .CustomerInfoTable {
 	margin:0px;padding:0px;
-	width:90%;
-	border:1px solid #000000;
+	width:80%;
+	border:0px solid #000000;
 	
 	-moz-border-radius-bottomleft:0px;
 	-webkit-border-bottom-left-radius:0px;
@@ -125,7 +125,7 @@ p {
     border-collapse: collapse;
         border-spacing: 0;
 	width:100%;
-	height:100%;
+	//height:100%;
 	margin:0px;padding:0px;
 }.CustomerInfoTable tr:last-child td:last-child {
 	-moz-border-radius-bottomright:0px;
@@ -146,15 +146,16 @@ p {
 	-webkit-border-bottom-left-radius:0px;
 	border-bottom-left-radius:0px;
 }.CustomerInfoTable tr:hover td{
-	
+	background-color:#f4d6cf;
+
 }
 .CustomerInfoTable tr:nth-child(odd){ background-color:#e5e5e5; }
 .CustomerInfoTable tr:nth-child(even)    { background-color:#ffffff; }.CustomerInfoTable td{
 	vertical-align:middle;
 	
 	
-	border:1px solid #000000;
-	border-width:0px 1px 1px 0px;
+	border:0px solid #cccccc;
+	border-width:0px 1px 0px 1px;
 	text-align:left;
 	padding:7px;
 	font-size:10px;
@@ -162,11 +163,11 @@ p {
 	font-weight:normal;
 	color:#000000;
 }.CustomerInfoTable tr:last-child td{
-	border-width:0px 1px 0px 0px;
+	border-width:0px 1px 1px 1px;
 }.CustomerInfoTable tr td:last-child{
-	border-width:0px 0px 1px 0px;
+	border-width:0px 1px 0px 0px;
 }.CustomerInfoTable tr:last-child td:last-child{
-	border-width:0px 0px 0px 0px;
+	border-width:0px 1px 01px 1px;
 }
 .CustomerInfoTable tr:first-child td{
 		background:-o-linear-gradient(bottom, #cccccc 5%, #b2b2b2 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #cccccc), color-stop(1, #b2b2b2) );
@@ -174,12 +175,12 @@ p {
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#cccccc", endColorstr="#b2b2b2");	background: -o-linear-gradient(top,#cccccc,b2b2b2);
 
 	background-color:#cccccc;
-	border:0px solid #000000;
+	border:1px solid #ababab;
 	text-align:center;
-	border-width:0px 0px 1px 1px;
-	font-size:14px;
+	border-width:1px 1px 1px 1px;
+	font-size:12px;
 	font-family:Arial;
-	font-weight:bold;
+	font-weight:Bold;
 	color:#000000;
 }
 .CustomerInfoTable tr:first-child:hover td{
@@ -190,8 +191,8 @@ p {
 	background-color:#cccccc;
 }
 .CustomerInfoTable tr:first-child td:first-child{
-	border-width:0px 0px 1px 0px;
+	border-width:1px 1px 1px 1px;
 }
 .CustomerInfoTable tr:first-child td:last-child{
-	border-width:0px 0px 1px 1px;
+	border-width:1px 1px 1px 1px;
 }

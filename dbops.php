@@ -68,7 +68,7 @@ function displayCustomers($connection) {
 	// Select all of the customer rows
  	if (!$result = $connection->query("SELECT cid, c_password, cname, 
  		address, phone FROM Customer ORDER BY cid")) {
-		    die('There was an error running the query [' . $db->error . ']');
+		    die('There was an error running the query [' . $connection->error . ']');
     }
 
 	// Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
@@ -81,12 +81,13 @@ function displayCustomers($connection) {
 	echo "<input type=\"hidden\" name=\"submitDelete\" value=\"DELETE\"/>";
 
 	echo "
-		<table border=0 cellpadding=0 cellspacing=0><tr valign=center>
+		<table border=0 cellpadding=0 cellspacing=0 class=CustomerInfoTable><tr valign=center>
 			<td class=rowheader>CustomerID</td>
 			<td class=rowheader>Name</td>
 			<td class=rowheader>Password</td>
 			<td class=rowheader>Address</td>
 			<td class=rowheader>Phone</td>
+			<td class=rowheader>Delete?</td>
 		</tr>";
 
 	// Display each Customer databaserow as a table row
@@ -153,7 +154,7 @@ function displayItems($connection) {
 	// Select all of the item rows
  	if (!$result = $connection->query("SELECT upc, title, item_type, 
 		category, company, item_year, price, stock FROM Item ORDER BY upc")) {
-		    die('There was an error running the query [' . $db->error . ']');
+		    die('There was an error running the query [' . $connection->error . ']');
     }
 
 	// Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
@@ -175,6 +176,7 @@ function displayItems($connection) {
 			<td class=rowheader>Item Year</td>
 			<td class=rowheader>Price</td>
 			<td class=rowheader>Stock</td>
+			<td class=rowheader>Delete?</td>
 		</tr>";
 
 	// Display each Item databaserow as a table row
