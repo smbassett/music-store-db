@@ -13,29 +13,15 @@
 <!-- Include header -->
 <?php include '../header.php'; ?>
 
+<!-- Include header -->
+<?php include '../dbops.php'; ?>
+
 <h1>Login to Allegro Music Store</h1>
 
 <?php
 
-	/*//DATABASE CONNECTION CONFIG FOR SCOTT - uncomment to use
-	// CHANGE this to connect to your own MySQL instance in the labs or on your own computer
-	$username = "root";
-	$password = "";
-	$hostname = "127.0.0.1"; //localhost
-	*/
-
-	// DATABASE CONNECTION CONFIG FOR CRYSTAL - uncomment to use
-	// Connect to AMS database
-	$username = "root";
-	$password = "";
-	$hostname = "localhost";
-
-	$connection = new mysqli($hostname, $username, $password, "AMS");
-	
-	if (mysqli_connect_errno()) {
-        printf("Connect failed: %s\n", mysqli_connect_error());
-        exit();
-    } else printf("Connection Successful!!");
+//Connect to database:
+$connection = connectToDatabase();
 
 	/* If the page has been reached by method POST, that is, if SUBMIT
 	was clicked, then check if the credentials are present in the 

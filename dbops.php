@@ -3,12 +3,31 @@
 /* 
 
 CUSTOMER TABLE FUNCTIONS
-
+connectToDatabase()
 addCustomer($password, $name, $address, $phone, $connection)
 deleteCustomer($id, $connection)
 displayCustomers($connection)
 
 */
+
+function connectToDatabase() {
+
+	// DATABASE CONNECTION CONFIG
+	// Connect to AMS database
+	$username = "root";
+	$password = "";
+	//$hostname = "localhost";				//$hostname for Crystal
+	$hostname = "127.0.0.1";				//$hostname for Scott (bug workaround on OS X)
+
+	$connection = new mysqli($hostname, $username, $password, "AMS");
+	
+	if (mysqli_connect_errno()) {
+        printf("Connect failed: %s\n", mysqli_connect_error());
+        exit();
+    } else printf("Connection Successful!!");
+    
+    return $connection;
+} 
 
 function addCustomer($password, $name, $address, $phone, $connection) {
 	// SQL statement
