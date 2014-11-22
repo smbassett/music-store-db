@@ -36,6 +36,14 @@ function formSubmit(CustId) {
   // Include basic database operations
   include '../dbops.php';
 
+/*//DATABASE CONNECTION CONFIG FOR SCOTT - uncomment to use
+  // CHANGE this to connect to your own MySQL instance in the labs or on your own computer
+  $username = "root";
+	$password = "";
+	$hostname = "127.0.0.1"; //localhost
+*/
+
+// DATABASE CONNECTION CONFIG FOR CRYSTAL - uncomment to use
   // Connect to AMS database
   $username = "root";
   $password = "";
@@ -63,19 +71,23 @@ function formSubmit(CustId) {
       addCustomer($_POST["new_password"], $_POST["new_name"], $_POST["new_address"], 
           $_POST["new_phone"], $connection);
     }
+
   }
 
 ?>
 
 <h2>Customer Registration Menu</h2>
 
-<div class="CustomerInfoTable">
+<!-- Note: table CSS generated with this useful online tool: http://www.csstablegenerator.com/?table_id=7 -->
+<table border=0 cellpadding=0 cellspacing=0 class="CustomerInfoTable">
 <?php
+
   // Display Customers
   displayCustomers($connection);
   
   // Disconnect from database
   mysqli_close($connection);
+
 
 ?>
 </div>
