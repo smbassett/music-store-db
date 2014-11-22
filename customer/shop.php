@@ -4,12 +4,15 @@
 <meta content="utf-8" http-equiv="encoding">
 
 <title>AMS Online</title>
-<!--
-    A simple stylesheet is provided so you can modify colours, fonts, etc.
--->
-    <link href="bookbiz.css" rel="stylesheet" type="text/css">
+
+<link href="../style.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+
 
 <body>
+<!-- Include header -->
+<?php include '../header.php'; ?>
+
 <h1>Welcome to AMS Online!</h1>
 
 <?php
@@ -34,7 +37,7 @@
 		
 		if (!$category && !$title && !$leading_singer){
 				echo("Please enter item specifications!");
-				echo '<META http-equiv="refresh" content="1; http://localhost/amsonlineshop2.php">';
+				echo '<META http-equiv="refresh" content="1; shop.php">';
 			}
 				
 		elseif (!$category && !$title){
@@ -122,5 +125,6 @@
                    <input type="submit" name="submit" value="SUBMIT"> 
 </form>	
 </div>
+<?php include '../footer.php'; ?>
 </body>
 </html>

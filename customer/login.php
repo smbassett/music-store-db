@@ -52,7 +52,7 @@
 			else{
 				while ($stmt->fetch()){
 					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; /music-store-db/amsonlineshop2.php">';
+					echo '<META http-equiv="refresh" content="1; shop.php">';
 					exit;
 				}
 			}

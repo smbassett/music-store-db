@@ -47,7 +47,7 @@ html {
 
 body {
 	font-family: 'PT Sans', sans-serif;
-	color: #fff;
+	color: #000;
 	background-color: #fff;
 	font-size: 12px;
 	width: 100%;
@@ -200,8 +200,8 @@ p {
 	width: 30%;
 }
 #text_inputs{
-		width: 20%;
-        height: 250px;
-        display: table;
-        text-align: left;
+	width: 20%;
+    height: 250px;
+    display: table;
+    text-align: left;
 }
