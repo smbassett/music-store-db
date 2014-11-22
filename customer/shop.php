@@ -124,7 +124,7 @@
    Leading Singer: <input type="text" name="leading_singer"><br><br>
                    <input type="submit" name="submit" value="SUBMIT"> 
 </form>	
-</div>
+</div></div>
 <?php include '../footer.php'; ?>
 </body>
 </html>
