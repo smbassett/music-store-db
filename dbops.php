@@ -25,7 +25,7 @@ function addCustomer($password, $name, $address, $phone, $connection) {
 	// Prepare phone number
 	$phone_length = strlen($phone);
 	if ($phone_length > 12 || $phone_length < 10 || $phone_length == 11) {
-		printf("<b>Please enter a valid phone number.</b>");
+		printf("<h2><b><mark>Please enter a valid phone number.</mark></b></h2>");
 		$valid = false;
 	} else if ($phone_length == 10) {
 		$phone = substr($phone, 0, 3) . "-" . substr($phone, 3, 3) . "-" . substr($phone, 6, 4);
@@ -38,9 +38,9 @@ function addCustomer($password, $name, $address, $phone, $connection) {
     	$stmt->execute();	
     	// Print success or error message  
 	    if($stmt->error) {       
-	      printf("<b>Error: %s.</b>\n", $stmt->error);
+	      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
 	    } else {
-	      echo "<b>Successfully added ".$name."</b>";
+	      echo "<h2><b><mark>Successfully added ".$name."</mark></b></h2>";
 	    }
 	} 
 }
@@ -58,9 +58,9 @@ function deleteCustomer($id, $connection) {
 	  
 	// Print success or error message
 	if($stmt->error) {
-	 printf("<b>Error: %s.</b>\n", $stmt->error);
+	 printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
 	} else {
-	 echo "<b>Successfully deleted ".$id."</b>";
+	 echo "<h2><b><mark>Successfully deleted customer (CID: ".$id.")</mark></b></h2>";
 	}
 }
 
@@ -68,7 +68,7 @@ function displayCustomers($connection) {
 	// Select all of the customer rows
  	if (!$result = $connection->query("SELECT cid, c_password, cname, 
  		address, phone FROM Customer ORDER BY cid")) {
-		    die('There was an error running the query [' . $db->error . ']');
+		    die('There was an error running the query [' . $connection->error . ']');
     }
 
 	// Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
@@ -82,12 +82,12 @@ function displayCustomers($connection) {
 
 	echo "<table border=0 cellpadding=0 cellspacing=0 class='CustomerInfoTable'>";
 	echo "<tr valign=center>";
-	echo "
-			<td class=rowheader>CustomerID</td>
+	echo "	<td class=rowheader>CustomerID</td>
 			<td class=rowheader>Name</td>
 			<td class=rowheader>Password</td>
 			<td class=rowheader>Address</td>
 			<td class=rowheader>Phone</td>
+			<td class=rowheader>Delete?</td>
 		</tr>";
 
 	// Display each Customer databaserow as a table row
@@ -130,9 +130,9 @@ function addItem($upc, $title, $item_type, $category, $company, $item_year,
 	
 	// Print success or error message  
     if($stmt->error) {       
-      printf("<b>Error: %s.</b>\n", $stmt->error);
+      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
     } else {
-      echo "<b>Successfully added ".$title."</b>";
+      echo "<h2><b><mark>Successfully added ".$title."</mark></b></h2>";
     }
 }
 
@@ -144,9 +144,9 @@ function deleteItem($upc, $connection) {
 	  
 	// Print success or error message
 	if($stmt->error) {
-	 printf("<b>Error: %s.</b>\n", $stmt->error);
+	 printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
 	} else {
-	 echo "<b>Successfully deleted ".$upc."</b>";
+	 echo "<h2><b><mark>Successfully deleted item (UPC: ".$upc.")</mark></b></h2>";
 	}
 }
 
@@ -154,7 +154,7 @@ function displayItems($connection) {
 	// Select all of the item rows
  	if (!$result = $connection->query("SELECT upc, title, item_type, 
 		category, company, item_year, price, stock FROM Item ORDER BY upc")) {
-		    die('There was an error running the query [' . $db->error . ']');
+		    die('There was an error running the query [' . $connection->error . ']');
     }
 
 	// Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
@@ -176,6 +176,7 @@ function displayItems($connection) {
 			<td class=rowheader>Item Year</td>
 			<td class=rowheader>Price</td>
 			<td class=rowheader>Stock</td>
+			<td class=rowheader>Delete?</td>
 		</tr>";
 
 	// Display each Item databaserow as a table row

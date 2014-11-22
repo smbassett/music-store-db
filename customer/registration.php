@@ -47,7 +47,7 @@ function formSubmit(CustId) {
   // Connect to AMS database
   $username = "root";
   $password = "";
-  $hostname = "localhost";
+  $hostname = "127.0.0.1"; //127.0.0.1 is the IP address for localhost. 
 
   $connection = new mysqli($hostname, $username, $password, "AMS");
 
