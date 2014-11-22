@@ -77,9 +77,7 @@ function formSubmit(CustId) {
 ?>
 
 <h2>Customer Registration Menu</h2>
-
 <!-- Note: table CSS generated with this useful online tool: http://www.csstablegenerator.com/?table_id=7 -->
-<table border=0 cellpadding=0 cellspacing=0 class="CustomerInfoTable">
 <?php
 
   // Display Customers
@@ -90,7 +88,7 @@ function formSubmit(CustId) {
 
 
 ?>
-</div>
+
 
 <h2>REGISTER CUSTOMER</h2>
 
