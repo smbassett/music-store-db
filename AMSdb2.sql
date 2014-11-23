@@ -13,6 +13,14 @@ price int not null,
 stock int not null,
 PRIMARY KEY (upc));
 
+CREATE TABLE Customer(
+cid int, 
+c_password varchar(8),
+cname varchar(20),
+address varchar(30), 
+phone int,
+PRIMARY KEY(cid));
+
 CREATE TABLE LeadSinger(
 upc int,
 singer_name varchar(10),
@@ -42,14 +50,6 @@ upc int,
 quantity int,
 PRIMARY KEY(receiptID, upc),
 FOREIGN KEY(upc) REFERENCES Item(upc));
-
-CREATE TABLE Customer(
-cid int, 
-c_password varchar(8),
-cname varchar(20),
-address varchar(30), 
-phone int,
-PRIMARY KEY(cid));
 
 CREATE Table `Return`(
 retid int, 
