@@ -33,10 +33,14 @@
 		if (!$category && !$title && !$leading_singer){
 				echo("Please enter item specifications!");
 				echo '<META http-equiv="refresh" content="1; shop.php">';
-			}
-				
+		}
+		elseif ($category && $title && $leading_singer){
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=? AND title=? AND upc IN (SELECT upc FROM LeadSinger WHERE singer_name = ?)");
+			$stmt->bind_param("sss", $category, $title, $leading_singer);
+			displaySearchResults($stmt);	
+		}		
 		elseif (!$category && !$title){
-		$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE upc IN (SELECT upc FROM LeadSinger WHERE singer_name = ?)");
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE upc IN (SELECT upc FROM LeadSinger WHERE singer_name = ?)");
 			$stmt->bind_param("s", $leading_singer);
 			displaySearchResults($stmt);	
 		}
@@ -51,12 +55,12 @@
 			displaySearchResults($stmt);	
 		}
 		elseif (!$category){
-			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE title=? and leading_singer=?");
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE title=? AND upc IN (SELECT upc FROM LeadSinger WHERE singer_name = ?)");
 			$stmt->bind_param("ss", $title, $leading_singer);
 			displaySearchResults($stmt);	
 		}
 		elseif (!$title){
-			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=? and leading_singer=?");
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=? AND upc IN (SELECT upc FROM LeadSinger WHERE singer_name = ?)");
 			$stmt->bind_param("ss", $category, $leading_singer);
 			displaySearchResults($stmt);	
 		}
