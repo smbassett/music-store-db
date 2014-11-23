@@ -18,7 +18,7 @@ cid int,
 c_password varchar(8),
 cname varchar(20),
 address varchar(30), 
-phone int,
+phone varchar(12),
 PRIMARY KEY(cid));
 
 CREATE TABLE LeadSinger(

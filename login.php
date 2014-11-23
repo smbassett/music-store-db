@@ -3,14 +3,17 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
-<title>Login</title>
-
-	<link href="login.css" rel="stylesheet" type="text/css">
-	
+<title>AMS Login</title>
+<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
+
+<!-- Include header -->
+<?php include 'header.php'; ?>
+
 <h1>Login to Allegro Music Store</h1>
+
 <?php
 
 	/* Establish Connection to Database */
@@ -36,27 +39,28 @@
 		*/
 			$customer_nm = $_POST["cust_name"];
 			$customer_pw = $_POST["cust_password"];
-			$stmt = $connection->prepare("SELECT * FROM Customer WHERE cname=? and c_password=?");
+			$stmt = $connection->prepare("SELECT cname FROM Customer WHERE cname=? and c_password=?");
 			$stmt->bind_param("ss", $customer_nm, $customer_pw);
 			$stmt->execute();
 		
+			$stmt->bind_result($col1);
+		
 			if($stmt->error) {
-				printf("<b>Error: %s.</b>\n", $stmt->error);} 
+				printf("<b>Error: %s.</b>\n", $stmt->error);
+			} 
 			else{
-				if ($stmt->fetch()){
+				while ($stmt->fetch()){
 					/*header('Location: http://localhost/home.html');*/
-					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; http://localhost/home.html">';
-					exit;
-					}
-				else 
-					printf("Customer not in database.");}
-	   
-			$stmt->close();		
+					echo "<b>Welcome ".$col1."!</b>";
+					echo '<META http-equiv="refresh" content="1; http://localhost/amsonlineshop2.php">';
+					exit;}
 			}
+			$stmt->close();		
 		}
+	}		
+
 ?>
-<h2>Customer Registration Menu</h2>
+<h2>Customer Login Menu</h2>
 	<form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 		<table border=0 cellpadding=0 cellspacing=0>
         <tr><td>Username</td><td><input type="text" size=30 name="cust_name"</td></tr>
@@ -64,7 +68,11 @@
 		<tr><td></td><td><input type="submit" name="submit" border=0 value="SUBMIT"></td></tr>
 		</table>
 	</form>
+	<a href="registration.php">Sign up</a> 
+
+<?php include 'footer.php'; ?>
 </body>
+
 </html>
 
 
