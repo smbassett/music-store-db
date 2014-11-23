@@ -48,3 +48,6 @@ VALUES
 (18, "Transformers 1", "DVD", "pop", "Apple", 1998, 25, 25),
 (19, "Titanic", "DVD", "new age", "Justin Bieber", 1998, 25, 30),
 (20, "The Proposal", "DVD", "classical", "Warner Bros", 1990, 25, 10);
+
+INSERT INTO LeadSinger
+VALUES (10, "George");
