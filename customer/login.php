@@ -35,19 +35,24 @@ $connection = connectToDatabase();
 		*/
 			$customer_nm = $_POST["cust_name"];
 			$customer_pw = $_POST["cust_password"];
-			$stmt = $connection->prepare("SELECT cname FROM Customer WHERE cname=? and c_password=?");
+			$stmt = $connection->prepare("SELECT cname, cid FROM Customer WHERE cname=? and c_password=?");
 			$stmt->bind_param("ss", $customer_nm, $customer_pw);
 			$stmt->execute();
 			
-			$stmt->bind_result($col1);
+			$stmt->bind_result($col1, $col2);
 		
 			if($stmt->error) {
 				printf("<b>Error: %s.</b>\n", $stmt->error);
 			} 
 			else{
+			// need to pass along the customer's cid to the store page,
+			// so that items can be added to that customer's shopping cart.
+			// will do this via a PHP 'session'.
 				while ($stmt->fetch()){
+					session_start();
+					$_SESSION['cid'] = $col2;
 					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; shop.php">';
+					echo '<META http-equiv="refresh" content="1; shop.php?' . SID . '">';
 					exit;
 				}
 			}

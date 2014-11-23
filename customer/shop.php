@@ -3,6 +3,21 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
+<!--
+    Javascript to submit an Item UPC as a POST form, used with the "ADD" links (add to cart).
+-->
+<script>
+function formSubmit(itemUpc) {
+    'use strict';
+      // Set the value of a hidden HTML element in this form
+      var form = document.getElementById('add');
+      form.upc.value = itemUpc;
+      // Post this form
+      form.submit();
+}
+</script>
+
+
 <title>AMS Online</title>
 
 <link href="../style.css" rel="stylesheet" type="text/css">
@@ -76,8 +91,10 @@
   	if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST["submitAdd"]) && $_POST["submitAdd"] == "ADD") {
-      // Add item to cart    		  
-      addItemToCart($_POST["upc"], $connection);       
+      // Add item to cart. To do this, need to grab customer CID that was passed to this page
+      // from login.php via a php 'session'.
+      session_start();     		  
+      addItemToCart($_SESSION['cid'], $_POST["upc"], $connection);       
     }
   }	
 }

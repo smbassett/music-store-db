@@ -65,3 +65,11 @@ quantity int,
 PRIMARY KEY (retid,upc),
 FOREIGN KEY (retid) REFERENCES `Return`(retid),
 FOREIGN KEY (upc) REFERENCES Item(upc));
+
+CREATE TABLE ShoppingCart(
+cid int, 
+upc int, 
+quantity int,
+PRIMARY KEY(cid, upc),
+FOREIGN KEY(cid) REFERENCES Customer(cid),
+FOREIGN KEY(upc) REFERENCES Item(upc));
