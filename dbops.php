@@ -7,6 +7,8 @@ connectToDatabase()
 addCustomer($password, $name, $address, $phone, $connection)
 deleteCustomer($id, $connection)
 displayCustomers($connection)
+displaySearchResults($stmt)
+addItemToCart($upc, $connection)
 
 */
 
