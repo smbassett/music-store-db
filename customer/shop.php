@@ -12,16 +12,33 @@
 <body>
 
 <!-- Include header -->
-<?php include 'header.php'; ?>
+<?php include '../header.php'; ?>
+
+<link href="../style.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+
+
+<body>
+<!-- Include header -->
+<?php include '../header.php'; ?>
 
 <h1>Welcome to AMS Online!</h1>
 
 <?php
 
-	/* Establish Connection to Database */
-    $username = "root";
+	/*//DATABASE CONNECTION CONFIG FOR SCOTT - uncomment to use
+	// CHANGE this to connect to your own MySQL instance in the labs or on your own computer
+	$username = "root";
+	$password = "";
+	$hostname = "127.0.0.1"; //localhost
+	*/
+
+	// DATABASE CONNECTION CONFIG FOR CRYSTAL - uncomment to use
+	// Connect to AMS database
+	$username = "root";
 	$password = "";
 	$hostname = "localhost";
+
 	$connection = new mysqli($hostname, $username, $password, "AMS");
 	
 	if (mysqli_connect_errno()) {
@@ -38,7 +55,7 @@
 		
 		if (!$category && !$title && !$leading_singer){
 				echo("Please enter item specifications!");
-				echo '<META http-equiv="refresh" content="1; http://localhost/amsonlineshop2.php">';
+				echo '<META http-equiv="refresh" content="1; shop.php">';
 			}
 				
 		elseif (!$category && !$title){
@@ -127,5 +144,7 @@
 </form>	
 </div>
 <?php include 'footer.php'; ?>
+</div></div>
+<?php include '../footer.php'; ?>
 </body>
 </html>

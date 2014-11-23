@@ -4,13 +4,14 @@
 <meta content="utf-8" http-equiv="encoding">
 
 <title>AMS Registration</title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
 <!--
     Javascript to submit a title_id as a POST form, used with the "delete" links
 -->
 <script>
-function formSubmit(CustId){
+function formSubmit(CustId) {
     'use strict';
     if (confirm('Are you sure you want to delete this customer?')) {
       // Set the value of a hidden HTML element in this form
@@ -26,15 +27,23 @@ function formSubmit(CustId){
 <body>
 
 <!-- Include header -->
-<?php include 'header.php'; ?>
+<?php include '../header.php'; ?>
 
 <h1>Manage Customer Registration</h1>
 
 <?php
 
   // Include basic database operations
-  include 'dbops.php';
+  include '../dbops.php';
 
+/*//DATABASE CONNECTION CONFIG FOR SCOTT - uncomment to use
+  // CHANGE this to connect to your own MySQL instance in the labs or on your own computer
+  $username = "root";
+	$password = "";
+	$hostname = "127.0.0.1"; //localhost
+*/
+
+// DATABASE CONNECTION CONFIG FOR CRYSTAL - uncomment to use
   // Connect to AMS database
   $username = "root";
   $password = "";
@@ -62,20 +71,24 @@ function formSubmit(CustId){
       addCustomer($_POST["new_password"], $_POST["new_name"], $_POST["new_address"], 
           $_POST["new_phone"], $connection);
     }
+
   }
 
 ?>
 
 <h2>Customer Registration Menu</h2>
-
+<!-- Note: table CSS generated with this useful online tool: http://www.csstablegenerator.com/?table_id=7 -->
 <?php
+
   // Display Customers
   displayCustomers($connection);
   
   // Disconnect from database
   mysqli_close($connection);
 
+
 ?>
+
 
 <h2>REGISTER CUSTOMER</h2>
 
@@ -91,6 +104,8 @@ function formSubmit(CustId){
   </table>
 </form>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>
 </body>
 </html>
+
+

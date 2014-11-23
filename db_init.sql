@@ -8,7 +8,7 @@ title varchar(30) not null,
 item_type varchar(10), 
 category varchar(10),
 company varchar(30) not null, 
-item_year char(4), 
+item_year int, 
 price int not null, 
 stock int not null,
 PRIMARY KEY (upc));
@@ -55,11 +55,13 @@ CREATE Table `Return`(
 retid int, 
 return_date date, 
 receiptID int,
-PRIMARY KEY (retid));
+PRIMARY KEY (retid),
+FOREIGN KEY(receiptID) REFERENCES PurchaseItem(receiptID));
 
 CREATE TABLE ReturnItem(
 retid int, 
 upc int, 
 quantity int,
 PRIMARY KEY (retid,upc),
+FOREIGN KEY (retid) REFERENCES `Return`(retid),
 FOREIGN KEY (upc) REFERENCES Item(upc));

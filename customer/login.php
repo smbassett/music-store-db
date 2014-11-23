@@ -4,22 +4,32 @@
 <meta content="utf-8" http-equiv="encoding">
 
 <title>AMS Login</title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
 
 <!-- Include header -->
-<?php include 'header.php'; ?>
+<?php include '../header.php'; ?>
 
 <h1>Login to Allegro Music Store</h1>
 
 <?php
 
-	/* Establish Connection to Database */
-    $username = "root";
+	/*//DATABASE CONNECTION CONFIG FOR SCOTT - uncomment to use
+	// CHANGE this to connect to your own MySQL instance in the labs or on your own computer
+	$username = "root";
+	$password = "";
+	$hostname = "127.0.0.1"; //localhost
+	*/
+
+	// DATABASE CONNECTION CONFIG FOR CRYSTAL - uncomment to use
+	// Connect to AMS database
+	$username = "root";
 	$password = "";
 	$hostname = "localhost";
+
 	$connection = new mysqli($hostname, $username, $password, "AMS");
 	
 	if (mysqli_connect_errno()) {
@@ -42,7 +52,7 @@
 			$stmt = $connection->prepare("SELECT cname FROM Customer WHERE cname=? and c_password=?");
 			$stmt->bind_param("ss", $customer_nm, $customer_pw);
 			$stmt->execute();
-		
+			
 			$stmt->bind_result($col1);
 		
 			if($stmt->error) {
@@ -50,15 +60,15 @@
 			} 
 			else{
 				while ($stmt->fetch()){
-					/*header('Location: http://localhost/home.html');*/
-					echo "<b>Welcome ".$col1."!</b>";
-					echo '<META http-equiv="refresh" content="1; http://localhost/amsonlineshop2.php">';
-					exit;}
+					echo "<b>Welcome ".$customer_nm."!</b>";
+					echo '<META http-equiv="refresh" content="1; shop.php">';
+					exit;
+				}
 			}
 			$stmt->close();		
 		}
-	}		
-
+	}
+		
 ?>
 <h2>Customer Login Menu</h2>
 	<form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
@@ -70,7 +80,7 @@
 	</form>
 	<a href="registration.php">Sign up</a> 
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>
 </body>
 
 </html>

@@ -12,6 +12,7 @@ Vojin
 Vojin
 -Added the shopping page
 -Made successful login's get redirected to the shopping page instead of default home page
+<<<<<<< HEAD
 -Added to bookbiz.css div tag for the headers and text boxes of amsonlineshop.php
 
 Vojin
@@ -20,3 +21,6 @@ Vojin
 ct_branch) because I was having issues with the pages linking together with each other 
 correctly. So everything is in one folder in the branch. 
 If you want to make it work for a directory structure on your comp just add the right path. 
+=======
+-Added to bookbiz.css div tag for the headers and text boxes of amsonlineshop.php
+>>>>>>> 4e1e9584e2eeb8e206dfbcab066aa31681be1528

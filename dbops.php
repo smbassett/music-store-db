@@ -79,9 +79,11 @@ function displayCustomers($connection) {
 	echo "<input type=\"hidden\" name=\"cid\" value=\"-1\"/>";
 	// We need a submit value to detect if delete was pressed 
 	echo "<input type=\"hidden\" name=\"submitDelete\" value=\"DELETE\"/>";
-
 	echo "
-		<table border=0 cellpadding=0 cellspacing=0><tr valign=center>
+		  <table border=0 cellpadding=0 cellspacing=0><tr valign=center>"
+	echo "<table border=0 cellpadding=0 cellspacing=0 class='CustomerInfoTable'>";
+	echo "<tr valign=center>";
+	echo "
 			<td class=rowheader>CustomerID</td>
 			<td class=rowheader>Name</td>
 			<td class=rowheader>Password</td>
@@ -167,6 +169,7 @@ function displayItems($connection) {
 
 	echo "
 		<table border=0 cellpadding=0 cellspacing=0><tr valign=center>
+		<table border=0 cellpadding=0 cellspacing=0 class='CustomerInfoTable'><tr valign=center>
 			<td class=rowheader>UPC</td>
 			<td class=rowheader>Title</td>
 			<td class=rowheader>Item Type</td>
