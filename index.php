@@ -17,7 +17,7 @@
 	<h3>Clerks (available soon!)</h3>
 	<a href="manager/manage_items.php" title="Manager's Page"><h3>Managers</h3></a>
 
-<?php include 'footer.php'; ?>
+<?php include 'footer.php'; ?> 
 
 </body>
 

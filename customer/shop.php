@@ -57,12 +57,12 @@ function formSubmit(itemUpc) {
 		elseif (!$category && !$title){
 			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE upc IN (SELECT upc FROM LeadSinger WHERE singer_name = ?)");
 			$stmt->bind_param("s", $leading_singer);
-			displaySearchResults($stmt);	
+			displaySearchResults($stmt);
 		}
 		elseif (!$category && !$leading_singer){
 			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE title=?");
 			$stmt->bind_param("s", $title);
-			displaySearchResults($stmt);	
+			displaySearchResults($stmt);
 		}
 		elseif (!$title && !$leading_singer){
 			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=?");
@@ -82,7 +82,7 @@ function formSubmit(itemUpc) {
 		elseif (!$leading_singer){
 			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=? and title=?");
 			$stmt->bind_param("ss", $category, $title);	
-			displaySearchResults($stmt);			
+			displaySearchResults($stmt);
 		}
 		
 		}

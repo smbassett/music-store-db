@@ -13,3 +13,7 @@ Vojin
 -Added the shopping page
 -Made successful login's get redirected to the shopping page instead of default home page
 -Added to bookbiz.css div tag for the headers and text boxes of amsonlineshop.php
+
+Vojin
+-DailySearchResults implemented
+-Added function to dbOps to display the dailySearch results 

@@ -46,7 +46,7 @@ function addCustomer($password, $name, $address, $phone, $connection) {
 	$id[0] = $id[0] + 1;
 
 	// Test fields for validity
-	$valid = true;
+	 $valid = true;
 
 	// Prepare phone number
 	$phone_length = strlen($phone);
@@ -175,6 +175,89 @@ function deleteItem($upc, $connection) {
 	} else {
 	 echo "<h2><b><mark>Successfully deleted item (UPC: ".$upc.")</mark></b></h2>";
 	}
+}
+
+function displaySearchResults($stmt){
+$stmt->execute();
+$stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8);
+// Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
+echo "<form id=\"add\" name=\"add\" action=\"";
+echo htmlspecialchars($_SERVER["PHP_SELF"]);
+echo "\" method=\"POST\">";
+// Hidden value is used if the add to cart link is clicked
+echo "<input type=\"hidden\" name=\"upc\" value=\"-1\"/>";
+// We need a submit value to detect if delete was pressed
+echo "<input type=\"hidden\" name=\"submitAdd\" value=\"ADD\"/>";
+echo "
+<table border=0 cellpadding=0 cellspacing=0 class='CustomerInfoTable'><tr valign=center>
+<td class=rowheader>UPC</td>
+<td class=rowheader>Title</td>
+<td class=rowheader>Item Type</td>
+<td class=rowheader>Category</td>
+<td class=rowheader>Company</td>
+<td class=rowheader>Item Year</td>
+<td class=rowheader>Price</td>
+<td class=rowheader>Stock</td>
+<td class=rowheader>Add to Cart?</td>
+</tr>";
+// Display each search result field in the table
+// Columns here are individual fields for each result row.
+while($row = $stmt->fetch()){
+echo "<td>".$col1."</td>";
+echo "<td>".$col2."</td>";
+echo "<td>".$col3."</td>";
+echo "<td>".$col4."</td>";
+echo "<td>".$col5."</td>";
+echo "<td>".$col6."</td>";
+echo "<td> $".$col7."</td>"; // added dollar sign for price.
+echo "<td>".$col8."</td><td>";
+//Display an option to add this Item to the shopping cart
+echo "<a href=\"javascript:formSubmit(".$col1.");\">ADD</a>";
+echo "</td></tr>";
+}
+echo "</form>";
+echo "</table>";
+}
+
+function displayDailySalesReport($stmt){
+$stmt->execute();
+$stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8);
+// Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
+echo "<form id=\"add\" name=\"add\" action=\"";
+echo htmlspecialchars($_SERVER["PHP_SELF"]);
+echo "\" method=\"POST\">";
+// Hidden value is used if the add to cart link is clicked
+echo "<input type=\"hidden\" name=\"upc\" value=\"-1\"/>";
+// We need a submit value to detect if delete was pressed
+echo "<input type=\"hidden\" name=\"submitAdd\" value=\"ADD\"/>";
+echo "
+<table border=0 cellpadding=0 cellspacing=0 class='CustomerInfoTable'><tr valign=center>
+<td class=rowheader>UPC</td>
+<td class=rowheader>Title</td>
+<td class=rowheader>Item Type</td>
+<td class=rowheader>Category</td>
+<td class=rowheader>Company</td>
+<td class=rowheader>Price</td>
+<td class=rowheader>Qunantity_Sold</td>
+<td class=rowheader>Quantity_Remaining</td>
+</tr>";
+// Display each search result field in the table
+// Columns here are individual fields for each result row.
+
+while($row = $stmt->fetch()){
+echo "<td>".$col1."</td>";
+echo "<td>".$col2."</td>";
+echo "<td>".$col3."</td>";
+echo "<td>".$col4."</td>";
+echo "<td>".$col5."</td>";
+echo "<td> $".$col6."</td>";
+echo "<td> ".$col7."</td>"; // added dollar sign for price.
+echo "<td>".$col8."</td><td>";
+//Display an option to add this Item to the shopping cart
+echo "</td></tr>";
+}
+echo "</form>";
+echo "</table>";
 }
 
 function displayItems($connection) {
