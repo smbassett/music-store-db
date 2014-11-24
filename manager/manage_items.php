@@ -36,18 +36,8 @@ function formSubmit(itemUpc) {
   // Include basic database operations
   include '../dbops.php';
 
-  // Connect to AMS database
-  $username = "root";
-  $password = "";
-  $hostname = "localhost";
-
-  $connection = new mysqli($hostname, $username, $password, "AMS");
-
-  // Check that the connection was successful, otherwise exit
-  if (mysqli_connect_errno()) {
-    printf("Connect failed: %s\n", mysqli_connect_error());
-    exit();
-  } else printf("Connection Successful");
+//Connect to database:
+$connection = connectToDatabase();
 ?>
 <br>
 <?php

@@ -4,9 +4,9 @@ SELECT database();
 
 CREATE TABLE Item(
 upc int,
-title varchar(30) not null,
+title varchar(50) not null,
 item_type varchar(10), 
-category varchar(10),
+category varchar(20),
 company varchar(30) not null, 
 item_year int, 
 price int not null, 
@@ -15,7 +15,7 @@ PRIMARY KEY (upc));
 
 CREATE TABLE Customer(
 cid int, 
-c_password varchar(8),
+c_password varchar(20),
 cname varchar(20),
 address varchar(30), 
 phone varchar(12),
@@ -23,7 +23,7 @@ PRIMARY KEY(cid));
 
 CREATE TABLE LeadSinger(
 upc int,
-singer_name varchar(10),
+singer_name varchar(20),
 PRIMARY KEY (upc, singer_name),
 FOREIGN KEY (upc) REFERENCES Item(upc));
 
@@ -65,3 +65,11 @@ quantity int,
 PRIMARY KEY (retid,upc),
 FOREIGN KEY (retid) REFERENCES `Return`(retid),
 FOREIGN KEY (upc) REFERENCES Item(upc));
+
+CREATE TABLE ShoppingCart(
+cid int, 
+upc int, 
+quantity int,
+PRIMARY KEY(cid, upc),
+FOREIGN KEY(cid) REFERENCES Customer(cid),
+FOREIGN KEY(upc) REFERENCES Item(upc));

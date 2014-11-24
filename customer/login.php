@@ -12,30 +12,14 @@
 
 <!-- Include header -->
 <?php include '../header.php'; ?>
+<?php include '../dbops.php'; ?>
 
 <h1>Login to Allegro Music Store</h1>
 
 <?php
 
-	/*//DATABASE CONNECTION CONFIG FOR SCOTT - uncomment to use
-	// CHANGE this to connect to your own MySQL instance in the labs or on your own computer
-	$username = "root";
-	$password = "";
-	$hostname = "127.0.0.1"; //localhost
-	*/
-
-	// DATABASE CONNECTION CONFIG FOR CRYSTAL - uncomment to use
-	// Connect to AMS database
-	$username = "root";
-	$password = "";
-	$hostname = "localhost";
-
-	$connection = new mysqli($hostname, $username, $password, "AMS");
-	
-	if (mysqli_connect_errno()) {
-        printf("Connect failed: %s\n", mysqli_connect_error());
-        exit();
-    } else printf("Connection Successful!!");
+//Connect to database:
+$connection = connectToDatabase();
 
 	/* If the page has been reached by method POST, that is, if SUBMIT
 	was clicked, then check if the credentials are present in the 
@@ -49,19 +33,26 @@
 		*/
 			$customer_nm = $_POST["cust_name"];
 			$customer_pw = $_POST["cust_password"];
-			$stmt = $connection->prepare("SELECT cname FROM Customer WHERE cname=? and c_password=?");
+
+			$stmt = $connection->prepare("SELECT cname, cid FROM Customer WHERE cname=? and c_password=?");
 			$stmt->bind_param("ss", $customer_nm, $customer_pw);
 			$stmt->execute();
 			
-			$stmt->bind_result($col1);
+			$stmt->bind_result($col1, $col2);
 		
 			if($stmt->error) {
 				printf("<b>Error: %s.</b>\n", $stmt->error);
 			} 
 			else{
+
+			// need to pass along the customer's cid to the store page,
+			// so that items can be added to that customer's shopping cart.
+			// will do this via a PHP 'session'.
 				while ($stmt->fetch()){
+					session_start();
+					$_SESSION['cid'] = $col2;
 					echo "<b>Welcome ".$customer_nm."!</b>";
-					echo '<META http-equiv="refresh" content="1; shop.php">';
+					echo '<META http-equiv="refresh" content="1; shop.php?' . SID . '">';
 					exit;
 				}
 			}
@@ -73,8 +64,8 @@
 <h2>Customer Login Menu</h2>
 	<form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 		<table border=0 cellpadding=0 cellspacing=0>
-			<tr><td>Username</td><td><input type="text" size=30 name="cust_name"</td></tr>
-        <tr><td>Password</td><td><input type="password" size=30 name="cust_password"</td></tr>
+        <tr><td>Username</td><td><input type="text" size=30 name="cust_name"</td></tr>
+        <tr><td>Password</td><td><input type="password" size=30 name="cust_password"</td></tr></tr>
 		<tr><td></td><td><input type="submit" name="submit" border=0 value="SUBMIT"></td></tr>
 		</table>
 	</form>
