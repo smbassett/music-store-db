@@ -474,7 +474,7 @@ function confirmPurchase($cid, $connection) {
     
 }
 
-function createPurchase($cid, $creditcard, $connection) {
+function createPurchase($cid, $creditcard, $expiry, $connection) {
 	// Generate receiptID
 	$id = $connection->query("SELECT max(receiptID) FROM PurchaseItem");
 	if(!$id) {
@@ -488,7 +488,7 @@ function createPurchase($cid, $creditcard, $connection) {
 	$stmt->bind_param("s", $cid);
 	$stmt->execute();
 	if(!$stmt) {
-		echo "ERROR: Please try again.";
+		echo "ERROR: Shopping cart not found.";
 	}
 	$stmt->store_result();
 	$stmt->bind_result($upc, $quantity);
@@ -500,8 +500,18 @@ function createPurchase($cid, $creditcard, $connection) {
 		$new->bind_param("iss", $new_id, $upc, $quantity);
 		$new->execute();
 		if(!$new) {
-			echo "ERROR: Please try again.";
+			echo "Purchase creation failed. Please try again.";
 		}
+	}
+	
+	// Create Order data
+	$date = date("Ymd");
+	$order = $connection->prepare("INSERT INTO `Order`(receiptID, order_date, cid,
+		cardNo, expiryDate, expectedDate) VALUES (?,?,?,?,?,?)");
+	$order->bind_param("ssssss", $new_id, $date, $cid, $creditcard, $expiry, $date);
+	$order->execute();
+	if (!$order) {
+		echo "Order creation failed. Please try again.";
 	}
 
 	// Clear shopping cart
@@ -515,7 +525,6 @@ function createPurchase($cid, $creditcard, $connection) {
 	// Display success message
 	echo "<h2><b><mark>Order placed for customer with ID ".$cid." and billed to credit card with number ".$creditcard.".";
 	echo " Thanks for shopping with AMS!</mark></b></h2>";
-
 }
 
 

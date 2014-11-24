@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // if user clicks 'confirm purchase'
     elseif (isset($_POST["purchase"]) && $_POST["purchase"] == "CONFIRM PURCHASE"){
 		session_start();
-		createPurchase($_SESSION['cid'], $_POST["credit_num"], $connection);		
+		createPurchase($_SESSION['cid'], $_POST["credit_num"], $_POST["credit_expiry"], $connection);		
     }
 } else {
   	displayShopSearch();
