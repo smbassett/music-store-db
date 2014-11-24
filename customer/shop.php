@@ -42,18 +42,17 @@ function formSubmit(itemUpc) {
  *	- user has clicked 'add to cart', or 
  *	- user has updated an order quantity in the cart.
  */
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	
 	// if user is searching for an item, work with given input to produce a table of search results
-		if (isset($_POST["submit"])) {
-			$category       = $_POST["category"];
-			$title          = $_POST["title"];
-			$leading_singer = $_POST["leading_singer"];
-		
+	if (isset($_POST["submit"])) {
+		$category       = $_POST["category"];
+		$title          = $_POST["title"];
+		$leading_singer = $_POST["leading_singer"];
+	
 		if (!$category && !$title && !$leading_singer){
 				echo("Please enter item specifications!");
 				echo '<META http-equiv="refresh" content="1; shop.php">';
-
 		}
 		elseif ($category && $title && $leading_singer){
 			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=? AND title=? AND upc IN (SELECT upc FROM LeadSinger WHERE singer_name = ?)");
@@ -90,7 +89,6 @@ function formSubmit(itemUpc) {
 			$stmt->bind_param("ss", $category, $title);	
 			displaySearchResults($stmt);
 		}
-		
 		displayShopSearch();
 	} 
 	// if user clicks 'add' to add a search result item to their shopping cart:
@@ -115,13 +113,20 @@ function formSubmit(itemUpc) {
     }
 
     // if user clicks 'proceed to checkout'
-    elseif ($_POST["checkout"] == "PROCEED TO CHECKOUT"){
+    elseif (isset($_POST["checkout"]) && $_POST["checkout"] == "PROCEED TO CHECKOUT"){
 		session_start();
 		confirmPurchase($_SESSION['cid'], $connection);
-		
-    }
-  }	
 
+    }
+
+    // if user clicks 'confirm purchase'
+    elseif (isset($_POST["purchase"]) && $_POST["purchase"] == "CONFIRM PURCHASE"){
+		session_start();
+		createPurchase($_SESSION['cid'], $_POST["credit_num"], $connection);		
+    }
+} else {
+  	displayShopSearch();
+}	
 
 ?>
 

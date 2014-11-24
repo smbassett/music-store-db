@@ -40,10 +40,14 @@ function addCustomer($password, $name, $address, $phone, $connection) {
 	// SQL statement
 	$stmt = $connection->prepare("INSERT INTO Customer (cid, c_password, cname, address, phone) VALUES (?,?,?,?,?)");
     
-    // Generate new cid
+    // Generate new cid  
 	$id = $connection->query("SELECT max(cid) FROM Customer");
-	$id = $id->fetch_array();
-	$id[0] = $id[0] + 1;
+	if (!$id) {
+		$id = "0";
+	} else {
+		$id->fetch_array();
+		$id[0] = $id[0]+1;	
+	}
 
 	// Test fields for validity
 	 $valid = true;
@@ -450,6 +454,63 @@ function confirmPurchase($cid, $connection) {
 	$stmt->fetch();
 
 	echo "\n<h2>Your total is $".$total.".</h2>";
+
+	echo '<form id="add" name="add" method="post" action="';
+	echo htmlspecialchars($_SERVER["PHP_SELF"]);
+	echo '">';
+	echo '
+	<table border=0 cellpadding=0 cellspacing=0>
+		<tr><td>Credit Card Number</td><td><input type="text" size=30 name="credit_num"></td></tr>
+	    <tr><td>Expiry Date (MMYY)</td><td><input type="text" size=30 name="credit_expiry"</td></tr>
+		<tr><td><input type="submit" name="purchase" border=0 value="CONFIRM PURCHASE"></td></tr>
+	</table>
+	</form>
+	';
+    
+}
+
+function createPurchase($cid, $creditcard, $connection) {
+	// Generate receiptID
+	$id = $connection->query("SELECT max(receiptID) FROM PurchaseItem");
+	if(!$id) {
+		echo "ERROR: Please try again.";
+	}
+	$id = $id->fetch_assoc();
+	$new_id = $id['max(receiptID)'] + 1;
+
+	// Find customer's shopping cart
+	$stmt = $connection->prepare("SELECT upc, quantity FROM ShoppingCart WHERE cid=?");
+	$stmt->bind_param("s", $cid);
+	$stmt->execute();
+	if(!$stmt) {
+		echo "ERROR: Please try again.";
+	}
+	$stmt->store_result();
+	$stmt->bind_result($upc, $quantity);
+
+	// Create PurchaseItem data
+	while($row = $stmt->fetch()) {
+		$new = $connection->prepare("INSERT INTO PurchaseItem(receiptID, upc, quantity)
+			VALUES (?,?,?)");
+		$new->bind_param("iss", $new_id, $upc, $quantity);
+		$new->execute();
+		if(!$new) {
+			echo "ERROR: Please try again.";
+		}
+	}
+
+	// Clear shopping cart
+	$clear = $connection->prepare("DELETE FROM ShoppingCart WHERE cid=?");
+	$clear->bind_param("s", $cid);
+	$clear->execute();
+	if(!$clear) {
+		echo "ERROR: Please try again.";
+	}
+
+	// Display success message
+	echo "<h2><b><mark>Order placed for customer with ID ".$cid." and billed to credit card with number ".$creditcard.".";
+	echo " Thanks for shopping with AMS!</mark></b></h2>";
+
 }
 
 
