@@ -4,15 +4,6 @@
 <meta content="utf-8" http-equiv="encoding">
 
 <title>AMS Online</title>
-<!--
-    A simple stylesheet is provided so you can modify colours, fonts, etc.
--->
-    <link href="style.css" rel="stylesheet" type="text/css">
-
-<body>
-
-<!-- Include header -->
-<?php include '../header.php'; ?>
 
 <link href="../style.css" rel="stylesheet" type="text/css">
 <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
@@ -142,8 +133,6 @@
    Leading Singer: <input type="text" name="leading_singer"><br><br>
                    <input type="submit" name="submit" value="SUBMIT"> 
 </form>	
-</div>
-<?php include 'footer.php'; ?>
 </div></div>
 <?php include '../footer.php'; ?>
 </body>
