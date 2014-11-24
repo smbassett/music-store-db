@@ -636,4 +636,74 @@ function displayShopSearch(){
 	';
 }
 
+function processReturn($receiptID, $cid, $connection) {
+	$stmt = $connection->prepare("SELECT receiptID, cid, cardNo, deliveredDate 
+		FROM `Order`
+		WHERE receiptID=? AND cid=?");
+	$stmt->bind_param("ss", $receiptID, $cid);
+	$stmt->execute();
+	if (!$stmt) {
+		echo "Error processing return. Please try again.";
+	}
+	$stmt->bind_result($receiptIDb, $cidb, $cardNo, $deliver);
+	$stmt->fetch();
+	//Does receipt ID exist?
+	if ($receiptIDb === NULL)
+		echo "Receipt ID does not exist. ";
+	//Has order been already delivered?
+	if ($deliver == NULL)
+		echo "This order has not been delivered yet and cannot be refunded. ";
+	//Does it match the customer ID?
+	if ($cidb === NULL)
+		echo "Customer ID does not exist.";
+	//If all tests pass, then:
+	else {
+		$stmt->close();
+		//Create record of Return
+		$date = date("Ymd");
+			// Generate return ID
+			$id = $connection->query("SELECT max(retid) FROM `Return`");
+			if(!$id) {
+				$new_id = 0;
+			} else {
+				$id = $id->fetch_assoc();
+				$new_id = $id['max(retid)'] + 1;
+			}
+		$return = $connection->prepare("INSERT INTO `Return` (retid, return_date, receiptID) VALUES (?,?,?)");
+		$return->bind_param("isi", $new_id, $date, $receiptID);
+		$return->execute();
+		if (!$return) echo "Error processing return.";
+		$return->close();
+
+		//Create record of ReturnItem
+		$return = $connection->prepare("SELECT upc, quantity FROM PurchaseItem WHERE receiptID=?");
+		$return->bind_param("s", $receiptID);
+		$return->execute();
+		$return->store_result();
+		$return->bind_result($upc, $quantity);
+		while ($row = $return->fetch()) {
+			$returnItem = $connection->prepare("INSERT INTO ReturnItem(retid, upc, quantity) VALUES (?,?,?)");
+			$returnItem->bind_param("sss", $new_id, $upc, $quantity);
+			$returnItem->execute();
+			if (!$returnItem) echo "Error processing return.";
+
+			//Update stock of Item
+			$shelving = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
+			$shelving->bind_param("ss", $quantity, $upc);
+			$shelving->execute();
+			if (!$shelving)	echo "Item stock could not be updated. Please try again.";
+		}
+
+		//Delete record from Purchase
+		$return = $connection->prepare("DELETE FROM PurchaseItem WHERE receiptID=?");
+		$return->bind_param("s", $receiptID);
+		$return->execute();
+		if (!$return) echo "Error deleting from purchase records.";
+
+		echo "You have successfully returned purchase with ID ".$receiptID.".";
+	}
+	
+	
+}
+
 ?>
