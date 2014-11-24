@@ -118,6 +118,7 @@ function formSubmit(itemUpc) {
     elseif ($_POST["checkout"] == "PROCEED TO CHECKOUT"){
 		session_start();
 		confirmPurchase($_SESSION['cid'], $connection);
+		
     }
   }	
 
