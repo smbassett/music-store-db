@@ -3,9 +3,7 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
-<!--
-    Javascript to submit an Item UPC as a POST form, used with the "ADD" links (add to cart).
--->
+<!--Javascript to submit an Item UPC as a POST form, used with the "ADD" links (add to cart).-->
 <script>
 function formSubmit(itemUpc) {
     'use strict';
@@ -37,8 +35,16 @@ function formSubmit(itemUpc) {
 	//Connect to database
 	$connection = connectToDatabase();
 
+/* 
+ * Large if-else block to detect user action on this page.
+ * Detects when: 
+ *	- user has searched for an item, 
+ *	- user has clicked 'add to cart', or 
+ *	- user has updated an order quantity in the cart.
+ */
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	
+	// if user is searching for an item, work with given input to produce a table of search results
 		if (isset($_POST["submit"])) {
 			$category       = $_POST["category"];
 			$title          = $_POST["title"];
@@ -85,19 +91,22 @@ function formSubmit(itemUpc) {
 			displaySearchResults($stmt);
 		}
 		
-		}
-		
-	// Detect user action
-  	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    if (isset($_POST["submitAdd"]) && $_POST["submitAdd"] == "ADD") {
-      // Add item to cart. To do this, need to grab customer CID that was passed to this page
-      // from login.php via a php 'session'.
-      session_start();     		  
-      addItemToCart($_SESSION['cid'], $_POST["upc"], $connection);       
+	} 
+	// if user clicks 'add' to add a search result item to their shopping cart:
+	elseif (isset($_POST["submitAdd"]) && $_POST["submitAdd"] == "ADD") {
+	    // Add item to cart. To do this, need to grab customer CID that was passed to this page
+		// from login.php via a php 'session'.
+    	session_start();     		  
+    	addItemToCart($_SESSION['cid'], $_POST["upc"], $connection);       
+    	} 
+    	
+    // if user types in a new order quantity and clicks 'update' in their shopping cart:
+    elseif (isset($_POST["submitUpdate"]) && $_POST["submitUpdate"] == "UPDATE"){
+    	// Update order quantity for item
+    	session_start();     		  
+    	updateItemQty($_SESSION['cid'], $_POST["upc"], $_POST["updateqty"], $connection);       
     }
   }	
-}
 ?>
 
 <div id="shop">

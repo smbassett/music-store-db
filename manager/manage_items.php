@@ -7,9 +7,7 @@
 <link href="../style.css" rel="stylesheet" type="text/css">
 <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
-<!--
-    Javascript to submit a title_id as a POST form, used with the "delete" links
--->
+<!--Javascript to submit a title_id as a POST form, used with the "delete" links-->
 <script>
 function formSubmit(itemUpc) {
     'use strict';
@@ -23,18 +21,17 @@ function formSubmit(itemUpc) {
 }
 </script>
 </head>
-
 <body>
 
 <!-- Include header -->
 <?php include '../header.php'; ?>
 
-<h1>Manage Items</h1>
+<h1>Manage Items</h1><br>
 
 <?php
 
-  // Include basic database operations
-  include '../dbops.php';
+// Include basic database operations
+include '../dbops.php';
 
 //Connect to database:
 $connection = connectToDatabase();
@@ -44,18 +41,19 @@ $connection = connectToDatabase();
   // Detect user action
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
+    // If manager has clicked the 'delete' button next to an item, then delete that item:
     if (isset($_POST["submitDelete"]) && $_POST["submitDelete"] == "DELETE") {
-      // Delete Item
-      deleteItem($_POST['upc'], $connection);        
-    
-    } elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
-      // Add Item    		  
-      addItem($_POST["new_upc"], $_POST["new_title"], $_POST["new_item_type"], $_POST["new_category"],
+    	// Delete Item
+    	deleteItem($_POST['upc'], $connection);        
+     } 
+    // If manager has typed in information about a new item and clicked 'add':
+    elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
+    	// Add Item    		  
+      	addItem($_POST["new_upc"], $_POST["new_title"], $_POST["new_item_type"], $_POST["new_category"],
       	$_POST["new_company"], $_POST["new_item_year"], $_POST["new_price"], $_POST["new_quantity"], 
-      	 $connection);
+      	$connection);
     }
   }
-
 ?>
 
 <h2>Items</h2>
@@ -66,7 +64,6 @@ $connection = connectToDatabase();
   
   // Disconnect from database
   mysqli_close($connection);
-
 ?>
 
 
