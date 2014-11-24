@@ -16,7 +16,7 @@
 <h1>Welcome to AMS Online!</h1>
 
 <?php
-
+    include '../dbops.php';
 	/*//DATABASE CONNECTION CONFIG FOR SCOTT - uncomment to use
 	// CHANGE this to connect to your own MySQL instance in the labs or on your own computer
 	$username = "root";
@@ -50,74 +50,34 @@
 			}
 				
 		elseif (!$category && !$title){
-		$stmt = $connection->prepare("SELECT * FROM Item WHERE leading_singer=?");
+		$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE upc IN (SELECT upc FROM LeadSinger WHERE singer_name = ?)");
 			$stmt->bind_param("s", $leading_singer);
-			$stmt->execute();
-			if($stmt->error) {
-				printf("<b>Error: %s.</b>\n", $stmt->error);} 
-			elseif($stmt->fetch())
-				printf("LeadSinger in DB.");
-			$stmt->close();		
+			displaySearchResults($stmt);
 		}
 		elseif (!$category && !$leading_singer){
-			$stmt = $connection->prepare("SELECT * FROM Item WHERE title=?");
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE title=?");
 			$stmt->bind_param("s", $title);
-			$stmt->execute();
-			if($stmt->error) {
-				printf("<b>Error: %s.</b>\n", $stmt->error);} 
-			elseif($stmt->fetch())
-				printf("Title in DB.");
-			$stmt->close();	
+			displaySearchResults($stmt);
 		}
 		elseif (!$title && !$leading_singer){
-			$stmt = $connection->prepare("SELECT * FROM Item WHERE category=?");
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=?");
 			$stmt->bind_param("s", $category);
-			$stmt->execute();
-			if($stmt->error) {
-				printf("<b>Error: %s.</b>\n", $stmt->error);} 
-			elseif($stmt->fetch())
-				printf("Category in DB.");
-			$stmt->close();		
+			displaySearchResults($stmt);		
 		}
 		elseif (!$category){
-			$stmt = $connection->prepare("SELECT * FROM Item WHERE title=? and leading_singer=?");
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE title=? and leading_singer=?");
 			$stmt->bind_param("ss", $title, $leading_singer);
-			$stmt->execute();
-			if($stmt->error) {
-				printf("<b>Error: %s.</b>\n", $stmt->error);} 
-			elseif($stmt->fetch())
-				printf("TS in DB.");
-			$stmt->close();	
+			displaySearchResults($stmt); 
 		}
 		elseif (!$title){
-			$stmt = $connection->prepare("SELECT * FROM Item WHERE category=? and leading_singer=?");
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=? and leading_singer=?");
 			$stmt->bind_param("ss", $category, $leading_singer);
-			$stmt->execute();
-			if($stmt->error) {
-				printf("<b>Error: %s.</b>\n", $stmt->error);} 
-			elseif($stmt->fetch())
-				printf("CS in DB.");
-			$stmt->close();	
+			displaySearchResults($stmt); 
 		}
-		elseif (!$leading_singer){
-			
-			$stmt = $connection->prepare("SELECT title, item_type, category, company, price, stock FROM Item WHERE category=? and title=?");
+		elseif (!$leading_singer){			
+			$stmt = $connection->prepare("SELECT upc, title, item_type, category, company, item_year, price, stock FROM Item WHERE category=? and title=?");
 			$stmt->bind_param("ss", $category, $title);
-			$stmt->execute();
-			
-			$stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6);
-			
-			if($stmt->error) {
-				printf("<b>Error: %s.</b>\n", $stmt->error);
-			} 
-			else{
-			echo "<table>";
-				while ($stmt->fetch()){
-					echo "<tr><td>".$col1."</td><td>".$col2."</td><td>".$col3."</td></tr>";
-				}
-			echo "</table>";
-			}
-			$stmt->close();		
+			displaySearchResults($stmt); 
 		}
 		
 		}
