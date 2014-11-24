@@ -12,7 +12,7 @@
 <!-- Include header -->
 <?php include '../header.php'; ?>
 
-<h1>Manage Items</h1>
+<h1>Daily Sales Report</h1>
 <?php
 
   // Include basic database operations
