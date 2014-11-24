@@ -232,7 +232,7 @@ function displayDailySalesReport($stmt){
 	<td class=rowheader>Category</td>
 	<td class=rowheader>Company</td>
 	<td class=rowheader>Price</td>
-	<td class=rowheader>Qunantity_Sold</td>
+	<td class=rowheader>Quantity_Sold</td>
 	<td class=rowheader>Quantity_Remaining</td>
 	</tr>";
 	// Display each search result field in the table
