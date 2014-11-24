@@ -42,13 +42,9 @@ function addCustomer($password, $name, $address, $phone, $connection) {
     
     // Generate new cid  
 	$id = $connection->query("SELECT max(cid) FROM Customer");
-	if (!$id) {
-		$id = "0";
-	} else {
-		$id->fetch_array();
-		$id[0] = $id[0]+1;	
-	}
-
+	$id = $id->fetch_row();
+	$new_id = $id[0] + 1;
+	
 	// Test fields for validity
 	 $valid = true;
 
@@ -63,7 +59,7 @@ function addCustomer($password, $name, $address, $phone, $connection) {
 
 	if($valid) {
 		// Bind the title and pub_id parameters, 'sssss' indicates 5 strings
-    	$stmt->bind_param("sssss", $id[0], $password, $name, $address, $phone);
+    	$stmt->bind_param("sssss", $new_id, $password, $name, $address, $phone);
     	// Execute the insert statement
     	$stmt->execute();	
     	// Print success or error message  

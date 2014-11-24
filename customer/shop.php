@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	elseif (isset($_POST["submitAdd"]) && $_POST["submitAdd"] == "ADD") {
 	    // Add item to cart. To do this, need to grab customer CID that was passed to this page
 		// from login.php via a php 'session'.
-    	session_start();     		  
+       		  
     	addItemToCart($_SESSION['cid'], $_POST["upc"], $connection);       
     	// display all the items now in the customer's shopping cart
 		displayShoppingCart($_SESSION['cid'], $connection);
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // if user types in a new order quantity and clicks 'update' in their shopping cart:
     elseif (isset($_POST["submitUpdate"]) && $_POST["submitUpdate"] == "UPDATE"){
     	// Update order quantity for item
-    	session_start();     		  
+       		  
     	updateItemQty($_SESSION['cid'], $_POST["upc"], $_POST["updateqty"], $connection);       
     	// display updated shopping cart
 		displayShoppingCart($_SESSION['cid'], $connection);
@@ -114,14 +114,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // if user clicks 'proceed to checkout'
     elseif (isset($_POST["checkout"]) && $_POST["checkout"] == "PROCEED TO CHECKOUT"){
-		session_start();
 		confirmPurchase($_SESSION['cid'], $connection);
 
     }
 
     // if user clicks 'confirm purchase'
     elseif (isset($_POST["purchase"]) && $_POST["purchase"] == "CONFIRM PURCHASE"){
-		session_start();
 		createPurchase($_SESSION['cid'], $_POST["credit_num"], $_POST["credit_expiry"], $connection);		
     }
 } else {

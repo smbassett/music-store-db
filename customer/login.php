@@ -49,8 +49,8 @@ $connection = connectToDatabase();
 			// so that items can be added to that customer's shopping cart.
 			// will do this via a PHP 'session'.
 				while ($stmt->fetch()){
-					session_start();
 					$_SESSION['cid'] = $col2;
+					$_SESSION['cname'] = $col1;
 					echo "<b>Welcome ".$customer_nm."!</b>";
 					echo '<META http-equiv="refresh" content="1; shop.php?' . SID . '">';
 					exit;
@@ -58,6 +58,7 @@ $connection = connectToDatabase();
 			}
 			$stmt->close();		
 		}
+
 	}
 		
 ?>
