@@ -493,14 +493,22 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	$stmt->store_result();
 	$stmt->bind_result($upc, $quantity);
 
-	// Create PurchaseItem data
 	while($row = $stmt->fetch()) {
+		// Create PurchaseItem data
 		$new = $connection->prepare("INSERT INTO PurchaseItem(receiptID, upc, quantity)
 			VALUES (?,?,?)");
 		$new->bind_param("iss", $new_id, $upc, $quantity);
 		$new->execute();
 		if(!$new) {
 			echo "Purchase creation failed. Please try again.";
+		}
+
+		// Update item stock
+		$shelving = $connection->prepare("UPDATE Item SET stock=stock-? WHERE upc=?");
+		$shelving->bind_param("ss", $quantity, $upc);
+		$shelving->execute();
+		if (!$shelving) {
+			echo "Item stock could not be updated. Please try again.";
 		}
 	}
 	
