@@ -37,6 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	</table>
 </form>
 
+<br>
+<a href="../index.php" title="Home"><h2>&lt;&lt;Back</h2></a>
+
 
 <?php include '../footer.php'; ?>
 </body>

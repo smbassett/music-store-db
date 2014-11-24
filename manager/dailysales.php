@@ -3,7 +3,7 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
-<title>AMS Manage Items</title>
+<title>AMS Daily Sales Report</title>
 <link href="../style.css" rel="stylesheet" type="text/css">
 <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'> 
 
@@ -68,6 +68,10 @@
     <tr><td></td><td><input type="submit" name="submit" border=0 value="VIEW REPORT"></td></tr>
   </table>
 </form>
+
+<br>
+
+<a href="home.php" title="Manager's Page"><h2>&lt;&lt;Back</h2></a>
 
 <?php include '../footer.php'; ?>
 </body>

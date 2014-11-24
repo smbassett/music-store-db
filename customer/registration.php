@@ -88,6 +88,9 @@ function formSubmit(CustId) {
   </table>
 </form>
 
+<br>
+<a href="login.php" title="Login instead"><h2>&lt;&lt;Back</h2></a>
+
 <?php include '../footer.php'; ?>
 </body>
 </html>

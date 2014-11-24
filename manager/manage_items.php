@@ -92,6 +92,10 @@ the old unit price will be retained.
   </table>
 </form>
 
+<br>
+
+<a href="home.php" title="Manager's Page"><h2>&lt;&lt;Back</h2></a>
+
 <?php include '../footer.php'; ?>
 </body>
 </html>

@@ -69,7 +69,10 @@ $connection = connectToDatabase();
 		<tr><td></td><td><input type="submit" name="submit" border=0 value="SUBMIT"></td></tr>
 		</table>
 	</form>
-	<a href="registration.php">Sign up</a> 
+	<a href="registration.php" title="Sign up">Sign up</a> 
+
+<br>
+<a href="../index.php" title="Home"><h2>&lt;&lt;Back</h2></a>
 
 <?php include '../footer.php'; ?>
 </body>

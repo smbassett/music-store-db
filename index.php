@@ -14,7 +14,7 @@
 	<h2>Please select one.</h2>
 	<br>
 	<a href="customer/login.php" title="Customer Login"><h3>Customers</h3></a>
-	<h3>Clerks (available soon!)</h3>
+	<a href="clerk/returns.php" title="Clerk's Page"><h3>Clerks</h3></a>
 	<a href="manager/home.php" title="Manager's Page"><h3>Managers</h3></a>
 
 <?php include 'footer.php'; ?> 
