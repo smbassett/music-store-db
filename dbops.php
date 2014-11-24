@@ -693,12 +693,8 @@ function processReturn($receiptID, $cid, $connection) {
 			$shelving->execute();
 			if (!$shelving)	echo "Item stock could not be updated. Please try again.";
 		}
-
-		//Delete record from Purchase
-		$return = $connection->prepare("DELETE FROM PurchaseItem WHERE receiptID=?");
-		$return->bind_param("s", $receiptID);
-		$return->execute();
-		if (!$return) echo "Error deleting from purchase records.";
+		$return->free_result();
+		$return->close();
 
 		echo "You have successfully returned purchase with ID ".$receiptID.".";
 	}
