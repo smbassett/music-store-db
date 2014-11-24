@@ -98,13 +98,17 @@ function formSubmit(itemUpc) {
 		// from login.php via a php 'session'.
     	session_start();     		  
     	addItemToCart($_SESSION['cid'], $_POST["upc"], $connection);       
-    	} 
+    	// display all the items now in the customer's shopping cart
+		displayShoppingCart($_SESSION['cid'], $connection);
+    } 
     	
     // if user types in a new order quantity and clicks 'update' in their shopping cart:
     elseif (isset($_POST["submitUpdate"]) && $_POST["submitUpdate"] == "UPDATE"){
     	// Update order quantity for item
     	session_start();     		  
     	updateItemQty($_SESSION['cid'], $_POST["upc"], $_POST["updateqty"], $connection);       
+    	// display updated shopping cart
+		displayShoppingCart($_SESSION['cid'], $connection);
     }
   }	
 ?>

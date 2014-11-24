@@ -361,9 +361,6 @@ function addItemToCart($cid, $upc, $connection){
 
 	// add this item to the customer's shopping cart
 	insertCartItem($cid, $upc, "1", $connection);
-
-	// display all the items now in the customer's shopping cart
-	displayShoppingCart($cid, $connection);
 }
 
 
@@ -484,8 +481,6 @@ function updateItemQty($cid, $upc, $newqty, $connection) {
     	  echo "<h2><b><mark>Quantity updated</mark></b></h2>";
     	}
 	}
-	// display updated shopping cart
-	displayShoppingCart($cid, $connection);
 }
 
 ?>
