@@ -3,10 +3,25 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 
-<title>AMS Registration</title>
+<title>AMS Customer Registration</title>
 <link href="../style.css" rel="stylesheet" type="text/css">
 <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
+<!--
+    Javascript to submit a title_id as a POST form, used with the "delete" links
+-->
+<script>
+function formSubmit(CustId) {
+    'use strict';
+    if (confirm('Are you sure you want to delete this customer?')) {
+      // Set the value of a hidden HTML element in this form
+      var form = document.getElementById('delete');
+      form.cid.value = CustId;
+      // Post this form
+      form.submit();
+    }
+}
+</script>
 </head>
 
 <body>
@@ -14,7 +29,7 @@
 <!-- Include header -->
 <?php include '../header.php'; ?>
 
-<h1>Register as an AMS Customer!</h1>
+<h1>Manage Customer Registration</h1>
 
 <?php
 
@@ -31,7 +46,11 @@
   // Detect user action
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    if (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
+    if (isset($_POST["submitDelete"]) && $_POST["submitDelete"] == "DELETE") {
+      // Delete customer
+      deleteCustomer($_POST['cid'], $connection);        
+    
+    } elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
       // Add customer    		  
       addCustomer($_POST["new_password"], $_POST["new_name"], $_POST["new_address"], 
           $_POST["new_phone"], $connection);
@@ -41,7 +60,21 @@
 
 ?>
 
-<h2>SIGN UP</h2>
+<h2>Customers</h2>
+<!-- Note: table CSS generated with this useful online tool: http://www.csstablegenerator.com/?table_id=7 -->
+<?php
+
+  // Display Customers
+  displayCustomers($connection);
+  
+  // Disconnect from database
+  mysqli_close($connection);
+
+
+?>
+
+
+<h2>REGISTER CUSTOMER</h2>
 
 <!-- Form for adding a new customer -->
 
@@ -56,7 +89,8 @@
 </form>
 
 <br>
-<a href="login.php" title="Login instead"><h2>&lt;&lt;Back</h2></a>
+
+<a href="home.php" title="Manager's Page"><h2>&lt;&lt;Back</h2></a>
 
 <?php include '../footer.php'; ?>
 </body>
