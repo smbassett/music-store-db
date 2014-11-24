@@ -73,8 +73,8 @@
 <h2>Customer Login Menu</h2>
 	<form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 		<table border=0 cellpadding=0 cellspacing=0>
-        <tr><td>Username</td><td><input type="text" size=30 name="cust_name"</td></tr>
-        <tr><td>Password</td><td><input type="password" size=30 name="cust_password"</td></tr></tr>
+			<tr><td>Username</td><td><input type="text" size=30 name="cust_name"</td></tr>
+        <tr><td>Password</td><td><input type="password" size=30 name="cust_password"</td></tr>
 		<tr><td></td><td><input type="submit" name="submit" border=0 value="SUBMIT"></td></tr>
 		</table>
 	</form>
