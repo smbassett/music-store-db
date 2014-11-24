@@ -394,10 +394,54 @@ function insertCartItem($cid, $upc, $quantity, $connection) {
 
 
 function displayShoppingCart($cid, $connection) {
-// search for all items in customer's shopping cart and display in table
-$stmt = $connection->prepare("SELECT I.upc, I.title, I.item_type, I.category, I.company, I.item_year, I.price, I.stock, S.quantity FROM Item I JOIN ShoppingCart S ON I.upc=S.upc WHERE S.cid = ?");
-			$stmt->bind_param("s", $cid);
-			createShoppingCartTable($stmt, $connection);
+	// search for all items in customer's shopping cart and display in table
+	$stmt = $connection->prepare("SELECT I.upc, I.title, I.item_type, I.category, I.company, I.item_year, I.price, I.stock, S.quantity FROM Item I JOIN ShoppingCart S ON I.upc=S.upc WHERE S.cid = ?");
+	$stmt->bind_param("s", $cid);
+	createShoppingCartTable($stmt, $connection);
+
+	// Proceed to checkout and create a purchase
+	echo '<form method="post" action="';
+	echo htmlspecialchars($_SERVER["PHP_SELF"]); 
+	echo'">';
+	echo '<input type="hidden" name="cid" value="'.$cid.'">';
+	echo '<input type="submit" name="checkout" value="PROCEED TO CHECKOUT" style = "display: block; margin: 0px; padding: 0px; font-size: 10px">';
+	echo '</form></td></tr>';   
+}
+
+function confirmPurchase($cid, $connection) {
+	// search for all items in customer's shopping cart and display in table
+	$stmt = $connection->prepare("SELECT I.upc, I.title, I.item_type, I.category, I.company, I.item_year, I.price, I.stock, S.quantity FROM Item I JOIN ShoppingCart S ON I.upc=S.upc WHERE S.cid = ?");
+	$stmt->bind_param("s", $cid);
+	$stmt->execute();
+	$stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8, $col9);
+
+	echo "
+		<table border=0 cellpadding=0 cellspacing=0 class='CustomerInfoTable'><tr valign=center>
+			<td class=rowheader>UPC</td>
+			<td class=rowheader>Title</td>
+			<td class=rowheader>Item Type</td>
+			<td class=rowheader>Category</td>
+			<td class=rowheader>Company</td>
+			<td class=rowheader>Item Year</td>
+			<td class=rowheader>Price</td>
+			<td class=rowheader>Stock</td>
+			<td class=rowheader>Order Qty</td>
+		</tr>";
+
+	// Display each search result field in the table
+	// Columns here are individual fields for each result row. 
+	while($row = $stmt->fetch()){  
+		echo "<tr><td>".$col1."</td>";
+		echo "<td>".$col2."</td>";
+		echo "<td>".$col3."</td>";
+		echo "<td>".$col4."</td>";
+		echo "<td>".$col5."</td>";
+		echo "<td>".$col6."</td>";
+		echo "<td> $".$col7."</td>"; // added dollar sign for price.
+		echo "<td>".$col8."</td>";
+		echo "<td>".$col9."</td></tr>";
+	}
+	echo "</table>";
 }
 
 
@@ -481,6 +525,22 @@ function updateItemQty($cid, $upc, $newqty, $connection) {
     	  echo "<h2><b><mark>Quantity updated</mark></b></h2>";
     	}
 	}
+}
+
+function displayShopSearch(){
+	echo '<div id="shop"><h2>Search for Item</h2>';
+	echo '<form method="post" action="';
+	echo htmlspecialchars($_SERVER["PHP_SELF"]);
+	echo '">';
+	echo '
+	<div id=text_inputs>
+	   Category:       <input type="text" name="category"><br><br>
+	   Title:          <input type="text" name="title"><br><br>
+	   Leading Singer: <input type="text" name="leading_singer"><br><br>
+	                   <input type="submit" name="submit" value="SUBMIT"> 
+	</form>	
+	</div></div>
+	';
 }
 
 ?>

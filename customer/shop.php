@@ -91,6 +91,7 @@ function formSubmit(itemUpc) {
 			displaySearchResults($stmt);
 		}
 		
+		displayShopSearch();
 	} 
 	// if user clicks 'add' to add a search result item to their shopping cart:
 	elseif (isset($_POST["submitAdd"]) && $_POST["submitAdd"] == "ADD") {
@@ -100,6 +101,7 @@ function formSubmit(itemUpc) {
     	addItemToCart($_SESSION['cid'], $_POST["upc"], $connection);       
     	// display all the items now in the customer's shopping cart
 		displayShoppingCart($_SESSION['cid'], $connection);
+		displayShopSearch();
     } 
     	
     // if user types in a new order quantity and clicks 'update' in their shopping cart:
@@ -109,20 +111,19 @@ function formSubmit(itemUpc) {
     	updateItemQty($_SESSION['cid'], $_POST["upc"], $_POST["updateqty"], $connection);       
     	// display updated shopping cart
 		displayShoppingCart($_SESSION['cid'], $connection);
+		displayShopSearch();
+    }
+
+    // if user clicks 'proceed to checkout'
+    elseif ($_POST["checkout"] == "PROCEED TO CHECKOUT"){
+		session_start();
+		confirmPurchase($_SESSION['cid'], $connection);
     }
   }	
+
+
 ?>
 
-<div id="shop">
-<h2>Search for Item</h2>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
-<div id=text_inputs>
-   Category:       <input type="text" name="category"><br><br>
-   Title:          <input type="text" name="title"><br><br>
-   Leading Singer: <input type="text" name="leading_singer"><br><br>
-                   <input type="submit" name="submit" value="SUBMIT"> 
-</form>	
-</div></div>
 <?php include '../footer.php'; ?>
 </body>
 </html>
