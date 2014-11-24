@@ -447,11 +447,16 @@ function confirmPurchase($cid, $connection) {
 	}
 	echo "</table>";
 
-	$stmt = $connection->prepare("SELECT sum(I.price) FROM Item I JOIN ShoppingCart S ON I.upc=S.upc WHERE S.cid = ?");
+	$stmt = $connection->prepare("SELECT I.price, S.quantity FROM Item I JOIN ShoppingCart S ON I.upc=S.upc WHERE S.cid = ?");
 	$stmt->bind_param("s", $cid);
 	$stmt->execute();
-	$stmt->bind_result($total);
-	$stmt->fetch();
+	$stmt->store_result();
+	$stmt->bind_result($price, $quantity);
+	
+	$total = 0;
+	while($row = $stmt->fetch()) {
+		$total += $price * $quantity;
+	}
 
 	echo "\n<h2>Your total is $".$total.".</h2>";
 
