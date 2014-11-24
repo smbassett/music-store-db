@@ -244,11 +244,9 @@ function displayDailySalesReport($stmt){
 	echo "<td>".$col3."</td>";
 	echo "<td>".$col4."</td>";
 	echo "<td>".$col5."</td>";
-	echo "<td> $".$col6."</td>";
-	echo "<td> ".$col7."</td>"; // added dollar sign for price.
-	echo "<td>".$col8."</td><td>";
-	//Display an option to add this Item to the shopping cart
-	echo "</td></tr>";
+	echo "<td> $".$col6."</td>"; // added dollar sign for price.
+	echo "<td> ".$col7."</td>"; 
+	echo "<td>".$col8."</td></tr>";
 	}
 	echo "</form>";
 	echo "</table>";
