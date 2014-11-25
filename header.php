@@ -5,7 +5,7 @@
 		if(isset($_POST["logout"]) && $_POST["logout"] == "Logout") {
 			if (isset($_SESSION['cname'])) {
 				session_unset();
-				echo '<META http-equiv="refresh" content="1; /music-store-db/customer/login.php">';
+				echo '<META http-equiv="refresh" content="1; /music-store-db/customer/login.php?">';
 			}			
 		}
 	}
