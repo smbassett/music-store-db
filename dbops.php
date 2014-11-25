@@ -13,8 +13,8 @@ function connectToDatabase() {
 	// Connect to AMS database
 	$username = "root";
 	$password = "";
-	$hostname = "localhost";				//$hostname for Crystal
-	//$hostname = "127.0.0.1";				//$hostname for Scott (bug workaround on OS X)
+	//$hostname = "localhost";				//$hostname for Crystal
+	$hostname = "127.0.0.1";				//$hostname for Scott (bug workaround on OS X)
 
 	$connection = new mysqli($hostname, $username, $password, "AMS");
 	
@@ -42,13 +42,9 @@ function addCustomer($password, $name, $address, $phone, $connection) {
     
     // Generate new cid  
 	$id = $connection->query("SELECT max(cid) FROM Customer");
-	if (!$id) {
-		$id = "0";
-	} else {
-		$id->fetch_array();
-		$id[0] = $id[0]+1;	
-	}
-
+	$id = $id->fetch_row();
+	$new_id = $id[0] + 1;
+	
 	// Test fields for validity
 	 $valid = true;
 
@@ -63,7 +59,7 @@ function addCustomer($password, $name, $address, $phone, $connection) {
 
 	if($valid) {
 		// Bind the title and pub_id parameters, 'sssss' indicates 5 strings
-    	$stmt->bind_param("sssss", $id[0], $password, $name, $address, $phone);
+    	$stmt->bind_param("sssss", $new_id, $password, $name, $address, $phone);
     	// Execute the insert statement
     	$stmt->execute();	
     	// Print success or error message  
@@ -166,7 +162,6 @@ displayItems($connection)
 
 */
 
-
 function addItem($upc, $title, $item_type, $category, $company, $item_year, 
 	$price, $stock, $connection) {
 	
@@ -182,6 +177,31 @@ function addItem($upc, $title, $item_type, $category, $company, $item_year,
       printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
     } else {
       echo "<h2><b><mark>Successfully added ".$title."</mark></b></h2>";
+    }
+}
+
+function updateItem($upc, $price, $quantity, $connection) {
+
+	//SQL statement
+	if ($price != NULL) {
+		$stmt = $connection->prepare("UPDATE Item SET price=? WHERE upc=?");
+		$stmt->bind_param("ss", $price, $upc);
+		$stmt->execute();
+	}
+
+	if ($quantity != NULL) {
+		$stmt2 = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
+		$stmt2->bind_param("ss", $quantity, $upc);
+		$stmt2->execute();
+	}
+
+	// Print success or error message 
+    if($price != NULL && $stmt->error) {       
+      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    } elseif($quantity != NULL && $stmt2->error) {
+      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt2->error);
+    } else {
+      echo "<h2><b><mark>Successfully updated ITEM ".$upc."</mark></b></h2>";
     }
 }
 
@@ -418,10 +438,14 @@ function displaySearchResults($stmt){
 		echo "<td>".$col5."</td>";
 		echo "<td>".$col6."</td>";
 		echo "<td> $".$col7."</td>"; // added dollar sign for price.
-		echo "<td>".$col8."</td><td>";
+		echo "<td>".$col8."</td>";
      
-	    //Display an option to add this Item to the shopping cart
-	    echo "<a href=\"javascript:formSubmit(".$col1.");\">ADD</a>";
+	    // Display an option to add this Item to the shopping cart if item is in stock (col8 >= 1)
+	    if ($col8 >= 1){
+	    echo "<td><a href=\"javascript:formSubmit(".$col1.");\">ADD</a>";
+	    } else {
+	    echo '<td><font color="4D7094">SOLD OUT</font>';
+	    }
 	    echo "</td></tr>";   
   	}
   	
@@ -584,6 +608,7 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	}
 	
 	// Create Order data
+	date_default_timezone_set('America/Vancouver');
 	$date = date("Ymd");
 	$order = $connection->prepare("INSERT INTO `Order`(receiptID, order_date, cid,
 		cardNo, expiryDate, expectedDate) VALUES (?,?,?,?,?,?)");
@@ -602,7 +627,7 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	}
 
 	// Display success message
-	echo "<h2><b><mark>Order placed for customer with ID ".$cid." and billed to credit card with number ".$creditcard.".";
+	echo "<h2><b><mark>Order placed for ".$_SESSION['cname']." and billed to credit card with number ".$creditcard.".";
 	echo " Thanks for shopping with AMS!</mark></b></h2>";
 
 	displayShopSearch();
@@ -673,11 +698,42 @@ function updateItemQty($cid, $upc, $newqty, $connection) {
 		// Print success or error message  
 		if($stmt->error) {       
     	  printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    	  $stmt->close();
     	} else {
     	  echo "<h2><b><mark>Item removed from shopping cart</mark></b></h2>";
+    	  $stmt->close();
     	  }
 		} else {
-	// update item qty with SQL statement
+	
+	// check available quantity for this upc. if available quantity < desired quantity,
+	// only add available quantity to shopping basket and explain this to the user. 
+		$stmt = $connection->prepare("SELECT stock FROM Item WHERE upc = ?");
+		$stmt->bind_param("s", $upc);
+		$stmt->execute();	
+		$stmt->bind_result($col1);
+		
+		// Print success or error message  
+    	if($stmt->error) {       
+    	  printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    	} 
+    	while($row = $stmt->fetch()){
+    	$availableqty = $col1;
+    	}
+
+		if ($availableqty < $newqty){
+		$stmt = $connection->prepare("UPDATE ShoppingCart SET quantity = ? WHERE cid = ? AND upc = ?");
+		$stmt->bind_param("sss", $availableqty, $cid, $upc);
+		$stmt->execute();	
+		
+		// Print success or error message  
+    	if($stmt->error) {       
+    	  printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    	} else {
+    	  echo "<h2><b><mark>Sorry, your order exceeds our available stock! Your order has automatically been reduced to ".$availableqty." items.</mark></b></h2>";
+    	}
+		} else{
+
+	// otherwise, if available quantity > desired quantity, add desired quantity to shopping basket.
 		$stmt = $connection->prepare("UPDATE ShoppingCart SET quantity = ? WHERE cid = ? AND upc = ?");
 		$stmt->bind_param("sss", $newqty, $cid, $upc);
 		$stmt->execute();	
@@ -688,6 +744,7 @@ function updateItemQty($cid, $upc, $newqty, $connection) {
     	} else {
     	  echo "<h2><b><mark>Quantity updated</mark></b></h2>";
     	}
+	}
 	}
 }
 
@@ -731,6 +788,7 @@ function processReturn($receiptID, $cid, $connection) {
 	else {
 		$stmt->close();
 		//Create record of Return
+		date_default_timezone_set('America/Vancouver');
 		$date = date("Ymd");
 			// Generate return ID
 			$id = $connection->query("SELECT max(retid) FROM `Return`");
