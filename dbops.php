@@ -742,7 +742,7 @@ function processReturn($receiptID, $cid, $upc, $connection) {
 		//Create record of ReturnItem
 		
 		//Return single UPC or return full order?
-		if ($upc == "") {
+		if ($upc == "") { //Return full order
 			$return = $connection->prepare("SELECT upc, quantity FROM PurchaseItem WHERE receiptID=?");
 			$return->bind_param("s", $receiptID);
 			$return->execute();
@@ -765,8 +765,13 @@ function processReturn($receiptID, $cid, $upc, $connection) {
 			$return->free_result();
 			$return->close();	
 
+			$deleteorder = $connection->prepare("DELETE FROM `Order` WHERE receiptID=?");
+			$deleteorder->bind_param("s", $receiptID);
+			$deleteorder->execute();
+			$deleteorder->close();
 			echo "You have successfully returned purchase with ID ".$receiptID.".";	
-		} else {
+
+		} else { //return single item
 			$returnsingle = $connection->prepare("SELECT quantity FROM PurchaseItem WHERE receiptID=? AND upc=?");
 			$returnsingle->bind_param("ss", $receiptID, $upc);
 			$returnsingle->execute();
@@ -784,6 +789,11 @@ function processReturn($receiptID, $cid, $upc, $connection) {
 			$shelving->bind_param("ss", $stock, $upc);
 			$shelving->execute();
 			if (!$shelving)	echo "Item stock could not be updated. Please try again.";
+
+			//Delete purchaseitem records
+			$deletepurchase = $connection->prepare("DELETE FROM PurchaseItem WHERE receiptID=? AND upc=?");
+			$deletepurchase->bind_param("ss", $receiptID, $upc);
+			$deletepurchase->execute();
 
 			echo "You have successfully returned item with UPC ".$upc." from order ".$receiptID.".";
 		}

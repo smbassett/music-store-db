@@ -56,8 +56,7 @@ CREATE Table `Return`(
 retid int, 
 return_date date, 
 receiptID int,
-PRIMARY KEY (retid),
-FOREIGN KEY(receiptID) REFERENCES PurchaseItem(receiptID));
+PRIMARY KEY (retid));
 
 CREATE TABLE ReturnItem(
 retid int, 
