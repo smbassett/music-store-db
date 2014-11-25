@@ -74,7 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		
 ?>
 
-
 <h2>Process a Return</h2>
 
 <form id="return" name="return" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
@@ -87,6 +86,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	</table>
 </form>
 
+<br>
+
+<h2>Returns</h2>
+
+<table border=0 cellpadding=0 cellspacing=0 class='CustomerInfoTable'>
+	<tr valign=center>
+		<td class=rowheader>ID</td>
+		<td class=rowheader>Date of Return</td>
+		<td class=rowheader>Item UPC</td>
+		<td class=rowheader>Quantity Returned</td>
+		<td class=rowheader>Original Receipt ID</td>
+	</tr>
+
+<?php
+
+$stmt = $connection->query(
+	"SELECT R.retid, R.return_date, I.upc, I.quantity, R.receiptID 
+	FROM `Return` R JOIN ReturnItem I 
+	ON  R.retid=I.retid 
+	ORDER BY R.retid, I.upc");
+
+while($row=$stmt->fetch_assoc()) {
+	echo "<tr><td>".$row['retid']."</td>";
+	echo "<td>".$row['return_date']."</td>";
+	echo "<td>".$row['upc']."</td>";
+	echo "<td>".$row['quantity']."</td>";
+	echo "<td>".$row['receiptID']."</td></tr>";
+}
+?>
+</table>
 <br>
 <a href="../index.php" title="Home"><h2>&lt;&lt;Back</h2></a>
 
