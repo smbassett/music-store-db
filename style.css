@@ -26,6 +26,14 @@ html {
 	margin-top: 20px;
 }
 
+#header h3 {
+	float: right;
+	padding-left: 20px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #848484;
+}
+
 #header img {
 	max-width: 100%;
 }
