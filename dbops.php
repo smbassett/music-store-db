@@ -713,13 +713,13 @@ function processReturn($receiptID, $cid, $upc, $connection) {
 	if ($receiptIDb === NULL)
 		echo "Receipt ID does not exist. ";
 	//Has order been already delivered?
-	if ($deliver == NULL)
+	elseif ($deliver == NULL)
 		echo "This order has not been delivered yet and cannot be refunded. ";
 	//Does it match the customer ID?
-	if ($cidb === NULL)
+	elseif ($cidb === NULL)
 		echo "Customer ID does not exist.";
 	//Was purchase more than 15 days ago?
-	if (floor(($datetime-$orderday)/(60*60*24)) > 15)
+	elseif (floor(($datetime-$orderday)/(60*60*24)) > 15)
 		echo "Unfortunately, we can only return items purchased less than 15 days ago.";
 	//If all tests pass, then:
 	else {
@@ -794,6 +794,21 @@ function processReturn($receiptID, $cid, $upc, $connection) {
 			$deletepurchase = $connection->prepare("DELETE FROM PurchaseItem WHERE receiptID=? AND upc=?");
 			$deletepurchase->bind_param("ss", $receiptID, $upc);
 			$deletepurchase->execute();
+			$deletepurchase->close();
+			
+			//If that was the last purchase on that Order, delete the Order
+			$lastpurchase = $connection->prepare("SELECT count(*) FROM PurchaseItem WHERE receiptID=?");
+			$lastpurchase->bind_param("s", $receiptID);
+			$lastpurchase->execute();
+			$lastpurchase->bind_result($count);
+			$lastpurchase->fetch();
+			if ($count == 0) {
+				$deleteorder = $connection->prepare("DELETE FROM `Order` WHERE receiptID=?");
+				$deleteorder->bind_param("s", $receiptID);
+				$deleteorder->execute();
+				$deleteorder->close();
+			}
+			$lastpurchase->close();
 
 			echo "You have successfully returned item with UPC ".$upc." from order ".$receiptID.".";
 		}
