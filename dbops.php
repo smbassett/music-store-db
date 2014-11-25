@@ -692,7 +692,7 @@ function displayShopSearch(){
 }
 
 function processReturn($receiptID, $cid, $connection) {
-	$stmt = $connection->prepare("SELECT receiptID, cid, cardNo, deliveredDate 
+	$stmt = $connection->prepare("SELECT receiptID, cid, cardNo, deliveredDate, order_date 
 		FROM `Order`
 		WHERE receiptID=? AND cid=?");
 	$stmt->bind_param("ss", $receiptID, $cid);
@@ -700,8 +700,15 @@ function processReturn($receiptID, $cid, $connection) {
 	if (!$stmt) {
 		echo "Error processing return. Please try again.";
 	}
-	$stmt->bind_result($receiptIDb, $cidb, $cardNo, $deliver);
+	$stmt->bind_result($receiptIDb, $cidb, $cardNo, $deliver, $order);
 	$stmt->fetch();
+
+	//Create date var
+	date_default_timezone_set('America/Vancouver');
+	$date = date("Ymd");
+	$datetime = strtotime($date);
+	$orderday = strtotime($order);
+
 	//Does receipt ID exist?
 	if ($receiptIDb === NULL)
 		echo "Receipt ID does not exist. ";
@@ -711,12 +718,13 @@ function processReturn($receiptID, $cid, $connection) {
 	//Does it match the customer ID?
 	if ($cidb === NULL)
 		echo "Customer ID does not exist.";
+	//Was purchase more than 15 days ago?
+	if (floor(($datetime-$orderday)/(60*60*24)) > 15)
+		echo "Unfortunately, we can only return items purchased less than 15 days ago.";
 	//If all tests pass, then:
 	else {
 		$stmt->close();
 		//Create record of Return
-		date_default_timezone_set('America/Vancouver');
-		$date = date("Ymd");
 			// Generate return ID
 			$id = $connection->query("SELECT max(retid) FROM `Return`");
 			if(!$id) {
