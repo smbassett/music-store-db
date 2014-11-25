@@ -8,16 +8,20 @@
 
 <body>
 
-<?php include './header.php'; ?>
+<?php include 'header.php'; ?>
 
 	<h1>Welcome to AMS Music Store!</h1>
 	<h2>Please select one.</h2>
 	<br>
-	<a href="customer/login.php" title="Customer Login"><h3>Customers</h3></a>
-	<h3>Clerks (available soon!)</h3>
-	<a href="manager/manage_items.php" title="Manager's Page"><h3>Managers</h3></a>
+	<?php
+		if (isset($_SESSION['cname']))
+			echo '<a href="/music-store-db/customer/shop.php" title="Search the shop">';
+		else echo '<a href="/music-store-db/customer/login.php" title="Customer Login">';
+	?><h3>Customers</h3></a>
+	<a href="clerk/returns.php" title="Clerk's Page"><h3>Clerks</h3></a>
+	<a href="manager/home.php" title="Manager's Page"><h3>Managers</h3></a>
 
-<?php include './footer.php'; ?> 
+<?php include 'footer.php'; ?> 
 
 </body>
 

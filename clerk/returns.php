@@ -10,8 +10,38 @@
 
 <body>
 <?php include '../header.php'; ?>
+<?php include '../dbops.php'; ?>
 
 <h1>Manage Returns</h1>
+
+<?php
+
+//Connect to database:
+$connection = connectToDatabase();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	if(isset($_POST["submit"]) && $_POST["submit"] == "RETURN") {
+		processReturn($_POST["receipt"], $_POST["cid"], $connection);
+	}
+}
+	
+		
+?>
+
+
+<h2>Process a Return</h2>
+
+<form id="return" name="return" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+	<table border=0 cellpadding=0 cellspacing=0>
+    <tr><td>Receipt ID</td><td><input type="text" size=30 name="receipt"</td></tr>
+    <tr><td>Customer ID</td><td><input type="text" size=30 name="cid"</td></tr></tr>
+	<tr><td></td><td><input type="submit" name="submit" border=0 value="RETURN"></td></tr>
+	</table>
+</form>
+
+<br>
+<a href="../index.php" title="Home"><h2>&lt;&lt;Back</h2></a>
+
 
 <?php include '../footer.php'; ?>
 </body>

@@ -44,7 +44,20 @@ VALUES
 (14, "Happy Birthday", "CD", "rap", "Justin Bieber", 2011, 24, 10),
 (15, "Chestnuts Roasting on an Open Fire", "CD", "rap", "Apple", 2014, 15, 30),
 (16, "Grandmas on Weed", "DVD", "pop", "Chick Flickers", 2011, 15, 30),
-(17, "Never Gonna Let You Down", "CD", "new age", "EZ Records", 1992, 15, 20),
+(17, "Never Gonna Give You Up", "CD", "new age", "EZ Records", 1992, 15, 20),
 (18, "Transformers 1", "DVD", "pop", "Apple", 1998, 25, 25),
 (19, "Titanic", "DVD", "new age", "Justin Bieber", 1998, 25, 30),
 (20, "The Proposal", "DVD", "classical", "Warner Bros", 1990, 25, 10);
+
+INSERT INTO LeadSinger
+VALUES 
+(0, "Lemon Drops"),
+(1, "LMFAO"),
+(3, "Jason Mraz"),
+(4, "PSY"),
+(9, "George"),
+(10, "George"),
+(11, "Arcade Fire"),
+(14, "George"),
+(15, "PSY"),
+(17, "Rick Astley");
