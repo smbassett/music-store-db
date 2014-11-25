@@ -770,8 +770,45 @@ function processReturnSingle($receiptID, $cid, $upc, $quantity, $connection) {
 }
 
 function processReturn($receiptID, $cid, $connection) {
-	
-	
+	// INSERT Return
+		//Generate new id
+		$id = $connection->query("SELECT max(retid) FROM `Return`");
+		$id = $id->fetch_assoc();
+		$id = $id['max(retid)'] + 1;
+		//Create date var
+		date_default_timezone_set('America/Vancouver');
+		$date = date("Y-m-d");
+	$stmt = $connection->prepare("INSERT INTO `Return` (retid, return_date, receiptID) VALUES (?,?,?)");
+	$stmt->bind_param("sss", $id, $date, $receiptID);
+	$stmt->execute();
+	$stmt->close();
+
+	// INSERT ReturnItem for each Item
+	$stmt = $connection->prepare("SELECT upc, quantity FROM PurchaseItem WHERE receiptID=?");
+	$stmt->bind_param("s", $receiptID);
+	$stmt->execute();
+	$stmt->bind_result($upc, $quantity);
+	$stmt->store_result();
+	while ($row=$stmt->fetch()){
+		$insert = $connection->prepare("INSERT INTO ReturnItem VALUES (?,?,?)");
+		$insert->bind_param("sss", $id, $upc, $quantity);
+		$insert->execute();
+		// UPDATE ItemStock
+		$shelving = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
+		$shelving->bind_param("ss", $quantity, $upc);
+		$shelving->execute();
+	}
+	$insert->close();
+	$shelving->close();
+	$stmt->close();
+
+	// DELETE Order
+	$stmt = $connection->prepare("DELETE FROM `Order` WHERE receiptID=?");
+	$stmt->bind_param("s", $receiptID);
+	$stmt->execute();
+
+	//Print success message
+	echo "You have successfully returned order with ID ".$receiptID.".";
 }
 
 ?>

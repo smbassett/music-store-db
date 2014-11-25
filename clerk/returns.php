@@ -38,16 +38,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			if($count==0) {
 				echo "Receipt ID and customer ID combination does not exist. Please try again.";
 			} else {
-				//Ordered less than 15 days ago?
-				date_default_timezone_set('America/Vancouver');
-				$date = date("Ymd");
-				$date = strtotime($date);
-				$deliver = strtotime($deliver);
-				if (floor(($date-$deliver)/(60*60*24)) > 15){
-					echo "Unfortunately, we can only return items purchased less than 15 days ago.";
-				} else {
-					$valid=true;
-				}	
+				//Delivered yet?
+				if (!$deliver)
+					echo "We cannot return an order that has not been delivered yet.";
+				else {
+					//Ordered less than 15 days ago?
+					date_default_timezone_set('America/Vancouver');
+					$date = date("Ymd");
+					$date = strtotime($date);
+					$deliver = strtotime($deliver);
+					if (floor(($date-$deliver)/(60*60*24)) > 15){
+						echo "Unfortunately, we can only return items purchased less than 15 days ago.";
+					} else {
+						$valid=true;
+					}
+				}		
 			}		
 			$stmt->close();				
 		}
