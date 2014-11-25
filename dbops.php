@@ -691,129 +691,85 @@ function displayShopSearch(){
 	';
 }
 
-function processReturn($receiptID, $cid, $upc, $connection) {
-	$stmt = $connection->prepare("SELECT receiptID, cid, cardNo, deliveredDate, order_date 
-		FROM `Order`
-		WHERE receiptID=? AND cid=?");
-	$stmt->bind_param("ss", $receiptID, $cid);
+function processReturnSingle($receiptID, $cid, $upc, $quantity, $connection) {
+	$stmt = $connection->prepare(
+		"SELECT quantity, count(*) 
+		FROM PurchaseItem
+		WHERE receiptID=? AND upc=?");
+	$stmt->bind_param("ss", $receiptID, $upc);
 	$stmt->execute();
-	if (!$stmt) {
-		echo "Error processing return. Please try again.";
-	}
-	$stmt->bind_result($receiptIDb, $cidb, $cardNo, $deliver, $order);
+	$stmt->bind_result($quantityb, $count);
 	$stmt->fetch();
+	$stmt->close();
+	//Make sure quantity is valid
+	if ($quantity > $quantityb)
+		echo "You cannot return a quantity greater than quantity purchased.";
+	//Make sure UPC is valid
+	elseif($count == 0)
+		echo "Customer with ID ".$cid." did not purchase any item with UPC ".$upc." in order with ID ".$receiptID.".";
 
-	//Create date var
-	date_default_timezone_set('America/Vancouver');
-	$date = date("Ymd");
-	$datetime = strtotime($date);
-	$orderday = strtotime($order);
-
-	//Does receipt ID exist?
-	if ($receiptIDb === NULL)
-		echo "Receipt ID does not exist. ";
-	//Has order been already delivered?
-	elseif ($deliver == NULL)
-		echo "This order has not been delivered yet and cannot be refunded. ";
-	//Does it match the customer ID?
-	elseif ($cidb === NULL)
-		echo "Customer ID does not exist.";
-	//Was purchase more than 15 days ago?
-	elseif (floor(($datetime-$orderday)/(60*60*24)) > 15)
-		echo "Unfortunately, we can only return items purchased less than 15 days ago.";
-	//If all tests pass, then:
 	else {
-		$stmt->close();
-		//Create record of Return
-			// Generate return ID
-			$id = $connection->query("SELECT max(retid) FROM `Return`");
-			if(!$id) {
-				$new_id = 0;
-			} else {
-				$id = $id->fetch_assoc();
-				$new_id = $id['max(retid)'] + 1;
-			}
-		$return = $connection->prepare("INSERT INTO `Return` (retid, return_date, receiptID) VALUES (?,?,?)");
-		$return->bind_param("isi", $new_id, $date, $receiptID);
-		$return->execute();
-		if (!$return) echo "Error processing return.";
-		$return->close();
-
-		//Create record of ReturnItem
-		
-		//Return single UPC or return full order?
-		if ($upc == "") { //Return full order
-			$return = $connection->prepare("SELECT upc, quantity FROM PurchaseItem WHERE receiptID=?");
-			$return->bind_param("s", $receiptID);
-			$return->execute();
-			$return->store_result();
-			$return->bind_result($upc, $quantity);
-			while ($row = $return->fetch()) {
-				$returnItem = $connection->prepare("INSERT INTO ReturnItem(retid, upc, quantity) VALUES (?,?,?)");
-				$returnItem->bind_param("sss", $new_id, $upc, $quantity);
-				$returnItem->execute();
-				if (!$returnItem) echo "Error processing return.";
-				$returnItem->close();
-
-				//Update stock of Item
-				$shelving = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
-				$shelving->bind_param("ss", $quantity, $upc);
-				$shelving->execute();
-				if (!$shelving)	echo "Item stock could not be updated. Please try again.";
-				$shelving->close();
-			}
-			$return->free_result();
-			$return->close();	
-
-			$deleteorder = $connection->prepare("DELETE FROM `Order` WHERE receiptID=?");
-			$deleteorder->bind_param("s", $receiptID);
-			$deleteorder->execute();
-			$deleteorder->close();
-			echo "You have successfully returned purchase with ID ".$receiptID.".";	
-
-		} else { //return single item
-			$returnsingle = $connection->prepare("SELECT quantity FROM PurchaseItem WHERE receiptID=? AND upc=?");
-			$returnsingle->bind_param("ss", $receiptID, $upc);
-			$returnsingle->execute();
-			$returnsingle->bind_result($stock);
-			$returnsingle->fetch();
-			$returnsingle->close();
-
-			$returnItem = $connection->prepare("INSERT INTO ReturnItem(retid, upc, quantity) VALUES (?,?,?)");
-			$returnItem->bind_param("sss", $new_id, $upc, $stock);
-			$returnItem->execute();
-			if (!$returnItem) echo "Error processing return.";
-
-			//Update stock of Item
-			$shelving = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
-			$shelving->bind_param("ss", $stock, $upc);
-			$shelving->execute();
-			if (!$shelving)	echo "Item stock could not be updated. Please try again.";
-
-			//Delete purchaseitem records
-			$deletepurchase = $connection->prepare("DELETE FROM PurchaseItem WHERE receiptID=? AND upc=?");
-			$deletepurchase->bind_param("ss", $receiptID, $upc);
-			$deletepurchase->execute();
-			$deletepurchase->close();
-			
-			//If that was the last purchase on that Order, delete the Order
-			$lastpurchase = $connection->prepare("SELECT count(*) FROM PurchaseItem WHERE receiptID=?");
-			$lastpurchase->bind_param("s", $receiptID);
-			$lastpurchase->execute();
-			$lastpurchase->bind_result($count);
-			$lastpurchase->fetch();
-			if ($count == 0) {
-				$deleteorder = $connection->prepare("DELETE FROM `Order` WHERE receiptID=?");
-				$deleteorder->bind_param("s", $receiptID);
-				$deleteorder->execute();
-				$deleteorder->close();
-			}
-			$lastpurchase->close();
-
-			echo "You have successfully returned item with UPC ".$upc." from order ".$receiptID.".";
+		// If quantity is unspecified, DELETE PurchaseItem
+		if ($quantity == "") {
+			$quantity = $quantityb;
+			$stmt = $connection->prepare("DELETE FROM PurchaseItem WHERE receiptID=? AND upc=?");
+			$stmt->bind_param("ss", $receiptID, $upc);
+			$stmt->execute();
+			$stmt->close();
+			// DELETE Order if empty
+			$stmt = $connection->prepare("SELECT count(*) FROM PurchaseItem WHERE receiptID=?");
+			$stmt->bind_param("s", $receiptID);
+			$stmt->execute();
+			$stmt->bind_result($anyleft);
+			$stmt->fetch();
+			if($anyleft == 0) {
+				$stmt->close();
+				$stmt = $connection->prepare("DELETE FROM `Order` WHERE receiptID=?");
+				$stmt->bind_param("s", $receiptID);
+				$stmt->execute();
+			}	$stmt->close();
+		} 
+		// If quantity is specified, UPDATE PurchaseItem
+		else {
+			$stmt = $connection->prepare(
+				"UPDATE PurchaseItem SET quantity=quantity-? WHERE receiptID=? AND upc=?");
+			$stmt->bind_param("sss", $quantity, $receiptID, $upc);
+			$stmt->execute();
+			$stmt->close();
 		}
+
+		//Create date var
+		date_default_timezone_set('America/Vancouver');
+		$date = date("Y-m-d");
 		
+		// INSERT Return
+			//Generate new id
+			$id = $connection->query("SELECT max(retid) FROM `Return`");
+			$id = $id->fetch_assoc();
+			$id = $id['max(retid)'] + 1;
+
+		$stmt = $connection->prepare("INSERT INTO `Return` (retid, return_date, receiptID) VALUES (?,?,?)");
+		$stmt->bind_param("sss", $id, $date, $receiptID);
+		$stmt->execute();
+		$stmt->close();
+
+		// INSERT ReturnItem
+		$stmt = $connection->prepare("INSERT INTO ReturnItem (retid, upc, quantity) VALUES (?,?,?)");
+		$stmt->bind_param("sss", $id, $upc, $quantity);
+		$stmt->execute();
+		$stmt->close();		
+
+		// UPDATE Item stock
+		$stmt = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
+		$stmt->bind_param("ss", $quantity, $upc);
+		$stmt->execute();
+
+		//Print success message
+		echo "You have successfully returned ".$quantity." items with UPC ".$upc." from order ".$receiptID.".";
 	}
+}
+
+function processReturn($receiptID, $cid, $connection) {
 	
 	
 }

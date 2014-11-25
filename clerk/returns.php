@@ -21,7 +21,48 @@ $connection = connectToDatabase();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if(isset($_POST["submit"]) && $_POST["submit"] == "RETURN") {
-		processReturn($_POST["receipt"], $_POST["cid"], $_POST["upc"], $_POST["quantity"], $connection);
+		
+		$valid=false;
+
+		// Didn't enter receipt ID or customer ID
+		if ($_POST["receipt"] == "" || $_POST["cid"] == ""){
+			echo "Please enter both receipt ID and customer ID to process a return.";
+		} else {
+			$stmt = $connection->prepare( "SELECT count(*), deliveredDate FROM `Order` WHERE receiptID=? AND cid=?");
+			$stmt->bind_param("ss", $_POST["receipt"], $_POST["cid"]);
+			$stmt->execute();
+			$stmt->bind_result($count, $deliver);
+			$stmt->fetch();
+			
+			// Valid receiptID customerID combo?
+			if($count==0) {
+				echo "Receipt ID and customer ID combination does not exist. Please try again.";
+			} else {
+				//Ordered less than 15 days ago?
+				date_default_timezone_set('America/Vancouver');
+				$date = date("Ymd");
+				$date = strtotime($date);
+				$deliver = strtotime($deliver);
+				if (floor(($date-$deliver)/(60*60*24)) > 15){
+					echo "Unfortunately, we can only return items purchased less than 15 days ago.";
+				} else {
+					$valid=true;
+				}	
+			}		
+			$stmt->close();				
+		}
+
+		// Batch return?
+		if ($_POST["upc"] == "" && $_POST["quantity"] == "" && $valid)
+			processReturn($_POST["receipt"], $_POST["cid"], $connection);
+		
+		// Return all quantity of a single UPC
+		elseif ($_POST["upc"] != "" && $valid)
+			processReturnSingle($_POST["receipt"], $_POST["cid"], $_POST["upc"], $_POST["quantity"], $connection);
+		
+		// Invalid combination
+		elseif ($_POST["upc"] == "" && $_POST["quantity"] != "" && $valid)
+			echo "Please enter an Item UPC if you wish to return a specific quantity.";
 	}
 }
 	
