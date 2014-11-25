@@ -505,6 +505,17 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	$id = $id->fetch_assoc();
 	$new_id = $id['max(receiptID)'] + 1;
 
+	// Create Order data
+	date_default_timezone_set('America/Vancouver');
+	$date = date("Ymd");
+	$order = $connection->prepare("INSERT INTO `Order`(receiptID, order_date, cid,
+		cardNo, expiryDate, expectedDate) VALUES (?,?,?,?,?,?)");
+	$order->bind_param("ssssss", $new_id, $date, $cid, $creditcard, $expiry, $date);
+	$order->execute();
+	if (!$order) {
+		echo "Order creation failed. Please try again.";
+	}
+
 	// Find customer's shopping cart
 	$stmt = $connection->prepare("SELECT upc, quantity FROM ShoppingCart WHERE cid=?");
 	$stmt->bind_param("s", $cid);
@@ -532,17 +543,6 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 		if (!$shelving) {
 			echo "Item stock could not be updated. Please try again.";
 		}
-	}
-	
-	// Create Order data
-	date_default_timezone_set('America/Vancouver');
-	$date = date("Ymd");
-	$order = $connection->prepare("INSERT INTO `Order`(receiptID, order_date, cid,
-		cardNo, expiryDate, expectedDate) VALUES (?,?,?,?,?,?)");
-	$order->bind_param("ssssss", $new_id, $date, $cid, $creditcard, $expiry, $date);
-	$order->execute();
-	if (!$order) {
-		echo "Order creation failed. Please try again.";
 	}
 
 	// Clear shopping cart
@@ -691,7 +691,7 @@ function displayShopSearch(){
 	';
 }
 
-function processReturn($receiptID, $cid, $connection) {
+function processReturn($receiptID, $cid, $upc, $connection) {
 	$stmt = $connection->prepare("SELECT receiptID, cid, cardNo, deliveredDate, order_date 
 		FROM `Order`
 		WHERE receiptID=? AND cid=?");
@@ -740,27 +740,54 @@ function processReturn($receiptID, $cid, $connection) {
 		$return->close();
 
 		//Create record of ReturnItem
-		$return = $connection->prepare("SELECT upc, quantity FROM PurchaseItem WHERE receiptID=?");
-		$return->bind_param("s", $receiptID);
-		$return->execute();
-		$return->store_result();
-		$return->bind_result($upc, $quantity);
-		while ($row = $return->fetch()) {
+		
+		//Return single UPC or return full order?
+		if ($upc == "") {
+			$return = $connection->prepare("SELECT upc, quantity FROM PurchaseItem WHERE receiptID=?");
+			$return->bind_param("s", $receiptID);
+			$return->execute();
+			$return->store_result();
+			$return->bind_result($upc, $quantity);
+			while ($row = $return->fetch()) {
+				$returnItem = $connection->prepare("INSERT INTO ReturnItem(retid, upc, quantity) VALUES (?,?,?)");
+				$returnItem->bind_param("sss", $new_id, $upc, $quantity);
+				$returnItem->execute();
+				if (!$returnItem) echo "Error processing return.";
+				$returnItem->close();
+
+				//Update stock of Item
+				$shelving = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
+				$shelving->bind_param("ss", $quantity, $upc);
+				$shelving->execute();
+				if (!$shelving)	echo "Item stock could not be updated. Please try again.";
+				$shelving->close();
+			}
+			$return->free_result();
+			$return->close();	
+
+			echo "You have successfully returned purchase with ID ".$receiptID.".";	
+		} else {
+			$returnsingle = $connection->prepare("SELECT quantity FROM PurchaseItem WHERE receiptID=? AND upc=?");
+			$returnsingle->bind_param("ss", $receiptID, $upc);
+			$returnsingle->execute();
+			$returnsingle->bind_result($stock);
+			$returnsingle->fetch();
+			$returnsingle->close();
+
 			$returnItem = $connection->prepare("INSERT INTO ReturnItem(retid, upc, quantity) VALUES (?,?,?)");
-			$returnItem->bind_param("sss", $new_id, $upc, $quantity);
+			$returnItem->bind_param("sss", $new_id, $upc, $stock);
 			$returnItem->execute();
 			if (!$returnItem) echo "Error processing return.";
 
 			//Update stock of Item
 			$shelving = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
-			$shelving->bind_param("ss", $quantity, $upc);
+			$shelving->bind_param("ss", $stock, $upc);
 			$shelving->execute();
 			if (!$shelving)	echo "Item stock could not be updated. Please try again.";
-		}
-		$return->free_result();
-		$return->close();
 
-		echo "You have successfully returned purchase with ID ".$receiptID.".";
+			echo "You have successfully returned item with UPC ".$upc." from order ".$receiptID.".";
+		}
+		
 	}
 	
 	
