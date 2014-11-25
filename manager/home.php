@@ -16,6 +16,7 @@
 
 <a href="manage_items.php" title="Manage Items"><h3>Manage Items</h3></a>
 <a href="registration.php" title="Manage Customers"><h3>Manage Customers</h3></a>
+<a href="orders.php" title="Manage Deliveries"><h3>Manage Deliveries</h3></a>
 <a href="dailysales.php" title="Daily Sales Report"><h3>Print Daily Sales Report</h3></a>
 <a href="topsellingitems.php" title="Top Selling Items"><h3>Print Top Selling Items by Date</h3></a>
 
