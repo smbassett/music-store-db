@@ -511,6 +511,7 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	}
 	
 	// Create Order data
+	date_default_timezone_set('America/Vancouver');
 	$date = date("Ymd");
 	$order = $connection->prepare("INSERT INTO `Order`(receiptID, order_date, cid,
 		cardNo, expiryDate, expectedDate) VALUES (?,?,?,?,?,?)");
@@ -690,6 +691,7 @@ function processReturn($receiptID, $cid, $connection) {
 	else {
 		$stmt->close();
 		//Create record of Return
+		date_default_timezone_set('America/Vancouver');
 		$date = date("Ymd");
 			// Generate return ID
 			$id = $connection->query("SELECT max(retid) FROM `Return`");
