@@ -20,7 +20,9 @@
 $connection = connectToDatabase();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	processReturn($_POST["receipt"], $_POST["cid"], $connection);
+	if(isset($_POST["submit"]) && $_POST["submit"] == "RETURN") {
+		processReturn($_POST["receipt"], $_POST["cid"], $connection);
+	}
 }
 	
 		
