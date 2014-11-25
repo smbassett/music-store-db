@@ -79,8 +79,8 @@ td {
 a {
 	font-size: 12px;
 }
-a:link { color: #bb3902; font-weight:normal; text-decoration:underline;}
-a:visited { color: #bb3902; font-weight:normal; text-decoration:underline;}
+a:link { color: #bb3902; font-weight:normal; text-decoration:none;}
+a:visited { color: #bb3902; font-weight:normal; text-decoration:none;}
 a:active { color: #bb3902; font-weight:normal; text-decoration:underline;}
 a:hover { color: #bb3902; font-weight:normal; text-decoration:underline;}
 
