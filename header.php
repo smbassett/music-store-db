@@ -36,7 +36,7 @@
 		echo '<form id="logout" name="logout" method="post" action="';
 		echo htmlspecialchars($_SERVER["PHP_SELF"]);
 		echo '">';
-		echo '<div style="float:right; position: absolute; top: 20px; right: 0px" > <input type="image" name="logout" value="Logout" src="../logout-freepik.png" alt="logout" width="30" height="30"></div>
+		echo '<div style="float:right; position: absolute; top: 20px; right: 0px" > <input type="image" name="logout" value="Logout" src="/music-store-db/logout-freepik.png" alt="logout" width="30" height="30"></div>
 			</form>';
 	} else {
 		

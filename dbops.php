@@ -12,7 +12,7 @@ function connectToDatabase() {
 	// DATABASE CONNECTION CONFIG
 	// Connect to AMS database
 	$username = "root";
-	$password = "1234qwer";
+	$password = "";
 	//$hostname = "localhost";				//$hostname for Crystal
 	$hostname = "127.0.0.1";				//$hostname for Scott (bug workaround on OS X)
 
