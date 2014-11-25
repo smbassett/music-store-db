@@ -38,10 +38,11 @@
 
 			$stmt = $connection->prepare(
 		
-				"SELECT I.upc, I.title, I.item_type, I.category, I.company, I.price, SUM(quantity) as Quantity_Sold, I.stock as Quantity_Remaining
+				"SELECT I.upc, I.title, I.category, I.price, SUM(quantity) as Quantity_Sold, (price*SUM(quantity)) as Total_Value
 				FROM `Order` O, PurchaseItem PI, Item I
 				WHERE O.receiptID = PI.receiptID and PI.upc = I.upc and order_date=?
-				GROUP BY upc"); 
+				GROUP BY upc, I.category
+				ORDER BY I.category");
 		 
 			$stmt->bind_param("s", $date);
 			displayDailySalesReport($stmt);
