@@ -15,9 +15,10 @@ PRIMARY KEY (upc));
 
 CREATE TABLE Customer(
 cid int, 
+username varchar(20),
 c_password varchar(20),
-cname varchar(20),
-address varchar(30), 
+fullname varchar(30),
+address varchar(50), 
 phone varchar(12),
 PRIMARY KEY(cid));
 

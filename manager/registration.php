@@ -52,7 +52,7 @@ function formSubmit(CustId) {
     
     } elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
       // Add customer    		  
-      addCustomer($_POST["new_password"], $_POST["new_name"], $_POST["new_address"], 
+      tryAddCustomer($_POST["new_username"], $_POST["new_password"], $_POST["new_fullname"], $_POST["new_address"], 
           $_POST["new_phone"], $connection);
     }
 
@@ -80,8 +80,9 @@ function formSubmit(CustId) {
 
 <form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <table border=0 cellpadding=0 cellspacing=0>
-    <tr><td>Name</td><td><input type="text" size=20 name="new_name"></td></tr>
+    <tr><td>Username</td><td><input type="text" size=20 name="new_username"></td></tr>
     <tr><td>Password</td><td><input type="password" size=20 name="new_password"</td></tr>
+    	<tr><td>Full Name</td><td> <input type="text" size=20 name="new_fullname"></td></tr>
 		<tr><td>Address</td><td> <input type="text" size=20 name="new_address"></td></tr>
 		<tr><td>Phone</td><td> <input type="text" size=20 name="new_phone"></td></tr>
     <tr><td></td><td><input type="submit" name="submit" border=0 value="ADD"></td></tr>
