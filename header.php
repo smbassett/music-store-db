@@ -14,6 +14,7 @@
 <div id="main">
 
 <div id="header">
+<div style = "position: relative;">
 
 	<a href="/music-store-db/index.php" title="Home"><h1>AMS</h1></a> 
 	
@@ -21,23 +22,27 @@
 		if (isset($_SESSION['cname']))
 			echo '<a href="/music-store-db/customer/shop.php" title="Customers">';
 		else echo '<a href="/music-store-db/customer/login.php" title="Customers">';
-	?><h2>Customers</h2></a>
-	<a href="/music-store-db/clerk/returns.php" title="Clerks"><h2>Clerks</h2></a>
-	<a href="/music-store-db/manager/home.php" title="Managers"><h2>Managers</h2></a>
+	?>
+	<h2>Customers</h2></a>
+	<a href="/music-store-db/clerk/returns.php" title="Clerks">
+	<h2>Clerks</h2></a>
+	<a href="/music-store-db/manager/home.php" title="Managers">
+	<h2>Managers</h2></a>
 
 	<?php
 	if (isset($_SESSION['cname'])) {
-		echo "<h2>Welcome ".$_SESSION['cname']."!</h2>";
+		echo '<div style="padding:0; margin:0; position: absolute; top: 12px; right: 50px" >';
+		echo "<h3>Welcome ".$_SESSION['cname']."!</h3></div>";
 		echo '<form id="logout" name="logout" method="post" action="';
 		echo htmlspecialchars($_SERVER["PHP_SELF"]);
 		echo '">';
-		echo '<input type="submit" name="logout" border=0 value="Logout">
+		echo '<div style="float:right; position: absolute; top: 20px; right: 0px" > <input type="image" name="logout" value="Logout" src="../logout-freepik.png" alt="logout" width="30" height="30"></div>
 			</form>';
 	} else {
 		
 	}	
 	?>
-	
+</div>
 
 	
 
