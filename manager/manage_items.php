@@ -19,6 +19,7 @@ function formSubmit(itemUpc) {
       form.submit();
     }
 }
+
 </script>
 </head>
 <body>

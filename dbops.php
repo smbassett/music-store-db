@@ -162,7 +162,6 @@ displayItems($connection)
 
 */
 
-
 function addItem($upc, $title, $item_type, $category, $company, $item_year, 
 	$price, $stock, $connection) {
 	
