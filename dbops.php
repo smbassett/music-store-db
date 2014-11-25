@@ -554,7 +554,7 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	}
 
 	// Display success message
-	echo "<h2><b><mark>Order placed for customer with ID ".$cid." and billed to credit card with number ".$creditcard.".";
+	echo "<h2><b><mark>Order placed for ".$_SESSION['cname']." and billed to credit card with number ".$creditcard.".";
 	echo " Thanks for shopping with AMS!</mark></b></h2>";
 
 	displayShopSearch();
