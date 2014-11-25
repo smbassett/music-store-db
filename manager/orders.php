@@ -18,8 +18,8 @@
 
 <?php
 
-  // Include basic database operations
-  include '../dbops.php';
+// Include basic database operations
+include '../dbops.php';
 
 // Connect to database
 	$connection = connectToDatabase();
@@ -31,8 +31,14 @@
 // Detect user action
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (isset($_POST["submit"]) && $_POST["submit"] == "DELIVER THESE ORDERS") {    
-    if (isset($_POST["deliver"]){ 
-      
+    if (!empty($_POST["deliver"])){ 
+      foreach($_POST["deliver"] as $checky) {
+        date_default_timezone_set('America/Vancouver');
+        $date = date("Y-m-d");
+        $stmt = $connection->prepare("UPDATE `Order` SET deliveredDate=? WHERE receiptID=?");
+        $stmt->bind_param("ss", $date, $checky);
+        $stmt->execute();
+      }  
     }
   }
 }
@@ -55,9 +61,12 @@ echo "
 $stmt = $connection->query("SELECT receiptID, order_date, cid, expectedDate FROM `Order` WHERE deliveredDate IS NULL
   ORDER BY receiptID");
 
+echo "<form id='deliver' name='deliver' method='post' action='";
+echo htmlspecialchars($_SERVER["PHP_SELF"]);
+echo "'>";
+
 while($row = $stmt->fetch_assoc()){  
-  echo "<tr><td><input type=checkbox name='deliver' value='";
-  echo $row['receiptID']."' border=0></td>";
+  echo "<tr><td><input type=checkbox name='deliver[]' value='".$row['receiptID']."' border=0 checked></td>";
   echo "<td>".$row['receiptID']."</td>";
   echo "<td>".$row['cid']."</td>";
   echo "<td>".$row['order_date']."</td>";
@@ -66,18 +75,12 @@ while($row = $stmt->fetch_assoc()){
   
 echo "</table>";    
   
-  
  // Disconnect from database
 mysqli_close($connection);
-
-
 ?>
 
-
 <br>
-
-<form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-  <input type="submit" name="submit" border=0 value="DELIVER THESE ORDERS">
+<input type="submit" name="submit" border=0 value="DELIVER THESE ORDERS">
 </form>
 
 <br>
