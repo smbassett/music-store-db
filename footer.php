@@ -1,5 +1,5 @@
 <div id="footer">
-Developed by Scott, Vojin, and Crystal. Moral support by Chris.
+Developed by Scott, Vojin, Chris, and Crystal.
 </div>
 
 </div> 

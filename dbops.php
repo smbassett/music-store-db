@@ -239,7 +239,7 @@ function deleteItem($upc, $connection) {
 
 function displayDailySalesReport($stmt){
 	$stmt->execute();
-	$stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8);
+	$stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6);
 	// Avoid Cross-site scripting (XSS) by encoding PHP_SELF (this page) using htmlspecialchars.
 	echo "<form id=\"add\" name=\"add\" action=\"";
 	echo htmlspecialchars($_SERVER["PHP_SELF"]);
@@ -252,26 +252,99 @@ function displayDailySalesReport($stmt){
 	<table border=0 cellpadding=0 cellspacing=0 class='CustomerInfoTable'><tr valign=center>
 	<td class=rowheader>UPC</td>
 	<td class=rowheader>Title</td>
-	<td class=rowheader>Item Type</td>
 	<td class=rowheader>Category</td>
-	<td class=rowheader>Company</td>
-	<td class=rowheader>Price</td>
-	<td class=rowheader>Quantity_Sold</td>
-	<td class=rowheader>Quantity_Remaining</td>
+	<td class=rowheader>Unit Price</td>
+	<td class=rowheader>Units Sold</td>
+	<td class=rowheader>Total Value</td>
 	</tr>";
 	// Display each search result field in the table
 	// Columns here are individual fields for each result row.
-
-	while($row = $stmt->fetch()){
-	echo "<td>".$col1."</td>";
-	echo "<td>".$col2."</td>";
-	echo "<td>".$col3."</td>";
-	echo "<td>".$col4."</td>";
-	echo "<td>".$col5."</td>";
-	echo "<td> $".$col6."</td>"; // added dollar sign for price.
-	echo "<td> ".$col7."</td>"; 
-	echo "<td>".$col8."</td></tr>";
-	}
+	
+	$total_amount1 = 0;
+	$total_amount2 = 0;
+	$category      = "";
+	$row           = $stmt->fetch();
+	
+	$divider = "- - - - - - - - - - - - - - - - - - - - - -";
+	
+	do {
+		if ($row){	
+			if ($category == ""){
+				$category = $col3;
+				
+				echo "<td>".$col1."</td>";
+				echo "<td>".$col2."</td>";
+				echo "<td>".$col3."</td>";
+				echo "<td>$".$col4."</td>";
+				echo "<td>".$col5."</td>";
+				echo "<td>$".$col6."</td><td>";
+				echo "</td></tr>";
+				
+				$total_amount1+=$col6;
+				$total_amount2+=$col6;
+				$row = $stmt->fetch();}
+			
+			while($row){
+				if ($col3 == $category){
+					echo "<tr><td>".$col1."</td>";
+					echo     "<td>".$col2."</td>";
+					echo     "<td>".$col3."</td>";
+					echo     "<td>$".$col4."</td>";
+					echo     "<td>".$col5."</td>";
+					echo     "<td>$".$col6."</td></tr>";
+					$total_amount1+=$col6;
+					$total_amount2+=$col6;
+					$row = $stmt->fetch();}
+				else{
+					$total = "Total";
+					echo "<tr><td></td>";
+					echo "<td><b><u>".$total."</u></b></td>";
+					echo "<td>".$divider."</td>";
+					echo "<td>".$divider."</td>";
+					echo "<td>".$divider."</td>";
+					echo "<td><b><u>$".$total_amount1."</u></b><td></tr>";
+					$total_amount1 = 0;
+					
+					echo "<tr><td>".$col1."</td>";
+					echo     "<td>".$col2."</td>";
+					echo     "<td>".$col3."</td>";
+					echo     "<td>$".$col4."</td>";
+					echo     "<td>".$col5."</td>";
+					echo     "<td>$".$col6."</td></tr>";
+					$total_amount1+=$col6;
+					$total_amount2+=$col6;
+					$category = $col3;					
+					
+					break;}			
+			}
+		}
+	} while ($row = $stmt->fetch());
+	
+	$total = "Total";
+	$equal = "- - - - - - - - - - - - - - - - - - - - - -";
+	$grand_total = "Total Daily Sales";
+	
+	echo "<tr><td></td>";
+	echo "<td><b><u>".$total."</u></b></td>";
+	echo "<td>".$divider."</td>";
+	echo "<td>".$divider."</td>";
+	echo "<td>".$divider."</td>";
+	echo "<td><b><u>$".$total_amount1."</u></b></td></tr>";	
+	
+	echo "<tr><td></td>";
+	echo "<td></td>";
+	echo "<td></td>";
+	echo "<td></td>";
+	echo "<td></td>";
+	echo "<td>".$equal."</td></tr>";	
+	
+	echo "<tr><td></td>";
+	echo "<td></td>";
+	echo "<td></td>";
+	echo "<td></td>";
+	echo "<td><b><u>".$grand_total."</u></b></td>";
+	echo "<td bgcolor = A3E0FF><b><u>$".$total_amount2."</u></b></td></tr>";	
+	
 	echo "</form>";
 	echo "</table>";
 }
