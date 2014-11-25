@@ -53,6 +53,11 @@ $connection = connectToDatabase();
       	$_POST["new_company"], $_POST["new_item_year"], $_POST["new_price"], $_POST["new_quantity"], 
       	$connection);
     }
+    //If manager wants to update item quantity/price
+    elseif (isset($_POST["submit"]) && $_POST["submit"] == "UPDATE") {
+      //Update Item
+      updateItem($_POST["upc"], $_POST["new_price"], $_POST["update_quantity"], $connection);
+    }
   }
 ?>
 
@@ -89,6 +94,17 @@ the old unit price will be retained.
     <tr><td>Price</td><td> <input type="text" size=20 name="new_price"></td></tr>
     <tr><td>Quantity</td><td><input type="text" size=20 name="new_quantity"</td></tr>	
     <tr><td></td><td><input type="submit" name="submit" border=0 value="ADD"></td></tr>
+  </table>
+</form>
+
+<h2>UPDATE ITEM</h2>
+
+<form id="update" name="update" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+  <table border=0 cellpadding=0 cellspacing=0>
+    <tr><td>UPC</td><td><input type="text" size=20 name="upc"></td></tr>
+    <tr><td>New Price (Optional)</td><td> <input type="text" size=20 name="new_price"></td></tr>
+    <tr><td>Quantity to add/sub (Optional)</td><td><input type="text" size=20 name="update_quantity"</td></tr> 
+    <tr><td></td><td><input type="submit" name="submit" border=0 value="UPDATE"></td></tr>
   </table>
 </form>
 

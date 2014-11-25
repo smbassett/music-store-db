@@ -12,7 +12,7 @@ function connectToDatabase() {
 	// DATABASE CONNECTION CONFIG
 	// Connect to AMS database
 	$username = "root";
-	$password = "";
+	$password = "1234qwer";
 	//$hostname = "localhost";				//$hostname for Crystal
 	$hostname = "127.0.0.1";				//$hostname for Scott (bug workaround on OS X)
 
@@ -178,6 +178,31 @@ function addItem($upc, $title, $item_type, $category, $company, $item_year,
       printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
     } else {
       echo "<h2><b><mark>Successfully added ".$title."</mark></b></h2>";
+    }
+}
+
+function updateItem($upc, $price, $quantity, $connection) {
+
+	//SQL statement
+	if ($price != NULL) {
+		$stmt = $connection->prepare("UPDATE Item SET price=? WHERE upc=?");
+		$stmt->bind_param("ss", $price, $upc);
+		$stmt->execute();
+	}
+
+	if ($quantity != NULL) {
+		$stmt2 = $connection->prepare("UPDATE Item SET stock=stock+? WHERE upc=?");
+		$stmt2->bind_param("ss", $quantity, $upc);
+		$stmt2->execute();
+	}
+
+	// Print success or error message 
+    if($price != NULL && $stmt->error) {       
+      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    } elseif($quantity != NULL && $stmt2->error) {
+      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt2->error);
+    } else {
+      echo "<h2><b><mark>Successfully updated ITEM ".$upc."</mark></b></h2>";
     }
 }
 
