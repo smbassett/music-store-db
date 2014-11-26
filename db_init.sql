@@ -49,14 +49,14 @@ receiptID int,
 upc int, 
 quantity int,
 PRIMARY KEY(receiptID, upc),
+FOREIGN KEY(receiptID) REFERENCES `Order`(receiptID) ON DELETE CASCADE,
 FOREIGN KEY(upc) REFERENCES Item(upc));
 
 CREATE Table `Return`(
 retid int, 
 return_date date, 
 receiptID int,
-PRIMARY KEY (retid),
-FOREIGN KEY(receiptID) REFERENCES PurchaseItem(receiptID));
+PRIMARY KEY (retid));
 
 CREATE TABLE ReturnItem(
 retid int, 
