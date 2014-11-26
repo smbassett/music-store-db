@@ -36,10 +36,22 @@ displayCustomers($connection)
 
 */
 
-function addCustomer($password, $name, $address, $phone, $connection) {
-	// SQL statement
-	$stmt = $connection->prepare("INSERT INTO Customer (cid, c_password, cname, address, phone) VALUES (?,?,?,?,?)");
-    
+function tryAddCustomer($username, $c_password, $fullname, $address, $phone, $connection){
+	$stmt = $connection->prepare("SELECT cid FROM Customer WHERE username = ?");
+	$stmt->bind_param("s", $username);
+	$stmt->execute();
+	$stmt->bind_result($found_cid);
+	$stmt->fetch();
+	
+	//Is username available?
+	if (is_null($found_cid)){
+		addCustomer($username, $c_password, $fullname, $address, $phone, $connection);
+	} else {
+		printf("<h2><b><mark>Sorry, that username is already taken. Please choose a different one.</mark></b></h2>");
+		}
+	}
+
+function addCustomer($username, $c_password, $fullname, $address, $phone, $connection) {
     // Generate new cid  
 	$id = $connection->query("SELECT max(cid) FROM Customer");
 	$id = $id->fetch_row();
@@ -55,20 +67,22 @@ function addCustomer($password, $name, $address, $phone, $connection) {
 		$valid = false;
 	} else if ($phone_length == 10) {
 		$phone = substr($phone, 0, 3) . "-" . substr($phone, 3, 3) . "-" . substr($phone, 6, 4);
-	} 
-
+	}
+	
 	if($valid) {
-		// Bind the title and pub_id parameters, 'sssss' indicates 5 strings
-    	$stmt->bind_param("sssss", $new_id, $password, $name, $address, $phone);
+		// SQL statement
+		$stmt = $connection->prepare("INSERT INTO Customer (cid, username, c_password, fullname, address, phone) VALUES (?,?,?,?,?,?)");
+		// Bind the title and pub_id parameters, 'ssssss' indicates 6 strings
+    	$stmt->bind_param("ssssss", $new_id, $username, $c_password, $fullname, $address, $phone);
     	// Execute the insert statement
     	$stmt->execute();	
     	// Print success or error message  
 	    if($stmt->error) {       
 	      printf("<b>Error: %s.</b>\n", $stmt->error);
 	    } else {
-	      echo "<h2><b><mark>Successfully added ".$name."</mark></b></h2>";
+	      echo "<h2><b><mark>Successfully added ".$username."</mark></b></h2>";
 	    }
-	} 
+	}
 }
 
 
@@ -109,7 +123,7 @@ function deleteCustomer($id, $connection) {
 
 function displayCustomers($connection) {
 	// Select all of the customer rows
- 	if (!$result = $connection->query("SELECT cid, c_password, cname, 
+ 	if (!$result = $connection->query("SELECT cid, username, c_password, fullname, 
  		address, phone FROM Customer ORDER BY cid")) {
 		    die('There was an error running the query [' . $db->error . ']');
     }
@@ -127,8 +141,9 @@ function displayCustomers($connection) {
 	echo "<tr valign=center>";
 	echo "
 			<td class=rowheader>CustomerID</td>
-			<td class=rowheader>Name</td>
+			<td class=rowheader>Username</td>
 			<td class=rowheader>Password</td>
+			<td class=rowheader>Full Name</td>
 			<td class=rowheader>Address</td>
 			<td class=rowheader>Phone</td>
 			<td class=rowheader>Delete?</td>
@@ -137,8 +152,9 @@ function displayCustomers($connection) {
 	// Display each Customer databaserow as a table row
 	while($row = $result->fetch_assoc()){  
 		echo "<td>".$row['cid']."</td>";
-		echo "<td>".$row['cname']."</td>";
+		echo "<td>".$row['username']."</td>";
 		echo "<td>".$row['c_password']."</td>";
+		echo "<td>".$row['fullname']."</td>";
 		echo "<td>".$row['address']."</td>";
 		echo "<td>".$row['phone']."</td><td>";
      

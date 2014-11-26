@@ -134,10 +134,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			
 		else createPurchase($_SESSION['cid'], $_POST["credit_num"], $_POST["credit_expiry"], $connection);		
     }
-} else {
+    // if user simply wants to view the shopping cart (has clicked on shopping cart icon in top right)
+    elseif (isset($_POST["viewcart"]) && $_POST["viewcart"] == "VIEWCART"){
+    	displayShoppingCart($_SESSION['cid'], $connection);
+    	displayShopSearch();
+		}
+	} else {
   	displayShopSearch();
-}	
-
+	}	
 ?>
 
 <?php include '../footer.php'; ?>

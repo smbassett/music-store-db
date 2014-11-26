@@ -1,29 +1,29 @@
 USE AMS; 
 SELECT database();
 
-INSERT INTO Customer(cid, c_password, cname, address, phone) 
+INSERT INTO Customer(cid, c_password, username, fullname, address, phone) 
 VALUES 
-(0, "password", "Crystal", "8298 Yellow St", "778-319-9806"),
-(1, "toocoolforschool", "Chris", "6423 Crazy Ave", "778-382-4893"),
-(2, "applez", "Vojin", "2987 Snowman Ave", "778-289-4892"),
-(3, "bananaz", "Scott", "348 Chalkboard St", "604-340-1023"),
-(4, "cs304", "George", "928 Olap St", "604-293-0940"),
-(5, "montana", "Hannah", "8492 Rain Ave", "604-922-0392"),
-(6, "never", "Jesus", "192 Granville St", "604-983-0900"),
-(7, "gonna", "Idina", "209 Burrard St", "778-392-1111"),
-(8, "give", "Michael", "109 Water St", "778-238-4987"),
-(9, "you", "Shelley", "1098 Main St", "604-204-9844"),
-(10, "up", "Asher", "2298 W Georgia St", "778-994-4392"),
-(11, "never", "Reese", "1872 Wallaby Way", "604-102-3049"),
-(12, "gonna", "Jennifer", "123 Standard St", "604-958-2728"),
-(13, "let", "Emily", "109 Student Union Blvd", "604-777-5849"),
-(14, "you", "Sue", "1198 Molap St", "604-293-0940"),
-(15, "down", "Rick", "2340 Illuminati Rd", "604-405-0940"),
-(16, "hey", "Edgar", "324 Yahoo St", "604-958-8876"),
-(17, "328408", "R2D2", "12 Star Wars Rd", "604-443-3829"),
-(18, "cyrus", "Miley", "238098 Twerk St", "604-832-4493"),
-(19, "rocks", "Elvis", "109 Disco Ave", "604-293-0940"),
-(20, "rebootcafe", "Arthur", "231 Armadillo Dr", "778-243-2909");
+(0, "password", "Crystal", "Crystal To", "8298 Yellow St", "778-319-9806"),
+(1, "toocoolforschool", "Chris", "Chris Laporte", "6423 Crazy Ave", "778-382-4893"),
+(2, "applez", "Vojin", "Vojin Vukman", "2987 Snowman Ave", "778-289-4892"),
+(3, "bananaz", "Scott", "Scott Bassett", "348 Chalkboard St", "604-340-1023"),
+(4, "cs304", "George", "George Harrison", "928 Olap St", "604-293-0940"),
+(5, "montana", "Hannah", "Hannah Dakota", "8492 Rain Ave", "604-922-0392"),
+(6, "never", "Jesus", "Jesus Jones", "192 Granville St", "604-983-0900"),
+(7, "gonna", "Idina", "Idina Jones", "209 Burrard St", "778-392-1111"),
+(8, "give", "Michael", "Michael Smith", "109 Water St", "778-238-4987"),
+(9, "you", "Shelley", "Shelley Peaks", "1098 Main St", "604-204-9844"),
+(10, "up", "Asher", "Asher Mash", "2298 W Georgia St", "778-994-4392"),
+(11, "never", "Reese", "Reese Winter", "1872 Wallaby Way", "604-102-3049"),
+(12, "gonna", "Jennifer", "Jennifer Jones", "123 Standard St", "604-958-2728"),
+(13, "let", "Emily", "Emily Yoshida", "109 Student Union Blvd", "604-777-5849"),
+(14, "you", "Sue", "Sue Smith", "1198 Molap St", "604-293-0940"),
+(15, "down", "Rick", "Rick Richards", "2340 Illuminati Rd", "604-405-0940"),
+(16, "hey", "Edgar", "Edgar Dafoe", "324 Yahoo St", "604-958-8876"),
+(17, "328408", "R2D2", "R2D2 Unit", "12 Star Wars Rd", "604-443-3829"),
+(18, "cyrus", "Miley", "Miley Smith", "238098 Twerk St", "604-832-4493"),
+(19, "rocks", "Elvis", "Elvis Presley", "109 Disco Ave", "604-293-0940"),
+(20, "rebootcafe", "Arthur", "Arthur Bear", "231 Armadillo Dr", "778-243-2909");
 
 INSERT INTO Item(upc, title, item_type, category, company, item_year, price, stock)
 VALUES

@@ -27,7 +27,7 @@ function formSubmit(itemUpc) {
 <!-- Include header -->
 <?php include '../header.php'; ?>
 
-<h1>Manage Items</h1><br>
+<h1>Manage Items</h1>
 
 <?php
 

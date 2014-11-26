@@ -31,11 +31,11 @@ $connection = connectToDatabase();
 		/*
 		Check if customer is in the database
 		*/
-			$customer_nm = $_POST["cust_name"];
-			$customer_pw = $_POST["cust_password"];
+			$username = $_POST["username"];
+			$c_password = $_POST["c_password"];
 
-			$stmt = $connection->prepare("SELECT cname, cid FROM Customer WHERE cname=? and c_password=?");
-			$stmt->bind_param("ss", $customer_nm, $customer_pw);
+			$stmt = $connection->prepare("SELECT fullname, cid FROM Customer WHERE username=? and c_password=?");
+			$stmt->bind_param("ss", $username, $c_password);
 			$stmt->execute();
 			
 			$stmt->bind_result($col1, $col2);
@@ -51,7 +51,7 @@ $connection = connectToDatabase();
 				while ($stmt->fetch()){
 					$_SESSION['cid'] = $col2;
 					$_SESSION['cname'] = $col1;
-					echo "<b>Welcome ".$customer_nm."!</b>";
+					echo "<b>Welcome ".$col1."!</b>";
 					echo '<META http-equiv="refresh" content="1; shop.php?' . SID . '">';
 					exit;
 				}
@@ -65,8 +65,8 @@ $connection = connectToDatabase();
 <h2>Customer Login Menu</h2>
 	<form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 		<table border=0 cellpadding=0 cellspacing=0>
-        <tr><td>Username</td><td><input type="text" size=30 name="cust_name"</td></tr>
-        <tr><td>Password</td><td><input type="password" size=30 name="cust_password"</td></tr></tr>
+        <tr><td>Username</td><td><input type="text" size=30 name="username"</td></tr>
+        <tr><td>Password</td><td><input type="password" size=30 name="c_password"</td></tr></tr>
 		<tr><td></td><td><input type="submit" name="submit" border=0 value="SUBMIT"></td></tr>
 		</table>
 	</form>

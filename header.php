@@ -31,13 +31,23 @@
 
 	<?php
 	if (isset($_SESSION['cname'])) {
-		echo '<div style="padding:0; margin:0; position: absolute; top: 12px; right: 50px" >';
+		echo '<div style="padding:0; margin:0; position: absolute; top: 12px; right: 80px" >';
 		echo "<h3>Welcome ".$_SESSION['cname']."!</h3></div>";
 		echo '<form id="logout" name="logout" method="post" action="';
 		echo htmlspecialchars($_SERVER["PHP_SELF"]);
 		echo '">';
-		echo '<div style="float:right; position: absolute; top: 20px; right: 0px" > <input type="image" name="logout" value="Logout" src="/music-store-db/logout-freepik.png" alt="logout" width="30" height="30"></div>
-			</form>';
+		echo '<div style="float:right; position: absolute; top: 20px; right: 0px" >
+		<input type="image" name="logout" value="Logout" src="/music-store-db/logout-freepik.png" alt="logout" width="30" height="30">
+		</div></form>';
+		
+		echo '<form id="viewcart" name="viewcart" method="post" action="/music-store-db/customer/shop.php"';
+		echo htmlspecialchars($_SERVER["PHP_SELF"]);
+		echo '">';
+		echo '<div style="float:right; position: absolute; top: 20px; right: 40px">
+		<form action="/music-store-db/customer/shop.php">
+		<input type="image" name="viewcart" value="VIEWCART" src="/music-store-db/cart-by-stephen-hutchings.png" alt="view cart" width="30" height="30"/>
+		</div></form>';
+		
 	} else {
 		
 	}	
