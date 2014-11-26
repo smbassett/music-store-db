@@ -47,7 +47,8 @@ function tryAddCustomer($username, $c_password, $fullname, $address, $phone, $co
 	if (is_null($found_cid)){
 		addCustomer($username, $c_password, $fullname, $address, $phone, $connection);
 	} else {
-		printf("<h2><b><mark>Sorry, that username is already taken. Please choose a different one.</mark></b></h2>");
+		printf("<h3>Sorry, that username is already taken. Please choose a different one.</h3>");
+		echo"<h3>May we suggest ".$username."_the_awesome, ".$fullname."666, or ".$username."-".$phone."?</h3>";
 		}
 	}
 
@@ -63,7 +64,7 @@ function addCustomer($username, $c_password, $fullname, $address, $phone, $conne
 	// Prepare phone number
 	$phone_length = strlen($phone);
 	if ($phone_length > 12 || $phone_length < 10 || $phone_length == 11) {
-		printf("<h2><b><mark>Please enter a valid phone number.</mark></b></h2>");
+		printf("<h3>We tried calling and we know that's a fake number. Please enter a valid phone number.</h3>");
 		$valid = false;
 	} else if ($phone_length == 10) {
 		$phone = substr($phone, 0, 3) . "-" . substr($phone, 3, 3) . "-" . substr($phone, 6, 4);
@@ -80,7 +81,8 @@ function addCustomer($username, $c_password, $fullname, $address, $phone, $conne
 	    if($stmt->error) {       
 	      printf("<b>Error: %s.</b>\n", $stmt->error);
 	    } else {
-	      echo "<h2><b><mark>Successfully added ".$username."</mark></b></h2>";
+	      echo "<h3>Thanks, ".$username."! Welcome to AMS!</h3>";
+	      echo '<META http-equiv="refresh" content="1; shop.php?' . SID . '">';
 	    }
 	}
 }
@@ -97,7 +99,7 @@ function deleteCustomer($id, $connection) {
 	  
 	// Print success or error message
 	if($stmt->error) {
-	 printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+	 printf("<h3>Error: %s.</h3>\n", $stmt->error);
 	}	
 	$stmt->close();
 
@@ -113,9 +115,9 @@ function deleteCustomer($id, $connection) {
 	  
 	// Print success or error message
 	if($stmt->error) {
-	 printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+	 printf("<h3>Error: %s.</h3>\n", $stmt->error);
 	} else {
-	 echo "<h2><b><mark>Successfully deleted customer (CID: ".$id.")</mark></b></h2>";
+	 echo "<h3>We've successfully removed customer with ID ".$id.". No hard feelings! :'(</h3>";
 	}
 	$stmt->close();
 }
@@ -178,21 +180,25 @@ displayItems($connection)
 
 */
 
-function addItem($upc, $title, $item_type, $category, $company, $item_year, 
+function addItem($title, $item_type, $category, $company, $item_year, 
 	$price, $stock, $connection) {
 	
+	$id = $connection->query("SELECT max(upc) FROM Item");
+	$id = $id->fetch_assoc();
+	$id = $id['max(upc)'] + 1;
+
 	// SQL statement
 	$stmt = $connection->prepare("INSERT INTO Item (upc, title, item_type, 
 		category, company, item_year, price, stock) VALUES (?,?,?,?,?,?,?,?)");
-	$stmt->bind_param("ssssssss", $upc, $title, $item_type, $category, $company, 
+	$stmt->bind_param("ssssssss", $id, $title, $item_type, $category, $company, 
 		$item_year, $price, $stock);
 	$stmt->execute();	
 	
 	// Print success or error message  
     if($stmt->error) {       
-      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+      printf("<h3>Error: %s.</h3>\n", $stmt->error);
     } else {
-      echo "<h2><b><mark>Successfully added ".$title."</mark></b></h2>";
+      echo "<h3>Wishing you many sales of your newly added item, ".$title.".</h3>";
     }
 }
 
@@ -213,11 +219,11 @@ function updateItem($upc, $price, $quantity, $connection) {
 
 	// Print success or error message 
     if($price != NULL && $stmt->error) {       
-      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+      printf("<h3>Error: %s.</h3>\n", $stmt->error);
     } elseif($quantity != NULL && $stmt2->error) {
-      printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt2->error);
+      printf("<h3>Error: %s.</h3>\n", $stmt2->error);
     } else {
-      echo "<h2><b><mark>Successfully updated ITEM ".$upc."</mark></b></h2>";
+      echo "<h3>Successfully updated ".$upc.".</h3>";
     }
 }
 
@@ -233,7 +239,7 @@ function deleteItem($upc, $connection) {
 	  
 	// Print success or error message
 	if($stmt->error) {
-	 printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+	 printf("<h3>Error: %s.</h3>\n", $stmt->error);
 	}	
 	$stmt->close();
 	
@@ -245,9 +251,9 @@ function deleteItem($upc, $connection) {
 	  
 	// Print success or error message
 	if($stmt->error) {
-	 printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+	 printf("<h3>Error: %s.</h3>\n", $stmt->error);
 	} else {
-	 echo "<h2><b><mark>Item deleted (UPC: ".$upc.")</mark></b></h2>";
+	 echo "<h3>Item deleted (UPC: ".$upc.")</h3>";
 	}
 	$stmt->close();
 }
@@ -471,7 +477,7 @@ function displaySearchResults($stmt){
 
 
 function addItemToCart($cid, $upc, $connection){
-	echo "<h2><b><mark>Customer CID: ".$cid.". Item UPC: ".$upc."</mark></b></h2>";
+	echo "<h3>Customer CID: ".$cid.". Item UPC: ".$upc."</h3>";
 
 	// add this item to the customer's shopping cart
 	insertCartItem($cid, $upc, "1", $connection);
@@ -481,7 +487,7 @@ function addItemToCart($cid, $upc, $connection){
 function insertCartItem($cid, $upc, $quantity, $connection) {
 	
 	// check to see if shopping cart already contains item to add
-	$stmt = $connection->prepare("SELECT upc FROM ShoppingCart WHERE cid=? AND upc=?");
+	$stmt = $connection->prepare("SELECT upc, FROM ShoppingCart WHERE cid=? AND upc=?");
 	$stmt->bind_param("ss", $cid, $upc);
 	$stmt->execute();
 	$stmt->bind_result($col1);
@@ -497,12 +503,12 @@ function insertCartItem($cid, $upc, $quantity, $connection) {
 		
 		// Print success or error message  
     	if($stmt->error) {       
-    	  printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    	  printf("<h3>Error: %s.</h3>\n", $stmt->error);
     	} else {
-    	  echo "<h2><b><mark>You've added an item to your shopping cart</mark></b></h2>";
+    	  echo "<h3>You've added an item to your shopping cart</h3>";
     	}
 	} else {
-	echo "<h2><b><mark>This item is already in your shopping cart</mark></b></h2>";
+	echo "<h3>This item is already in your shopping cart</h3>";
 	}
 }
 
@@ -645,8 +651,8 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	}
 
 	// Display success message
-	echo "<h2><b><mark>Order placed for ".$_SESSION['cname']." and billed to credit card with number ".$creditcard.".";
-	echo " <br/>Your receipt number is: ".$new_id.". Thanks for shopping with AMS!</mark></b></h2>";
+	echo "<h3>Order placed for ".$_SESSION['cname']." and billed to credit card with number ".$creditcard.".";
+	echo " <br/>Your receipt number is: ".$new_id.". Thanks for shopping with AMS!</h3>";
 
 	displayShopSearch();
 }
@@ -705,7 +711,7 @@ function createShoppingCartTable($stmt, $connection) {
 }
 
 function updateItemQty($cid, $upc, $newqty, $connection) {
-	echo "<h2><b><mark>DEBUG STATEMENT: Updating order by CID ".$cid." for Item UPC: ".$upc." to qty ".$newqty."</mark></b></h2>";
+	echo "<h3>Item with ID ".$upc." has been updated to a quantity of ".$newqty.".</h3>";
 
 	//check to see if new quantity is 0. if so, delete this item from the cart.
 	if ($newqty <= 0){
@@ -715,10 +721,10 @@ function updateItemQty($cid, $upc, $newqty, $connection) {
 	
 		// Print success or error message  
 		if($stmt->error) {       
-    	  printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    	  printf("<h3>Error: %s.</h3>\n", $stmt->error);
     	  $stmt->close();
     	} else {
-    	  echo "<h2><b><mark>Item removed from shopping cart</mark></b></h2>";
+    	  echo "<h3>Item removed from shopping cart</h3>";
     	  $stmt->close();
     	  }
 		} else {
@@ -732,7 +738,7 @@ function updateItemQty($cid, $upc, $newqty, $connection) {
 		
 		// Print success or error message  
     	if($stmt->error) {       
-    	  printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    	  printf("<h3>Error: %s.</h3>\n", $stmt->error);
     	} 
     	while($row = $stmt->fetch()){
     	$availableqty = $col1;
@@ -745,9 +751,9 @@ function updateItemQty($cid, $upc, $newqty, $connection) {
 		
 		// Print success or error message  
     	if($stmt->error) {       
-    	  printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    	  printf("<h3>Error: %s.</h3>\n", $stmt->error);
     	} else {
-    	  echo "<h2><b><mark>Sorry, your order exceeds our available stock! Your order has automatically been reduced to ".$availableqty." items.</mark></b></h2>";
+    	  echo "<h3>Sorry, your order exceeds our available stock! Your order has automatically been reduced to ".$availableqty." items.</h3>";
     	}
 		} else{
 
@@ -758,9 +764,9 @@ function updateItemQty($cid, $upc, $newqty, $connection) {
 		
 		// Print success or error message  
     	if($stmt->error) {       
-    	  printf("<h2><b><mark>Error: %s.</mark></b></h2>\n", $stmt->error);
+    	  printf("<h3>Error: %s.</h3>\n", $stmt->error);
     	} else {
-    	  echo "<h2><b><mark>Quantity updated</mark></b></h2>";
+    	  echo "<h3>Quantity updated</h3>";
     	}
 	}
 	}

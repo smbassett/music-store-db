@@ -50,7 +50,7 @@ $connection = connectToDatabase();
     // If manager has typed in information about a new item and clicked 'add':
     elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
     	// Add Item    		  
-      	addItem($_POST["new_upc"], $_POST["new_title"], $_POST["new_item_type"], $_POST["new_category"],
+      	addItem($_POST["new_title"], $_POST["new_item_type"], $_POST["new_category"],
       	$_POST["new_company"], $_POST["new_item_year"], $_POST["new_price"], $_POST["new_quantity"], 
       	$connection);
     }
@@ -72,7 +72,7 @@ $connection = connectToDatabase();
   mysqli_close($connection);
 ?>
 
-
+<br>
 <h2>ADD NEW ITEM</h2>
 
 <!-- Form for adding a new Item 
@@ -86,7 +86,6 @@ the old unit price will be retained.
 
 <form id="add" name="add" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <table border=0 cellpadding=0 cellspacing=0>
-    <tr><td>UPC</td><td><input type="text" size=20 name="new_upc"></td></tr>
     <tr><td>Title</td><td><input type="text" size=20 name="new_title"></td></tr>
     <tr><td>Item Type</td><td><input type="text" size=20 name="new_item_type"></td></tr>
     <tr><td>Category</td><td><input type="text" size=20 name="new_category"></td></tr>
@@ -97,7 +96,7 @@ the old unit price will be retained.
     <tr><td></td><td><input type="submit" name="submit" border=0 value="ADD"></td></tr>
   </table>
 </form>
-
+<br>
 <h2>UPDATE ITEM</h2>
 
 <form id="update" name="update" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">

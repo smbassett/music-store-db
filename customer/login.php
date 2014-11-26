@@ -48,12 +48,14 @@ $connection = connectToDatabase();
 			// need to pass along the customer's cid to the store page,
 			// so that items can be added to that customer's shopping cart.
 			// will do this via a PHP 'session'.
-				while ($stmt->fetch()){
+				if ($stmt->fetch()){
 					$_SESSION['cid'] = $col2;
 					$_SESSION['cname'] = $col1;
 					echo "<b>Welcome ".$col1."!</b>";
 					echo '<META http-equiv="refresh" content="1; shop.php?' . SID . '">';
 					exit;
+				} else {
+					echo "Sorry, we couldn't find that username and password combination in our records. Pleaes try again.";
 				}
 			}
 			$stmt->close();		
@@ -70,7 +72,7 @@ $connection = connectToDatabase();
 		<tr><td></td><td><input type="submit" name="submit" border=0 value="SUBMIT"></td></tr>
 		</table>
 	</form>
-	<a href="registration.php" title="Sign up">Sign up</a> 
+	<a href="registration.php" title="Sign up">Don't have an account yet? No problem. Sign up!</a> 
 
 <br>
 <a href="../index.php" title="Home"><h2>&lt;&lt;Back</h2></a>

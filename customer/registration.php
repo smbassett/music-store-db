@@ -25,7 +25,6 @@
 	$connection = connectToDatabase();
 ?>
 
-<br>
 
 <?php
   // Detect user action
@@ -41,7 +40,7 @@
 
 ?>
 
-<h2>SIGN UP</h2>
+<h2>Please fill out the following to sign up.</h2>
 
 <!-- Form for adding a new customer -->
 

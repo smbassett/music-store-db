@@ -10,7 +10,7 @@
 
 <?php include 'header.php'; ?>
 
-	<h1>Welcome to AMS Music Store!</h1>
+	<h1>Welcome to Allegro Music Store!</h1>
 	<h2>Please select one.</h2>
 	<br>
 	<?php
