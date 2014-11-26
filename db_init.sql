@@ -38,7 +38,7 @@ CREATE TABLE `Order`(
 receiptID int,
 order_date date, 
 cid int, 
-cardNo int, 
+cardNo varchar(20), 
 expiryDate int, 
 expectedDate date, 
 deliveredDate date,

@@ -37,7 +37,7 @@ $connection = connectToDatabase();
 <?php
 
 $stmt = $connection->query(
-	"SELECT O.receiptID, O.cid, C.cname, P.upc, I.title, P.quantity, O.order_date, O.expectedDate, O.deliveredDate
+	"SELECT O.receiptID, O.cid, C.fullname, P.upc, I.title, P.quantity, O.order_date, O.expectedDate, O.deliveredDate
 	FROM `Order` O JOIN PurchaseItem P JOIN Item I JOIN Customer C
 	ON O.receiptID=P.receiptID AND P.upc=I.upc AND O.cid=C.cid
 	ORDER BY O.receiptID, P.upc");
@@ -45,7 +45,7 @@ $stmt = $connection->query(
 while($row=$stmt->fetch_assoc()) {
 	echo "<tr><td>".$row['receiptID']."</td>";
 	echo "<td>".$row['cid']."</td>";
-	echo "<td>".$row['cname']."</td>";
+	echo "<td>".$row['fullname']."</td>";
 	echo "<td>".$row['upc']."</td>";
 	echo "<td>".$row['title']."</td>";
 	echo "<td>".$row['quantity']."</td>";

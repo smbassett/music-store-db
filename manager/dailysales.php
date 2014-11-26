@@ -35,7 +35,9 @@
 		
 		if ($year && $month && $day){
 			$date = $year.$month.$day;
-
+			
+			echo '<h2>REPORT FOR '.$year.'-'.$month.'-'.$day.'<h2>';
+			
 			$stmt = $connection->prepare(
 		
 				"SELECT I.upc, I.title, I.category, I.price, SUM(quantity) as Quantity_Sold, (price*SUM(quantity)) as Total_Value
