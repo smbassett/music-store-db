@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		if ($_POST["upc"] == "" && $_POST["quantity"] == "" && $valid)
 			processReturn($_POST["receipt"], $_POST["cid"], $connection);
 		
-		// Return all quantity of a single UPC
+		// Return quantity of a single UPC
 		elseif ($_POST["upc"] != "" && $valid)
 			processReturnSingle($_POST["receipt"], $_POST["cid"], $_POST["upc"], $_POST["quantity"], $connection);
 		

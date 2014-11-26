@@ -801,7 +801,7 @@ function processReturnSingle($receiptID, $cid, $upc, $quantity, $connection) {
 
 	else {
 		// If quantity is unspecified, DELETE PurchaseItem
-		if ($quantity == "") {
+		if ($quantity == "" || $quantity==$quantityb) {
 			$quantity = $quantityb;
 			$stmt = $connection->prepare("DELETE FROM PurchaseItem WHERE receiptID=? AND upc=?");
 			$stmt->bind_param("ss", $receiptID, $upc);
@@ -813,12 +813,13 @@ function processReturnSingle($receiptID, $cid, $upc, $quantity, $connection) {
 			$stmt->execute();
 			$stmt->bind_result($anyleft);
 			$stmt->fetch();
+			$stmt->close();
 			if($anyleft == 0) {
-				$stmt->close();
 				$stmt = $connection->prepare("DELETE FROM `Order` WHERE receiptID=?");
 				$stmt->bind_param("s", $receiptID);
 				$stmt->execute();
-			}	$stmt->close();
+				$stmt->close();
+			}
 		} 
 		// If quantity is specified, UPDATE PurchaseItem
 		else {
