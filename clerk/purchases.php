@@ -51,7 +51,9 @@ while($row=$stmt->fetch_assoc()) {
 	echo "<td>".$row['quantity']."</td>";
 	echo "<td>".$row['order_date']."</td>";
 	echo "<td>".$row['expectedDate']."</td>";
-	echo "<td>".$row['deliveredDate']."</td></tr>";
+	if ($row['deliveredDate'] === NULL)
+		echo "<td><font color='4D7094'>DELIVERY PENDING</font></td></tr>";	
+	else echo "<td>".$row['deliveredDate']."</td></tr>";
 }
 ?>
 </table>
