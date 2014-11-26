@@ -120,7 +120,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // if user clicks 'confirm purchase'
     elseif (isset($_POST["purchase"]) && $_POST["purchase"] == "CONFIRM PURCHASE"){
-		createPurchase($_SESSION['cid'], $_POST["credit_num"], $_POST["credit_expiry"], $connection);		
+		if (strlen($_POST["credit_num"]) != 16) {
+			echo $_POST["credit_num"]." is not a valid credit card number. We're watching you. Please try again.";
+			echo "<br>";
+			confirmPurchase($_SESSION['cid'], $connection);			
+		}
+		elseif (strlen($_POST["credit_expiry"]) != 4 || substr($_POST["credit_expiry"], 0, 2)>12 ||
+			substr($_POST["credit_expiry"], 2, 2)<14) {
+			echo $_POST["credit_expiry"]." is not a valid expiry date. We're watching you. Please try again.";
+			echo "<br>";
+			confirmPurchase($_SESSION['cid'], $connection);			
+		}
+			
+		else createPurchase($_SESSION['cid'], $_POST["credit_num"], $_POST["credit_expiry"], $connection);		
     }
 } else {
   	displayShopSearch();
