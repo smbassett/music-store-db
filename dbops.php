@@ -487,7 +487,7 @@ function addItemToCart($cid, $upc, $connection){
 function insertCartItem($cid, $upc, $quantity, $connection) {
 	
 	// check to see if shopping cart already contains item to add
-	$stmt = $connection->prepare("SELECT upc, FROM ShoppingCart WHERE cid=? AND upc=?");
+	$stmt = $connection->prepare("SELECT upc FROM ShoppingCart WHERE cid=? AND upc=?");
 	$stmt->bind_param("ss", $cid, $upc);
 	$stmt->execute();
 	$stmt->bind_result($col1);
