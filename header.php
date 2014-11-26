@@ -24,7 +24,7 @@
 		else echo '<a href="/music-store-db/customer/login.php" title="Customers">';
 	?>
 	<h2>Customers</h2></a>
-	<a href="/music-store-db/clerk/returns.php" title="Clerks">
+	<a href="/music-store-db/clerk/home.php" title="Clerks">
 	<h2>Clerks</h2></a>
 	<a href="/music-store-db/manager/home.php" title="Managers">
 	<h2>Managers</h2></a>

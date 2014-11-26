@@ -117,7 +117,7 @@ while($row=$stmt->fetch_assoc()) {
 ?>
 </table>
 <br>
-<a href="../index.php" title="Home"><h2>&lt;&lt;Back</h2></a>
+<a href="home.php" title="Home"><h2>&lt;&lt;Back</h2></a>
 
 
 <?php include '../footer.php'; ?>
