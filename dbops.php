@@ -81,6 +81,8 @@ function addCustomer($username, $c_password, $fullname, $address, $phone, $conne
 	    if($stmt->error) {       
 	      printf("<b>Error: %s.</b>\n", $stmt->error);
 	    } else {
+	    	$_SESSION['cid'] = $new_id;
+			$_SESSION['cname'] = $fullname;
 	      echo "<h3>Thanks, ".$username."! Welcome to AMS!</h3>";
 	      echo '<META http-equiv="refresh" content="1; shop.php?' . SID . '">';
 	    }
