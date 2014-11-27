@@ -601,12 +601,50 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	$id = $id->fetch_assoc();
 	$new_id = $id['max(receiptID)'] + 1;
 
-	// Create Order data
+	//Create date var
 	date_default_timezone_set('America/Vancouver');
 	$date = date("Ymd");
+
+	// //Calculate delivery date - we can only deliver ~5 orders a day
+	// //How many orders are pending delivery?
+	// $expect = $connection->query("SELECT count(*) FROM `Order` WHERE deliveredDate IS NULL");
+	// $pendings = $expect->fetch_row()[0];
+	// $expect->close();
+	// echo "There are ".$pendings." pending deliveries.";
+	// //How many orders have already been delivered today?
+	// $expect = $connection->prepare("SELECT count(*) FROM `Order` WHERE deliveredDate=?");
+	// $expect->bind_param("s", $date);
+	// $expect->execute();
+	// $expect->bind_result($delivered);
+	// $expect->fetch();
+	// $expect->close();
+	// echo $delivered." orders were delivered today.";
+	// //Calculate expected day...
+	// $deliverday = $date + ceil(($pendings-5-$delivered) / 5);
+	// if ($deliverday < 0)
+	// 	$deliverday = $date;
+	// echo "Today is ".$date;
+	// echo "You can expect your order to be delivered on ".$deliverday.", which is in ".ceil(($pendings-5-$delivered) / 5)." days.";
+	
+
+	//Calculate delivery day - we send 3 orders a day
+	$expect = $connection->query(
+		"SELECT count(*), max(deliveredDate) FROM `Order`
+		WHERE deliveredDate = (SELECT max(deliveredDate) FROM `Order`)");
+	$expect = $expect->fetch_row();
+	$pending = $connection->query("SELECT count(*) FROM `Order` WHERE deliveredDate IS NULL");
+	$pending = $pending->fetch_row();
+	if($expect[1] === NULL)
+		$deliverday = $date;
+	else {
+		$numdays = floor(($expect[0]+$pending[0])/3);
+		$deliverday = date('Y-m-d', strtotime($expect[1]. ' + '.$numdays.' days'));
+	}
+
+	// Create Order data
 	$order = $connection->prepare("INSERT INTO `Order`(receiptID, order_date, cid,
 		cardNo, expiryDate, expectedDate) VALUES (?,?,?,?,?,?)");
-	$order->bind_param("isssss", $new_id, $date, $cid, $creditcard, $expiry, $date);
+	$order->bind_param("isssss", $new_id, $date, $cid, $creditcard, $expiry, $deliverday);
 	$order->execute();
 	if($order->error) {       
     	  printf("<h2>Error creating customer order: ".$order->error."</h2>\n");
@@ -614,6 +652,14 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 	if (!$order) {
 		echo "<h2>Order creation failed. Please try again.<h2>";
 	}
+
+	// /**CALCULATE DELIVERY **/
+	// $numdays = $connection->prepare("SELECT count(*) FROM `Order`");
+	// $numdays->execute();
+	// $numdays->store_result();
+	// //my_sqli_num_rows
+	// $deliverydays = round((1+($numdays/3)));
+	// /**!!!!*/
 
 	// Find customer's shopping cart
 	$stmt = $connection->prepare("SELECT upc, quantity FROM ShoppingCart WHERE cid=?");
@@ -654,7 +700,8 @@ function createPurchase($cid, $creditcard, $expiry, $connection) {
 
 	// Display success message
 	echo "<h3>Order placed for ".$_SESSION['cname']." and billed to credit card with number ".$creditcard.".";
-	echo " <br/>Your receipt number is: ".$new_id.". Thanks for shopping with AMS!</h3>";
+	echo "<h3> The approximate date of arrival is ".$deliverday.".</h3>";
+	echo "<h3> Your receipt number is: ".$new_id.". Thanks for shopping with AMS!</h3>";
 
 	displayShopSearch();
 }
