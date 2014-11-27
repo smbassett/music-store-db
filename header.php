@@ -16,7 +16,7 @@
 <div id="header">
 <div style = "position: relative;">
 
-	<a href="/music-store-db/index.php" title="Home"><h1>AMS</h1></a> 
+	<h1>AMS</h1>
 	
 	<?php
 		if (isset($_SESSION['cname']))
