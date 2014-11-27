@@ -50,9 +50,9 @@ function formSubmit(CustId) {
       // Delete customer
       deleteCustomer($_POST['cid'], $connection);        
     
-    } elseif (isset($_POST["submit"]) && $_POST["submit"] ==  "ADD") {       
+    } elseif (isset($_POST["submitAddCust"]) && $_POST["submitAddCust"] ==  "ADD") {       
       // Add customer    		  
-      tryAddCustomer($_POST["new_username"], $_POST["new_password"], $_POST["new_fullname"], $_POST["new_address"], 
+      managerTryAddCustomer($_POST["new_username"], $_POST["new_password"], $_POST["new_fullname"], $_POST["new_address"], 
           $_POST["new_phone"], $connection);
     }
 
@@ -85,7 +85,7 @@ function formSubmit(CustId) {
     	<tr><td>Full Name</td><td> <input type="text" size=20 name="new_fullname"></td></tr>
 		<tr><td>Address</td><td> <input type="text" size=20 name="new_address"></td></tr>
 		<tr><td>Phone</td><td> <input type="text" size=20 name="new_phone"></td></tr>
-    <tr><td></td><td><input type="submit" name="submit" border=0 value="ADD"></td></tr>
+    <tr><td></td><td><input type="submit" name="submitAddCust" border=0 value="ADD"></td></tr>
   </table>
 </form>
 

@@ -55,7 +55,7 @@ $connection = connectToDatabase();
 					echo '<META http-equiv="refresh" content="1; shop.php?' . SID . '">';
 					exit;
 				} else {
-					echo "Sorry, we couldn't find that username and password combination in our records. Pleaes try again.";
+					echo "Sorry, we couldn't find that username and password combination in our records. Please try again.";
 				}
 			}
 			$stmt->close();		

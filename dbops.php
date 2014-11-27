@@ -90,6 +90,58 @@ function addCustomer($username, $c_password, $fullname, $address, $phone, $conne
 }
 
 
+function managerTryAddCustomer($username, $c_password, $fullname, $address, $phone, $connection){
+	$stmt = $connection->prepare("SELECT cid FROM Customer WHERE username = ?");
+	$stmt->bind_param("s", $username);
+	$stmt->execute();
+	$stmt->bind_result($found_cid);
+	$stmt->fetch();
+	
+	//Is username available?
+	if (is_null($found_cid)){
+		managerAddCustomer($username, $c_password, $fullname, $address, $phone, $connection);
+	} else {
+		printf("<h3>Sorry, that username is already taken. Please choose a different one.</h3>");
+		echo"<h3>May we suggest ".$username."_the_awesome, ".$fullname."666, or ".$username."-".$phone."?</h3>";
+		}
+	}
+
+
+function managerAddCustomer($username, $c_password, $fullname, $address, $phone, $connection) {
+    // Generate new cid  
+	$id = $connection->query("SELECT max(cid) FROM Customer");
+	$id = $id->fetch_row();
+	$new_id = $id[0] + 1;
+	
+	// Test fields for validity
+	 $valid = true;
+
+	// Prepare phone number
+	$phone_length = strlen($phone);
+	if ($phone_length > 12 || $phone_length < 10 || $phone_length == 11) {
+		printf("<h3>We tried calling and we know that's a fake number. Please enter a valid phone number.</h3>");
+		$valid = false;
+	} else if ($phone_length == 10) {
+		$phone = substr($phone, 0, 3) . "-" . substr($phone, 3, 3) . "-" . substr($phone, 6, 4);
+	}
+	
+	if($valid) {
+		// SQL statement
+		$stmt = $connection->prepare("INSERT INTO Customer (cid, username, c_password, fullname, address, phone) VALUES (?,?,?,?,?,?)");
+		// Bind the title and pub_id parameters, 'ssssss' indicates 6 strings
+    	$stmt->bind_param("ssssss", $new_id, $username, $c_password, $fullname, $address, $phone);
+    	// Execute the insert statement
+    	$stmt->execute();	
+    	// Print success or error message  
+	    if($stmt->error) {       
+	      printf("<b>Error: %s.</b>\n", $stmt->error);
+	    } else {
+	      echo "<h3>Added user '".$username."'.</h3>";
+	    }
+	}
+}
+
+
 function deleteCustomer($id, $connection) {
     // Deleting a customer involves deleting the customer's shopping cart and then deleting the customer.
     
